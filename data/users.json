@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "reza_karimi",
+      "name": "رضا کریمی",
+      "email": "reza@example.com",
+      "avatar": "/images/avatars/1.jpg",
+      "status": "active",
+      "bio": "عاشق تکنولوژی و برنامه‌نویسی",
+      "createdAt": "2023-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "username": "sara_mohammadi",
+      "name": "سارا محمدی",
+      "email": "sara@example.com",
+      "avatar": "/images/avatars/2.jpg",
+      "status": "ready",
+      "bio": "طراح گرافیک و عکاس",
+      "createdAt": "2023-02-15T00:00:00Z"
+    }
+  ]
+}

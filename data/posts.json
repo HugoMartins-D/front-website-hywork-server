@@ -1,0 +1,30 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "لپ‌تاپ ایسوس Zenbook",
+      "caption": "لپ‌تاپ فوق‌سبک با صفحه نمایش OLED و پردازنده Intel Core i7",
+      "price": 45000000,
+      "stock": 5,
+      "category": "الکترونیک",
+      "rating": 4.8,
+      "image": "laptop1.jpg",
+      "likesCount": 120,
+      "createdAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "title": "هدفون بی‌سیم سونی WH-1000XM5",
+      "caption": "هدفون با کیفیت صدای عالی و حذف نویز پیشرفته",
+      "price": 8500000,
+      "stock": 15,
+      "category": "الکترونیک",
+      "rating": 4.6,
+      "image": "headphone1.jpg",
+      "likesCount": 85,
+      "createdAt": "2024-01-20T14:15:00Z"
+    }
+  ]
+}

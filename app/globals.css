@@ -1,0 +1,351 @@
+@import "tailwindcss";
+
+/* ترتیب صریح لایه‌های cascade - استاندارد Tailwind v4 برای پروژه‌هایی که CSS دستی هم دارن */
+@layer theme, base, components, utilities;
+
+/* ==================== استایل‌های Leaflet ==================== */
+
+/* تنظیمات برای نمایش صحیح نقشه در Next.js */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.leaflet-control-zoom {
+  z-index: 10;
+}
+
+/* برای رفع مشکل نمایش آیکون‌ها در Next.js */
+.leaflet-marker-icon {
+  background: transparent !important;
+}
+
+/* ==================== توکن‌های طراحی ====================
+   این دقیقاً همون متغیرهایی هستن که در کل پروژه (Sidebar، MobileBottomNav،
+   layout.tsx، LoginForm، OtpForm و ...) با سینتکس bg-(--bg-primary) استفاده می‌شن.
+   با تعریفشون داخل @theme، هم به‌عنوان CSS variable در دسترسن، هم Tailwind
+   می‌تونه در آینده ازشون یوتیلیتی بسازه (مثلاً اگه بخوای bg-primary هم اضافه کنی). */
+@theme {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-surface: #f1f5f9;
+  --color-bg-card: #ffffff;
+  --color-bg-hover: #e2e8f0;
+  
+  --color-border-color: #e2e8f0;
+  --color-border-light: #f1f5f9;
+  
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+  
+  --color-accent-color: #3b82f6;
+  --color-accent-hover: #2563eb;
+  
+  --color-shadow: rgba(0, 0, 0, 0.08);
+
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  /* انیمیشن‌های سفارشی - Tailwind v4 خودش از این توکن‌ها یوتیلیتی animate-* می‌سازه */
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
+  --animate-slide-right: slideInRight 0.5s ease-in-out;
+  --animate-slide-left: slideInLeft 0.5s ease-in-out;
+}
+
+/* ==================== استراتژی دارک‌مود ====================
+   ThemeContext ما data-theme="dark" رو روی <html> ست می‌کنه (نه از طریق
+   ترجیح سیستم‌عامل). این خط به Tailwind می‌گه که واریانت dark: هم از همین
+   attribute پیروی کنه، نه از prefers-color-scheme. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+[data-theme="dark"] {
+  --color-bg-primary: #0a0a0a;
+  --color-bg-secondary: #171717;
+  --color-bg-surface: #262626;
+  --color-bg-card: #1a1a1a;
+  --color-bg-hover: #2a2a2a;
+  
+  --color-border-color: #3f3f46;
+  --color-border-light: #2a2a2a;
+  
+  --color-text-primary: #ededed;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #6b7280;
+  
+  --color-accent-color: #60a5fa;
+  --color-accent-hover: #93bbfc;
+  
+  --color-shadow: rgba(0, 0, 0, 0.4);
+}
+
+/* ==================== پایه (Reset + راست‌چین) ==================== */
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    direction: rtl;
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    direction: rtl;
+    min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: var(--color-accent-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  input, textarea, select, button {
+    font-family: var(--font-sans);
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+  }
+
+  ::selection {
+    background: var(--color-accent-color);
+    color: #ffffff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-color);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-secondary);
+  }
+
+  /* جلوگیری از zoom خودکار iOS روی فوکوس اینپوت در موبایل */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+
+    input, textarea, select, button {
+      font-size: 16px;
+    }
+  }
+}
+
+/* ==================== کلاس‌های تکرارشونده (Component classes) ====================
+   معادل idiomatic-تر نسخه‌ی قبلی: به‌جای هاردکد کردن رنگ‌ها، از توکن‌های
+   بالا و یوتیلیتی‌های Tailwind با @apply استفاده شده. */
+@layer components {
+  .card {
+    @apply bg-(--color-bg-card) rounded-xl p-6 shadow-[0_4px_6px_-1px_var(--color-shadow)] transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply shadow-[0_10px_15px_-3px_var(--color-shadow)] -translate-y-0.5;
+  }
+
+  .btn-primary {
+    @apply bg-(--color-accent-color) text-white font-bold py-3 px-6 rounded-lg transition-all duration-300;
+  }
+  .btn-primary:hover {
+    @apply bg-(--color-accent-hover) -translate-y-px shadow-[0_4px_6px_-1px_var(--color-shadow)];
+  }
+  .btn-primary:disabled {
+    @apply opacity-50 cursor-not-allowed translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply bg-(--color-bg-surface) text-(--color-text-primary) font-bold py-3 px-6 rounded-lg transition-all duration-300;
+  }
+  .btn-secondary:hover {
+    @apply bg-(--color-border-color) -translate-y-px;
+  }
+
+  .btn-success {
+    @apply bg-green-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300;
+  }
+  .btn-success:hover {
+    @apply bg-green-600 -translate-y-px shadow-[0_4px_6px_-1px_rgba(34,197,94,0.5)];
+  }
+
+  .btn-danger {
+    @apply bg-red-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300;
+  }
+  .btn-danger:hover {
+    @apply bg-red-600 -translate-y-px shadow-[0_4px_6px_-1px_rgba(239,68,68,0.5)];
+  }
+
+  .badge {
+    @apply inline-block py-1 px-3 rounded-full text-xs font-semibold leading-none;
+  }
+  .badge-blue   { @apply bg-blue-100 text-blue-800; }
+  .badge-green  { @apply bg-green-100 text-green-800; }
+  .badge-red    { @apply bg-red-100 text-red-800; }
+  .badge-yellow { @apply bg-yellow-100 text-yellow-800; }
+
+  .error-message {
+    @apply text-red-500 bg-red-50 border border-red-300 py-3 px-4 rounded-lg text-sm;
+  }
+  .success-message {
+    @apply text-green-500 bg-green-50 border border-green-300 py-3 px-4 rounded-lg text-sm;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/50 flex items-center justify-center z-1000;
+  }
+  .modal-content {
+    @apply bg-(--color-bg-card) rounded-2xl p-8 max-w-125 w-[90%] max-h-[90vh] overflow-y-auto animate-fade-in;
+  }
+
+  .loading-spinner {
+    @apply inline-block w-8 h-8 rounded-full border-[3px] border-(--color-accent-color)/30 animate-spin;
+    border-top-color: var(--color-accent-color);
+  }
+
+  .data-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .data-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+
+  /* ورودی کد تأیید (OTP) - همیشه چپ‌چین، صرف‌نظر از جهت کلی صفحه */
+  .otp-input {
+    direction: ltr !important;
+    text-align: center !important;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 2px;
+    unicode-bidi: plaintext !important;
+  }
+
+  /* ورودی شماره‌تلفن/ایمیل - چپ‌چین برای خوانایی بهتر ارقام و @ */
+  .phone-input,
+  .email-input {
+    direction: ltr !important;
+    text-align: left !important;
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+  }
+
+  .otp-container {
+    direction: ltr !important;
+  }
+  .otp-container input {
+    direction: ltr !important;
+    text-align: center !important;
+  }
+}
+
+/* ==================== یوتیلیتی‌های کمکی ====================
+   نکته: .text-right / .text-left / .text-center / .sr-only از نسخه‌ی قبلی
+   حذف شدن چون Tailwind به‌صورت built-in همین کلاس‌ها رو داره؛ تعریف دوباره‌شون
+   فقط ریسک تداخل specificity ایجاد می‌کنه. */
+@layer utilities {
+  .ltr {
+    direction: ltr;
+    text-align: left;
+  }
+  .rtl {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .space-x-rtl > * + * {
+    margin-right: 0.5rem;
+    margin-left: 0;
+  }
+  .space-x-ltr > * + * {
+    margin-left: 0.5rem;
+    margin-right: 0;
+  }
+}
+
+/* ==================== کی‌فریم‌های انیمیشن ====================
+   این‌ها مستقیماً پشت --animate-* در @theme استفاده می‌شن، پس دیگه نیازی
+   به تعریف دستی .animate-fade-in و مشابهش نیست؛ Tailwind خودش می‌سازتشون. */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

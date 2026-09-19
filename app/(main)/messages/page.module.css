@@ -1,0 +1,1136 @@
+/* ============================================================
+   src/app/(main)/messages/messages.module.css
+   ============================================================
+   استایل‌های صفحه پیام‌ها - کاملاً ماژولار و مقیاس‌پذیر
+   با پشتیبانی از تم روشن/تاریک و ریسپانسیو کامل
+   ============================================================ */
+
+/* ============================================================
+   1️⃣ کانتینر اصلی
+   ============================================================ */
+
+/** 
+ * کانتینر اصلی برنامه پیام‌ها
+ * - نمایش دو ستونه در دسکتاپ (لیست چت‌ها + جزییات چت)
+ * - نمایش تک ستونه در موبایل
+ */
+.messagesApp {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background: var(--color-bg-primary);
+  overflow: hidden;
+  font-family: var(--font-sans, inherit);
+}
+
+/* ============================================================
+   2️⃣ لیست چت‌ها (سایدبار چپ)
+   ============================================================ */
+
+/**
+ * لیست چت‌ها - شامل سرچ و لیست مکالمات
+ * عرض ثابت در دسکتاپ، تمام صفحه در موبایل
+ */
+.chatList {
+  width: 380px;
+  background: var(--color-bg-secondary);
+  border-left: 1px solid var(--color-border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: width 0.3s ease, transform 0.3s ease;
+}
+
+/** حالت مخفی برای موبایل */
+.chatListHidden {
+  display: none;
+}
+
+/* ============================================================
+   3️⃣ بخش جستجوی چت‌ها
+   ============================================================ */
+
+/** هدر جستجو با دکمه بازگشت */
+.chatSearch {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border-color);
+  gap: 12px;
+  background: var(--color-bg-secondary);
+  flex-shrink: 0;
+}
+
+/** دکمه بازگشت به صفحه اصلی */
+.homeBackBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  color: var(--color-text-primary);
+}
+
+.homeBackBtn:hover {
+  background: var(--color-bg-surface);
+}
+
+/** کانتینر جستجو */
+.searchWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-muted);
+}
+
+/** آیکون جستجو */
+.searchIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/** ورودی جستجو */
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans, inherit);
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ============================================================
+   4️⃣ لیست آیتم‌های چت
+   ============================================================ */
+
+/** کانتینر اسکرول‌پذیر آیتم‌ها */
+.chatItems {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/** استایل اسکرول برای WebKit */
+.chatItems::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chatItems::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+.chatItems::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted);
+  border-radius: 10px;
+}
+
+.chatItems::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+/** هر آیتم چت */
+.chatItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid var(--color-border-light);
+  position: relative;
+  gap: 12px;
+}
+
+.chatItem:hover {
+  background: var(--color-bg-surface);
+}
+
+/** آیتم فعال/انتخاب شده */
+.chatItemActive {
+  background: var(--color-bg-surface);
+}
+
+/** آواتار کاربر */
+.avatarWrapper {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--color-bg-surface);
+}
+
+.avatarPlaceholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/** اطلاعات چت (نام + آخرین پیام) */
+.chatInfo {
+  flex: 1;
+  min-width: 0;
+  margin-right: 12px;
+}
+
+/** نام کاربر یا گروه */
+.chatName {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/** آخرین پیام */
+.chatMessage {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/** متادیتا (زمان + تعداد پیام‌های نخوانده) */
+.chatMeta {
+  text-align: left;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+/** زمان آخرین پیام */
+.chatTime {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/** نشانگر پیام‌های نخوانده */
+.chatUnread {
+  background: var(--color-accent-color);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/** نشانگر آنلاین بودن */
+.onlineIndicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #4ade80;
+  border-radius: 50%;
+  border: 2px solid var(--color-bg-secondary);
+}
+
+/* ============================================================
+   5️⃣ جزییات چت (پنل راست)
+   ============================================================ */
+
+/** پنل جزییات چت */
+.chatDetail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg-primary);
+  min-width: 0;
+}
+
+/** حالت مخفی در موبایل */
+.chatDetailHidden {
+  display: none;
+}
+
+/* ============================================================
+   6️⃣ هدر چت
+   ============================================================ */
+
+/** هدر با اطلاعات کاربر */
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--color-border-color);
+  background: var(--color-bg-secondary);
+  flex-shrink: 0;
+}
+
+/** دکمه بازگشت در موبایل */
+.backBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-primary);
+  transition: background 0.2s ease;
+}
+
+.backBtn:hover {
+  background: var(--color-bg-surface);
+}
+
+/** اطلاعات کاربر در هدر */
+.chatHeaderInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+/** نام کاربر */
+.chatHeaderName {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/** وضعیت کاربر */
+.chatHeaderStatus {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* ============================================================
+   7️⃣ منطقه پیام‌ها
+   ============================================================ */
+
+/** کانتینر پیام‌ها با اسکرول */
+.chatMessagesArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--color-bg-primary);
+  scrollbar-width: thin;
+}
+
+.chatMessagesArea::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chatMessagesArea::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+.chatMessagesArea::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted);
+  border-radius: 10px;
+}
+
+.chatMessagesArea::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+/* ============================================================
+   8️⃣ پیام‌ها
+   ============================================================ */
+
+/** هر پیام */
+.messageWrapper {
+  display: flex;
+  width: 100%;
+  animation: messageSlideIn 0.2s ease;
+}
+
+/** پیام ارسالی (من) */
+.messageWrapperMe {
+  justify-content: flex-end;
+}
+
+/** پیام دریافتی (دیگری) */
+.messageWrapperOther {
+  justify-content: flex-start;
+}
+
+/** کانتینر پیام */
+.messageContainer {
+  max-width: 70%;
+  position: relative;
+}
+
+/** حباب پیام ارسالی */
+.messageBubbleMe {
+  background: var(--color-accent-color);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 18px 18px 18px 4px;
+  font-size: 14px;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+/** حباب پیام دریافتی */
+.messageBubbleOther {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  padding: 10px 14px;
+  border-radius: 18px 18px 4px 18px;
+  font-size: 14px;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+/** حباب پاسخ به پیام */
+.replyBubble {
+  padding: 4px 8px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.replyBubble:hover {
+  opacity: 0.8;
+}
+
+/** پاسخ در پیام ارسالی */
+.replyBubbleMe {
+  background: rgba(255, 255, 255, 0.1);
+  border-right: 2px solid white;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/** پاسخ در پیام دریافتی */
+.replyBubbleOther {
+  background: var(--color-bg-secondary);
+  border-left: 2px solid var(--color-accent-color);
+  color: var(--color-text-muted);
+}
+
+/** متن پاسخ */
+.replyBubbleText {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/** فوتر پیام (زمان + وضعیت) */
+.messageFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 2px;
+  align-items: center;
+}
+
+/** زمان پیام */
+.messageTime {
+  font-size: 10px;
+  opacity: 0.6;
+  color: var(--color-text-muted);
+}
+
+/** وضعیت پیام (خوانده/نخوانده) */
+.messageStatus {
+  font-size: 10px;
+  opacity: 0.6;
+  color: var(--color-text-muted);
+  display: inline-flex;
+  align-items: center;
+}
+
+/** تصویر در پیام */
+.mediaImage {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  object-fit: cover;
+}
+
+.mediaImage:hover {
+  opacity: 0.9;
+}
+
+/** ویدیو در پیام */
+.mediaVideo {
+  max-width: 250px;
+  max-height: 180px;
+  border-radius: 12px;
+  margin-bottom: 4px;
+}
+
+/** صدا در پیام */
+.mediaAudio {
+  max-width: 200px;
+}
+
+/** فایل در پیام */
+.fileBubble {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--color-bg-surface);
+  border-radius: 12px;
+  color: var(--color-text-primary);
+}
+
+/** نام فایل */
+.fileName {
+  font-size: 12px;
+  word-break: break-word;
+  flex: 1;
+}
+
+/** دکمه دانلود فایل */
+.downloadBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: var(--color-text-primary);
+  transition: background 0.2s ease;
+}
+
+.downloadBtn:hover {
+  background: var(--color-bg-surface);
+}
+
+/* ============================================================
+   9️⃣ هایلایت پیام (پاسخ به پیام)
+   ============================================================ */
+
+/** هایلایت پیام هنگام پاسخ */
+.messageWrapperHighlight .messageBubbleMe,
+.messageWrapperHighlight .messageBubbleOther,
+.messageWrapperHighlight .fileBubble,
+.messageWrapperHighlight .mediaImage {
+  transition: box-shadow 0.2s ease;
+  box-shadow: 0 0 0 2px #4caf50, 0 0 0 4px rgba(76, 175, 80, 0.3);
+  border-radius: 12px;
+}
+
+/* ============================================================
+   🔟 ورودی چت
+   ============================================================ */
+
+/** ناحیه ورودی پیام */
+.chatInputArea {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--color-border-color);
+  background: var(--color-bg-secondary);
+  flex-shrink: 0;
+}
+
+/** دکمه ضمیمه (آپلود فایل) */
+.attachBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  transition: background 0.2s ease;
+}
+
+.attachBtn:hover {
+  background: var(--color-bg-surface);
+}
+
+/** ورودی متن پیام */
+.messageInput {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid var(--color-border-color);
+  border-radius: 24px;
+  outline: none;
+  font-size: 14px;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans, inherit);
+  transition: border-color 0.2s ease;
+}
+
+.messageInput:focus {
+  border-color: var(--color-accent-color);
+}
+
+.messageInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+/** دکمه ارسال */
+.sendBtn {
+  background: var(--color-accent-color);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sendBtn:hover {
+  background: var(--color-accent-hover);
+  transform: scale(1.05);
+}
+
+.sendBtn:active {
+  transform: scale(0.95);
+}
+
+.sendBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================
+   1️⃣1️⃣ باکس پاسخ به پیام
+   ============================================================ */
+
+/** نوار نمایش پیام در حال پاسخ */
+.replyBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--color-bg-surface);
+  border-top: 1px solid var(--color-border-color);
+  border-bottom: 1px solid var(--color-border-color);
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+/** محتوای پاسخ */
+.replyContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+/** برچسب پاسخ */
+.replyLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-accent-color);
+  flex-shrink: 0;
+}
+
+/** متن پاسخ */
+.replyText {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+/** دکمه لغو پاسخ */
+.cancelReplyBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cancelReplyBtn:hover {
+  background: var(--color-bg-surface);
+}
+
+/* ============================================================
+   1️⃣2️⃣ حالت خالی (بدون چت انتخاب شده)
+   ============================================================ */
+
+/** نمایش زمانی که هیچ چتی انتخاب نشده */
+.emptyState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--color-text-muted);
+  font-size: 18px;
+  padding: 20px;
+  text-align: center;
+}
+
+/** آیکون حالت خالی */
+.emptyIcon {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+/** متن حالت خالی */
+.emptyState p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* ============================================================
+   1️⃣3️⃣ منوی شناور (کلیک راست روی پیام)
+   ============================================================ */
+
+/** کانتینر منوی شناور */
+.floatingMenu {
+  position: fixed;
+  z-index: 1000;
+}
+
+/** منوی پیام */
+.messageMenu {
+  background: var(--color-bg-secondary);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--color-shadow);
+  padding: 8px 0;
+  min-width: 180px;
+  border: 1px solid var(--color-border-color);
+  animation: fadeIn 0.15s ease;
+}
+
+/** هر آیتم منو */
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  transition: background 0.2s ease;
+  text-align: right;
+  font-family: var(--font-sans, inherit);
+}
+
+.menuItem:hover {
+  background: var(--color-bg-surface);
+}
+
+/** آیتم حذف (با رنگ قرمز) */
+.menuItemDelete {
+  color: #ef4444;
+}
+
+.menuItemDelete:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/** جداکننده منو */
+.menuDivider {
+  height: 1px;
+  background: var(--color-border-color);
+  margin: 4px 0;
+}
+
+/* ============================================================
+   1️⃣4️⃣ مودال (اموجی و اکشن‌ها)
+   ============================================================ */
+
+/** لایه پشت مودال */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/** کانتینر مودال */
+.modalContainer {
+  background: var(--color-bg-secondary);
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  transform: translateY(100%);
+  animation: slideUp 0.3s ease forwards;
+  box-shadow: 0 -4px 20px var(--color-shadow);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/** ردیف اموجی‌ها */
+.emojiRow {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 12px 4px 16px;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--color-border-color);
+  margin-bottom: 16px;
+}
+
+.emojiRow::-webkit-scrollbar {
+  display: none;
+}
+
+/** هر اموجی */
+.emojiItem {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 12px;
+  transition: transform 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.emojiItem:hover {
+  transform: scale(1.2);
+  background: var(--color-bg-surface);
+}
+
+/** گرید آیتم‌های مودال */
+.modalGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/** هر آیتم مودال */
+.modalItem {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 16px;
+  transition: background 0.2s ease;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans, inherit);
+}
+
+.modalItem:hover {
+  background: var(--color-bg-surface);
+}
+
+/** آیکون آیتم مودال */
+.modalItem svg {
+  width: 32px;
+  height: 32px;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+}
+
+/** دکمه بستن مودال */
+.modalCloseBtn {
+  width: 100%;
+  padding: 12px;
+  background: var(--color-bg-surface);
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  transition: background 0.2s ease;
+  font-family: var(--font-sans, inherit);
+}
+
+.modalCloseBtn:hover {
+  background: var(--color-border-color);
+}
+
+/* ============================================================
+   1️⃣5️⃣ انیمیشن‌ها
+   ============================================================ */
+
+/** افکت محو شدن */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/** افکت بالا آمدن */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/** افکت ورود پیام */
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   1️⃣6️⃣ ریسپانسیو - موبایل کوچک (تا 480px)
+   ============================================================ */
+
+@media (max-width: 480px) {
+  /** آیتم‌های چت */
+  .chatItem {
+    padding: 10px 12px;
+  }
+  
+  .chatName {
+    font-size: 14px;
+  }
+  
+  .chatMessage {
+    font-size: 12px;
+  }
+  
+  /** هدر چت */
+  .chatHeader {
+    padding: 10px 16px;
+  }
+  
+  /** منطقه پیام‌ها */
+  .chatMessagesArea {
+    padding: 12px;
+  }
+  
+  /** حباب‌های پیام */
+  .messageBubbleMe,
+  .messageBubbleOther {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .messageContainer {
+    max-width: 85%;
+  }
+  
+  /** ورودی پیام */
+  .chatInputArea {
+    gap: 6px;
+    padding: 10px 12px;
+  }
+  
+  .messageInput {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  /** مودال */
+  .modalGrid {
+    gap: 12px;
+  }
+  
+  .modalItem span {
+    font-size: 12px;
+  }
+  
+  .emojiItem {
+    font-size: 24px;
+  }
+  
+  /** دکمه‌ها */
+  .sendBtn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .attachBtn {
+    padding: 6px;
+  }
+  
+  /** آواتار */
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .avatarPlaceholder {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
+/* ============================================================
+   1️⃣7️⃣ ریسپانسیو - تبلت و موبایل (تا 768px)
+   ============================================================ */
+
+@media (max-width: 768px) {
+  /** لیست چت‌ها تمام صفحه می‌شود */
+  .chatList {
+    width: 100%;
+  }
+  
+  /** مخفی کردن لیست وقتی جزییات باز است */
+  .chatListHidden {
+    display: none;
+  }
+  
+  /** مخفی کردن جزییات وقتی لیست باز است */
+  .chatDetailHidden {
+    display: none;
+  }
+  
+  /** جزییات تمام صفحه می‌شود */
+  .chatDetail {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   1️⃣8️⃣ ریسپانسیو - تبلت بزرگ (769px تا 1024px)
+   ============================================================ */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .chatList {
+    width: 300px;
+  }
+}
+
+/* ============================================================
+   1️⃣9️⃣ ریسپانسیو - دسکتاپ متوسط (1025px تا 1440px)
+   ============================================================ */
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .chatList {
+    width: 350px;
+  }
+}
+
+/* ============================================================
+   2️⃣0️⃣ ریسپانسیو - دسکتاپ بزرگ (1441px به بالا)
+   ============================================================ */
+
+@media (min-width: 1441px) {
+  .chatList {
+    width: 420px;
+  }
+}
+
+/* ============================================================
+   2️⃣1️⃣ پشتیبانی از تم تاریک
+   ============================================================ */
+
+/** کلاس‌های اضافی برای تم تاریک */
+:global(.dark) .chatList {
+  background: var(--color-bg-secondary);
+}
+
+:global(.dark) .chatItem:hover {
+  background: var(--color-bg-surface);
+}
+
+:global(.dark) .chatItemActive {
+  background: var(--color-bg-surface);
+}
+
+:global(.dark) .messageBubbleOther {
+  background: var(--color-bg-surface);
+}
+
+:global(.dark) .replyBubbleOther {
+  background: var(--color-bg-secondary);
+}
+
+/* ============================================================
+   2️⃣2️⃣ کلاس‌های کمکی
+   ============================================================ */
+
+/** مخفی کردن عنصر */
+.hidden {
+  display: none !important;
+}
+
+/** غیرفعال کردن انتخاب متن */
+.noSelect {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/** اسکرول نرم */
+.smoothScroll {
+  scroll-behavior: smooth;
+}
