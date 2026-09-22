@@ -58,7 +58,7 @@ function normalizePhoneNumber(input: string): string {
   
   // اعتبارسنجی نهایی
   if (!PHONE_REGEX.test(phone)) {
-    throw new Error("Número de celular inválido (exemplo: 09123456789)");
+    throw new Error('شماره موبایل معتبر نیست (مثال: 09123456789)');
   }
   
   return phone;
@@ -94,12 +94,12 @@ async function requestOTP(phoneNumber: string): Promise<void> {
   } catch (parseError) {
     console.error('❌ خطا در parsing پاسخ:', parseError);
     console.error('📄 محتوای پاسخ:', text);
-    throw new Error("O servidor retornou uma resposta inválida");
+    throw new Error('پاسخ نامعتبر از سرور دریافت شد');
   }
 
   // بررسی موفقیت درخواست
   if (!response.ok) {
-    const errorMessage = result.message || `Erro do servidor: ${response.status}`;
+    const errorMessage = result.message || `خطای سرور: ${response.status}`;
     console.error('❌ خطای سرور:', {
       status: response.status,
       message: errorMessage,
@@ -185,7 +185,7 @@ export default function LoginPage() {
     // ============================================
     if (!data.identifier || data.identifier.trim() === '') {
       console.warn('⚠️ شماره موبایل وارد نشده است');
-      error("Informe o número de celular");
+      error('لطفاً شماره موبایل را وارد کنید');
       return;
     }
 
@@ -197,7 +197,7 @@ export default function LoginPage() {
       phoneNumber = normalizePhoneNumber(data.identifier);
       console.log('📱 شماره نرمال‌سازی شده:', phoneNumber);
     } catch (normalizeError) {
-      const message = normalizeError instanceof Error ? normalizeError.message : "Número de celular inválido";
+      const message = normalizeError instanceof Error ? normalizeError.message : 'شماره موبایل نامعتبر';
       console.error('❌ خطا در نرمال‌سازی شماره:', normalizeError);
       error(message);
       return;
@@ -221,7 +221,7 @@ export default function LoginPage() {
       console.log('💾 شماره در sessionStorage ذخیره شد');
       
       // نمایش پیام موفقیت
-      success("Enviamos o código de confirmação para seu celular");
+      success('کد تایید به شماره شما ارسال شد');
       console.log('✅ کد تایید با موفقیت ارسال شد');
       
       // پاک‌سازی تایمر قبلی اگر وجود دارد
@@ -244,13 +244,13 @@ export default function LoginPage() {
       
       // تشخیص نوع خطا و نمایش پیام مناسب
       if (err instanceof TypeError && err.message === 'Failed to fetch') {
-        error("Não foi possível conectar ao servidor. Verifique se o serviço está disponível.");
+        error('❌ اتصال به سرور برقرار نشد. لطفاً مطمئن شوید بک‌اند در حال اجراست.');
       } else if (err instanceof Error) {
         // نمایش پیام خطای خاص از سرور
         error(err.message);
       } else {
         // خطای ناشناخته
-        error("Não foi possível enviar o código. Tente novamente.");
+        error('خطا در ارسال کد تایید. لطفاً مجدداً تلاش کنید.');
       }
     } finally {
       // ============================================
@@ -274,7 +274,7 @@ export default function LoginPage() {
     <main 
       className="min-h-screen flex items-center justify-center bg-bg-primary p-4"
       role="main"
-      aria-label="Entrar"
+      aria-label="صفحه ورود"
     >
       <div className="w-full max-w-md">
         <LoginForm 

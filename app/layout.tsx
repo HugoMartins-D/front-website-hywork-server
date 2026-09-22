@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     default: 'MyApp',
     template: '%s | MyApp',
   },
-  description: "Plataforma de compra e venda de produtos",
-  keywords: ["Loja", "Compra", "Venda", "Produtos", "Online"],
+  description: 'سکوی خرید و فروش محصولات',
+  keywords: ['فروشگاه', 'خرید', 'فروش', 'محصولات', 'آنلاین'],
   authors: [{ name: 'MyApp Team' }],
   creator: 'MyApp',
   publisher: 'MyApp',
@@ -35,10 +35,10 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'MyApp',
-    description: "Plataforma de compra e venda de produtos",
+    description: 'سکوی خرید و فروش محصولات',
     url: 'https://myapp.com',
     siteName: 'MyApp',
-    locale: 'pt_BR',
+    locale: 'fa_IR',
     type: 'website',
   },
   icons: {
@@ -52,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" dir="ltr" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="fa" dir="rtl" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         <ThemeProvider>
           <UserProvider>  {/* ✅ اینجا UserProvider را قرار دهید */}

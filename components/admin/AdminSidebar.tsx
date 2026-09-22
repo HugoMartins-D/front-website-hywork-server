@@ -12,12 +12,12 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
   const pathname = usePathname();
 
   const menuItems = [
-    { path: '/admin/dashboard', label: "Painel", icon: '📊' },
-    { path: '/admin/postmanagments', label: "Produtos", icon: '📦' },
-    { path: '/admin/usersmanagement', label: "Usuários", icon: '👥' },
-    { path: '/admin/orders', label: "Pedidos", icon: '🛒' },
-    { path: '/admin/chats', label: "Conversas", icon: '💬' },
-    { path: '/admin/settings', label: "Configurações", icon: '⚙️' },
+    { path: '/admin/dashboard', label: 'داشبورد', icon: '📊' },
+    { path: '/admin/postmanagments', label: 'محصولات', icon: '📦' },
+    { path: '/admin/usersmanagement', label: 'کاربران', icon: '👥' },
+    { path: '/admin/orders', label: 'سفارشات', icon: '🛒' },
+    { path: '/admin/chats', label: 'چت‌ها', icon: '💬' },
+    { path: '/admin/settings', label: 'تنظیمات', icon: '⚙️' },
   ];
 
   return (
@@ -31,7 +31,7 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
         <div className="p-4 border-b border-(--color-border-color)">
           <Link href="/admin/dashboard" className="flex items-center gap-2 no-underline">
             <span className="text-2xl">🚀</span>
-            <span className="text-lg font-bold text-(--color-text-primary)">Administração</span>
+            <span className="text-lg font-bold text-(--color-text-primary)">پنل مدیریت</span>
           </Link>
         </div>
         <nav className="p-4">
@@ -58,7 +58,7 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
       {/* دکمه همبرگر */}
       <button
         onClick={onToggle}
-        className="fixed top-4 start-4 z-[60] md:hidden p-2 bg-(--color-bg-card) rounded-lg border border-(--color-border-color) text-(--color-text-primary)"
+        className="fixed top-4 right-4 z-[60] md:hidden p-2 bg-(--color-bg-card) rounded-lg border border-(--color-border-color) text-(--color-text-primary)"
       >
         {isOpen ? '✕' : '☰'}
       </button>

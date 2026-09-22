@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Sidebar from '@/components/Sidebar';
 import MobileBottomNav from '@/components/MobileBottomNav';
-import { formatNumber, formatPrice } from '@/utils/numberUtils';
+import { toPersianNumber, formatPrice } from '@/utils/numberUtils';
 import { useToast } from '@/components/NotificationToast';
 
 // ============================================
@@ -212,7 +212,7 @@ const ShippingOptionCard = ({
       </div>
       <div className="text-sm sm:text-base font-semibold mb-1">{option.label}</div>
       <div className="text-sm font-bold text-orange-600 mb-1">
-        {option.price === 0 ? "Grátis" : formatPrice(option.price)}
+        {option.price === 0 ? 'رایگان' : formatPrice(option.price)}
       </div>
       <div className="text-[11px] text-text-muted">{option.desc}</div>
     </div>
@@ -275,7 +275,7 @@ const OrderSummary = ({
   return (
     <div className="bg-bg-secondary rounded-2xl p-4 sm:p-6 border border-border-color shadow-[0_1px_3px_var(--color-shadow)] sticky top-25">
       <h3 className="text-base sm:text-lg font-semibold text-text-primary mb-4">
-        Resumo do carrinho
+        خلاصه سبد خرید
       </h3>
 
       {/* لیست آیتم‌ها */}
@@ -298,7 +298,7 @@ const OrderSummary = ({
                 {item.title}
               </div>
               <div className="text-[11px] text-text-muted">
-                Quantidade: {formatNumber(item.quantity)}
+                تعداد: {toPersianNumber(item.quantity)}
               </div>
             </div>
             <div className="text-sm font-bold text-orange-600 whitespace-nowrap">
@@ -312,13 +312,13 @@ const OrderSummary = ({
 
       {/* جزئیات قیمت */}
       <div className="flex justify-between text-sm text-text-secondary mb-2">
-        <span>Subtotal dos produtos</span>
-        <span>{formatPrice(totalPrice)} tomans</span>
+        <span>قیمت کالاها</span>
+        <span>{formatPrice(totalPrice)} تومان</span>
       </div>
       <div className="flex justify-between text-sm text-text-secondary mb-2">
-        <span>Frete</span>
+        <span>هزینه ارسال</span>
         <span>
-          {shippingMethod ? formatPrice(SHIPPING_COSTS[shippingMethod] || 0) : "Não selecionado"} tomans
+          {shippingMethod ? formatPrice(SHIPPING_COSTS[shippingMethod] || 0) : 'انتخاب نشده'} تومان
         </span>
       </div>
 
@@ -326,8 +326,8 @@ const OrderSummary = ({
 
       {/* جمع کل */}
       <div className="flex justify-between text-base sm:text-lg font-bold text-text-primary">
-        <span>Total a pagar</span>
-        <span>{formatPrice(getTotalWithShipping())} tomans</span>
+        <span>قابل پرداخت</span>
+        <span>{formatPrice(getTotalWithShipping())} تومان</span>
       </div>
     </div>
   );
@@ -366,14 +366,14 @@ export default function CheckoutPage() {
   const [cartItems] = useState<CartItem[]>([
     {
       id: 1,
-      title: "Fone de ouvido sem fio Sony",
+      title: 'هدفون بی‌سیم سونی',
       price: 3250000,
       quantity: 1,
       image: '/images/posts/1.jpg',
     },
     {
       id: 2,
-      title: "Ingresso para encontro online",
+      title: 'بلیت دورهمی آنلاین',
       price: 89000,
       quantity: 2,
       image: '/images/posts/2.jpg',
@@ -414,23 +414,23 @@ export default function CheckoutPage() {
   const shippingOptions: ShippingOption[] = useMemo(() => [
     {
       id: SHIPPING_METHODS.POST,
-      label: "Entrega expressa",
+      label: 'پست پیشتاز',
       price: SHIPPING_COSTS[SHIPPING_METHODS.POST],
-      desc: "Entrega em 2 a 5 dias úteis",
+      desc: 'زمان تحویل ۲ تا ۵ روز کاری',
       icon: LightningFilledIcon,
     },
     {
       id: SHIPPING_METHODS.COURIER,
-      label: "Entrega por motoboy",
+      label: 'پیک موتوری',
       price: SHIPPING_COSTS[SHIPPING_METHODS.COURIER],
-      desc: "Entrega em 1 dia útil",
+      desc: 'زمان تحویل ۱ روز کاری',
       icon: MotorcycleIcon,
     },
     {
       id: SHIPPING_METHODS.PICKUP,
-      label: "Retirada no local",
+      label: 'تحویل حضوری',
       price: SHIPPING_COSTS[SHIPPING_METHODS.PICKUP],
-      desc: "Teerã, unidade central",
+      desc: 'تهران، شعبه مرکزی',
       icon: BuildingIcon,
     },
   ], []);
@@ -439,14 +439,14 @@ export default function CheckoutPage() {
   const paymentOptions: PaymentOption[] = useMemo(() => [
     {
       id: PAYMENT_METHODS.ONLINE,
-      label: "Pagamento online",
-      desc: "Pagar pelo banco",
+      label: 'پرداخت آنلاین',
+      desc: 'اتصال به درگاه بانکی',
       icon: CreditCardIcon,
     },
     {
       id: PAYMENT_METHODS.CASH,
-      label: "Pagamento na entrega",
-      desc: "Pague ao receber",
+      label: 'پرداخت در محل',
+      desc: 'پرداخت هنگام تحویل',
       icon: HouseIcon,
     },
   ], []);
@@ -495,24 +495,24 @@ export default function CheckoutPage() {
 
     // اعتبارسنجی نام
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "Informe seu nome completo";
+      newErrors.fullName = 'نام و نام خانوادگی الزامی است';
     }
 
     // اعتبارسنجی شماره تماس
     if (!formData.phone.trim()) {
-      newErrors.phone = "Informe um telefone de contato";
+      newErrors.phone = 'شماره تماس الزامی است';
     } else if (!PHONE_REGEX.test(formData.phone)) {
-      newErrors.phone = "Telefone inválido (exemplo: 09123456789)";
+      newErrors.phone = 'شماره تماس معتبر نیست (مثال: 09123456789)';
     }
 
     // اعتبارسنجی آدرس
     if (!formData.address.trim()) {
-      newErrors.address = "Informe o endereço";
+      newErrors.address = 'آدرس الزامی است';
     }
 
     // اعتبارسنجی ایمیل (اختیاری)
     if (formData.email && !EMAIL_REGEX.test(formData.email)) {
-      newErrors.email = "E-mail inválido";
+      newErrors.email = 'ایمیل معتبر نیست';
     }
 
     console.log('✅ نتیجه اعتبارسنجی:', {
@@ -535,19 +535,19 @@ export default function CheckoutPage() {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      error("Preencha todos os campos obrigatórios");
+      error('لطفاً اطلاعات را کامل کنید');
       return;
     }
 
     // بررسی انتخاب روش ارسال
     if (!shippingMethod) {
-      error("Selecione uma forma de entrega");
+      error('لطفاً روش ارسال را انتخاب کنید');
       return;
     }
 
     // بررسی انتخاب روش پرداخت
     if (!paymentMethod) {
-      error("Selecione uma forma de pagamento");
+      error('لطفاً روش پرداخت را انتخاب کنید');
       return;
     }
 
@@ -581,14 +581,14 @@ export default function CheckoutPage() {
         shippingCost: SHIPPING_COSTS[shippingMethod] || 0,
       });
 
-      success("Seu pedido foi registrado com sucesso");
+      success('سفارش شما با موفقیت ثبت شد');
 
       // هدایت به صفحه موفقیت
       router.push(`/order-success?order=${orderNumber}&total=${orderTotal}`);
 
     } catch (err) {
       console.error('❌ خطا در ثبت سفارش:', err);
-      error("Não foi possível registrar o pedido. Tente novamente.");
+      error('خطا در ثبت سفارش. لطفاً مجدداً تلاش کنید.');
     } finally {
       setIsSubmitting(false);
     }
@@ -608,7 +608,7 @@ export default function CheckoutPage() {
         {isMobile && <MobileBottomNav />}
         <div className="min-h-[calc(100vh-70px)] bg-bg-primary text-center py-12 sm:py-16 md:py-20 px-4 md:ms-65">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-text-primary mb-4">
-            Seu carrinho está vazio
+            سبد خرید شما خالی است
           </h2>
           <button
             onClick={() => {
@@ -617,7 +617,7 @@ export default function CheckoutPage() {
             }}
             className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent-color text-white border-none rounded-[40px] cursor-pointer transition-colors hover:bg-accent-hover text-sm sm:text-base"
           >
-            Voltar para a loja
+            بازگشت به فروشگاه
           </button>
         </div>
       </>
@@ -646,10 +646,10 @@ export default function CheckoutPage() {
         {/* هدر */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-text-primary mb-2">
-            Finalizar pedido
+            تکمیل سفارش
           </h1>
           <p className="text-sm sm:text-base text-text-muted">
-            Preencha seus dados
+            اطلاعات خود را کامل کنید
           </p>
         </div>
 
@@ -660,13 +660,13 @@ export default function CheckoutPage() {
               {/* اطلاعات شخصی */}
               <div className="bg-bg-secondary rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6 border border-border-color shadow-[0_1px_3px_var(--color-shadow)]">
                 <h3 className="text-base sm:text-lg font-semibold text-text-primary mb-4 sm:mb-5 pb-3 border-b border-border-color">
-                  Dados pessoais
+                  اطلاعات شخصی
                 </h3>
 
                 <div className="flex flex-col md:flex-row gap-4 md:gap-5 mb-4 md:mb-5">
                   <div className="flex-1">
                     <label className="block mb-2 font-medium text-text-secondary text-xs sm:text-sm">
-                      Nome completo *
+                      نام و نام خانوادگی *
                     </label>
                     <input
                       type="text"
@@ -676,7 +676,7 @@ export default function CheckoutPage() {
                       className={`w-full px-4 py-3 border rounded-xl text-sm outline-none transition-colors bg-bg-primary text-text-primary font-sans ${
                         errors.fullName ? 'border-red-500' : 'border-border-color focus:border-accent-color'
                       }`}
-                      placeholder="Exemplo: João Silva"
+                      placeholder="مثال: علی محمدی"
                       aria-invalid={!!errors.fullName}
                     />
                     {errors.fullName && (
@@ -688,7 +688,7 @@ export default function CheckoutPage() {
 
                   <div className="flex-1">
                     <label className="block mb-2 font-medium text-text-secondary text-xs sm:text-sm">
-                      Telefone *
+                      شماره تماس *
                     </label>
                     <input
                       type="tel"
@@ -712,7 +712,7 @@ export default function CheckoutPage() {
                 <div className="flex flex-col md:flex-row gap-4 md:gap-5 mb-4 md:mb-5">
                   <div className="flex-1">
                     <label className="block mb-2 font-medium text-text-secondary text-xs sm:text-sm">
-                      E-mail (opcional)
+                      ایمیل (اختیاری)
                     </label>
                     <input
                       type="email"
@@ -734,7 +734,7 @@ export default function CheckoutPage() {
 
                   <div className="flex-1">
                     <label className="block mb-2 font-medium text-text-secondary text-xs sm:text-sm">
-                      Código postal (opcional)
+                      کد پستی (اختیاری)
                     </label>
                     <input
                       type="text"
@@ -742,7 +742,7 @@ export default function CheckoutPage() {
                       value={formData.postalCode}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-border-color rounded-xl text-sm outline-none transition-colors bg-bg-primary text-text-primary font-sans focus:border-accent-color"
-                      placeholder="1234567890"
+                      placeholder="۱۲۳۴۵۶۷۸۹۰"
                     />
                   </div>
                 </div>
@@ -750,7 +750,7 @@ export default function CheckoutPage() {
                 <div className="flex flex-col md:flex-row gap-4 md:gap-5">
                   <div className="flex-1">
                     <label className="block mb-2 font-medium text-text-secondary text-xs sm:text-sm">
-                      Estado / cidade
+                      استان / شهر
                     </label>
                     <input
                       type="text"
@@ -758,13 +758,13 @@ export default function CheckoutPage() {
                       value={formData.city}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-border-color rounded-xl text-sm outline-none transition-colors bg-bg-primary text-text-primary font-sans focus:border-accent-color"
-                      placeholder="Teerã"
+                      placeholder="تهران"
                     />
                   </div>
 
                   <div className="flex-1">
                     <label className="block mb-2 font-medium text-text-secondary text-xs sm:text-sm">
-                      Endereço completo *
+                      آدرس دقیق *
                     </label>
                     <input
                       type="text"
@@ -774,7 +774,7 @@ export default function CheckoutPage() {
                       className={`w-full px-4 py-3 border rounded-xl text-sm outline-none transition-colors bg-bg-primary text-text-primary font-sans ${
                         errors.address ? 'border-red-500' : 'border-border-color focus:border-accent-color'
                       }`}
-                      placeholder="Rua, número, complemento..."
+                      placeholder="خیابان، کوچه، پلاک..."
                       aria-invalid={!!errors.address}
                     />
                     {errors.address && (
@@ -789,7 +789,7 @@ export default function CheckoutPage() {
               {/* روش ارسال */}
               <div className="bg-bg-secondary rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6 border border-border-color shadow-[0_1px_3px_var(--color-shadow)]">
                 <h3 className="text-base sm:text-lg font-semibold text-text-primary mb-4 sm:mb-5 pb-3 border-b border-border-color">
-                  Forma de entrega
+                  روش ارسال
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {shippingOptions.map((option) => (
@@ -806,7 +806,7 @@ export default function CheckoutPage() {
               {/* روش پرداخت */}
               <div className="bg-bg-secondary rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6 border border-border-color shadow-[0_1px_3px_var(--color-shadow)]">
                 <h3 className="text-base sm:text-lg font-semibold text-text-primary mb-4 sm:mb-5 pb-3 border-b border-border-color">
-                  Forma de pagamento
+                  روش پرداخت
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {paymentOptions.map((option) => (
@@ -826,7 +826,7 @@ export default function CheckoutPage() {
                 disabled={isSubmitting}
                 className="w-full bg-accent-color text-white border-none px-4 py-3.5 rounded-[40px] text-sm sm:text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none mt-2"
               >
-                {isSubmitting ? "Registrando pedido..." : "Confirmar pedido e pagar"}
+                {isSubmitting ? 'در حال ثبت سفارش...' : 'ثبت سفارش و پرداخت'}
               </button>
             </form>
           </div>

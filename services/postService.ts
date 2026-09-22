@@ -80,7 +80,7 @@ const enrichUser = (user: JsonUser | null): User | null => {
   return {
     id: user.id,
     username: user.username || (user.name ? user.name.replace(/\s/g, '_').toLowerCase() : `user_${user.id}`),
-    name: user.name || user.username || "Usuário desconhecido",
+    name: user.name || user.username || 'کاربر ناشناس',
     email: user.email,
     avatar: user.avatar || '/images/avatars/default.png',
     status: validStatus || 'inactive',
@@ -140,7 +140,7 @@ const enrichPost = (post: JsonPost, comments: Comment[] = []): Post => {
     author: enrichedAuthor,
     authorId: post.userId,
     authorUsername: enrichedAuthor?.username || 'unknown',
-    authorName: enrichedAuthor?.name || "Usuário desconhecido",
+    authorName: enrichedAuthor?.name || 'کاربر ناشناس',
     authorAvatar: enrichedAuthor?.avatar || '/images/avatars/default.png',
     comments: postComments,
   };
@@ -308,11 +308,11 @@ export const createPost = async (postData: Partial<Post>): Promise<ApiResponse<P
       id: newId,
       userId: postData.userId || 1,
       image: postData.image || null,
-      title: postData.title || "Sem título",
+      title: postData.title || 'بدون عنوان',
       caption: postData.caption || '',
       price: postData.price || 0,
       stock: postData.stock ?? 0,
-      category: postData.category || "Geral",
+      category: postData.category || 'عمومی',
       rating: postData.rating || 0,
       likesCount: 0,
       commentsCount: 0,
@@ -323,7 +323,7 @@ export const createPost = async (postData: Partial<Post>): Promise<ApiResponse<P
     const enriched = enrichPost(newPost);
     return { success: true, data: enriched };
   } catch {
-    return { success: false, error: "Não foi possível criar a publicação" };
+    return { success: false, error: 'خطا در ایجاد پست' };
   }
 };
 
@@ -331,14 +331,14 @@ export const updatePost = async (id: number | string, postData: Partial<Post>): 
   try {
     const index = localPosts.findIndex((p: JsonPost) => p.id === Number(id));
     if (index === -1) {
-      return { success: false, error: "Publicação não encontrada" };
+      return { success: false, error: 'پست یافت نشد' };
     }
     localPosts[index] = { ...localPosts[index], ...postData };
     saveLocalPosts();
     const enriched = enrichPost(localPosts[index]);
     return { success: true, data: enriched };
   } catch {
-    return { success: false, error: "Não foi possível atualizar a publicação" };
+    return { success: false, error: 'خطا در بروزرسانی پست' };
   }
 };
 
@@ -346,13 +346,13 @@ export const deletePost = async (id: number | string): Promise<ApiResponse> => {
   try {
     const index = localPosts.findIndex((p: JsonPost) => p.id === Number(id));
     if (index === -1) {
-      return { success: false, error: "Publicação não encontrada" };
+      return { success: false, error: 'پست یافت نشد' };
     }
     localPosts.splice(index, 1);
     saveLocalPosts();
-    return { success: true, message: "Publicação excluída" };
+    return { success: true, message: 'پست با موفقیت حذف شد' };
   } catch {
-    return { success: false, error: "Não foi possível excluir a publicação" };
+    return { success: false, error: 'خطا در حذف پست' };
   }
 };
 
@@ -360,13 +360,13 @@ export const likePost = async (id: number | string): Promise<ApiResponse<{ likes
   try {
     const post = localPosts.find((p: JsonPost) => p.id === Number(id));
     if (!post) {
-      return { success: false, error: "Publicação não encontrada" };
+      return { success: false, error: 'پست یافت نشد' };
     }
     post.likesCount = (post.likesCount || 0) + 1;
     saveLocalPosts();
     return { success: true, data: { likesCount: post.likesCount } };
   } catch {
-    return { success: false, error: "Não foi possível curtir a publicação" };
+    return { success: false, error: 'خطا در لایک پست' };
   }
 };
 
@@ -388,7 +388,7 @@ export const addComment = async (
     };
     return { success: true, data: newComment };
   } catch {
-    return { success: false, error: "Não foi possível enviar o comentário" };
+    return { success: false, error: 'خطا در ارسال نظر' };
   }
 };
 

@@ -52,11 +52,11 @@ export default function MobileBottomNav() {
   const { theme } = useTheme();
 
   const menuItems: MenuItem[] = [
-    { name: "Perfil", path: '/profile', icon: ProfileIcon },
-    { name: "Buscar", path: '/search', icon: SearchIcon },
-    { name: "Criar publicação", path: '/create-post', icon: CreatePostIcon },
-    { name: "Carrinho", path: '/cart', icon: CartIcon },
-    { name: "Mensagens", path: '/messages', icon: MessagesIcon },
+    { name: 'پروفایل', path: '/profile', icon: ProfileIcon },
+    { name: 'جستجو', path: '/search', icon: SearchIcon },
+    { name: 'ساخت پست', path: '/create-post', icon: CreatePostIcon },
+    { name: 'سبد خرید', path: '/cart', icon: CartIcon },
+    { name: 'پیام‌ها', path: '/messages', icon: MessagesIcon },
   ];
 
   const isActivePath = (path: string) => pathname === path;

@@ -1,20 +1,22 @@
-// Mantém dígitos latinos na interface e aceita entradas de dados legadas.
-export const normalizeDigits = (value: string): string =>
-  value.replace(/[۰-۹]/g, digit => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
-    .replace(/[٠-٩]/g, digit => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)));
+// تبدیل اعداد به فارسی
+export const toPersianNumber = (num: number | string): string => {
+  const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+  return String(num).replace(/\d/g, (digit) => persianDigits[parseInt(digit)]);
+};
 
-// Strings preservam zeros à esquerda, usados em horários e códigos.
-export const formatNumber = (value: number | string): string =>
-  typeof value === 'number'
-    ? new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 20 }).format(value)
-    : normalizeDigits(value);
+// فرمت قیمت با جداکننده هزارگان
+export const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat('fa-IR').format(price);
+};
 
-// Os valores continuam na moeda original; localização não converte preços.
-export const formatPrice = (price: number): string =>
-  new Intl.NumberFormat('pt-BR').format(price);
+// فرمت امتیاز
+export const formatRating = (rating: number): string => {
+  return new Intl.NumberFormat('fa-IR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(rating);
+};
 
-export const formatRating = (rating: number): string =>
-  new Intl.NumberFormat('pt-BR', {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  }).format(rating);
+// تبدیل اعداد فارسی به انگلیسی
+export const toEnglishNumber = (str: string): string => {
+  const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+  const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  return str.replace(/[۰-۹]/g, (digit) => englishDigits[persianDigits.indexOf(digit)]);
+};

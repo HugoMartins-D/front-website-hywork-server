@@ -34,7 +34,7 @@ export default function SearchPage() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [location] = useState("Teerã");
+  const [location] = useState('تهران');
   const [isMobile, setIsMobile] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -124,7 +124,7 @@ export default function SearchPage() {
                   <input
                     ref={inputRef}
                     type="text"
-                    placeholder="Busca inteligente..."
+                    placeholder="جستجو هوشمند ..."
                     value={searchTerm}
                     onChange={handleInputChange}
                     onFocus={() => {
@@ -163,7 +163,7 @@ export default function SearchPage() {
                     <button
                       key={`suggestion-${index}-${suggestion}`}
                       onClick={() => handleSuggestionClick(suggestion)}
-                      className="w-full px-5 py-3 text-start text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface)] transition-colors flex items-center gap-3 border-b border-[var(--color-border-color)] last:border-b-0"
+                      className="w-full px-5 py-3 text-right text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface)] transition-colors flex items-center gap-3 border-b border-[var(--color-border-color)] last:border-b-0"
                     >
                       <SearchIconSvg className="w-4 h-4 text-[var(--color-text-secondary)] flex-shrink-0" />
                       <span>{suggestion}</span>
@@ -178,25 +178,25 @@ export default function SearchPage() {
               {loading ? (
                 <>
                   <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-text-primary)]"></div>
-                  <p className="mt-2 text-sm text-[var(--color-text-secondary)]">Buscando...</p>
+                  <p className="mt-2 text-sm text-[var(--color-text-secondary)]">در حال جستجو...</p>
                 </>
               ) : hasSearchTerm && suggestions.length === 0 ? (
                 <>
                   <p className="text-lg text-[var(--color-text-secondary)] mb-2">
-                    Nenhum resultado para &quot;{searchTerm}&quot;.
+                    نتیجه‌ای برای &quot;{searchTerm}&quot; یافت نشد.
                   </p>
                   <p className="text-sm text-[var(--color-text-secondary)] opacity-70">
-                    Tente outro termo.
+                    عبارت دیگری را امتحان کنید.
                   </p>
                 </>
               ) : !hasSearchTerm && (
                 <>
                   <SearchIconSvg className="w-16 h-16 text-[var(--color-text-secondary)] opacity-30 mx-auto mb-4" />
                   <p className="text-lg text-[var(--color-text-secondary)]">
-                    Digite o que deseja buscar
+                    برای جستجو، عبارت مورد نظر را وارد کنید
                   </p>
                   <p className="text-sm text-[var(--color-text-secondary)] opacity-60 mt-2">
-                    As sugestões aparecerão aqui
+                    پیشنهادات مرتبط با عبارت شما نمایش داده می‌شود
                   </p>
                 </>
               )}

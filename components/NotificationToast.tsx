@@ -278,7 +278,7 @@ const ToastItem = ({ toast, onClose }: ToastItemProps) => {
 
   return (
     <div 
-      className={`min-w-75 max-w-100 bg-white dark:bg-(--color-bg-card) rounded-xl shadow-lg pointer-events-auto overflow-hidden ltr relative max-[768px]:min-w-auto max-[768px]:max-w-full max-[768px]:w-full border-r-4 ${getBorderColor()} ${
+      className={`min-w-75 max-w-100 bg-white dark:bg-(--color-bg-card) rounded-xl shadow-lg pointer-events-auto overflow-hidden rtl relative max-[768px]:min-w-auto max-[768px]:max-w-full max-[768px]:w-full border-r-4 ${getBorderColor()} ${
         isExiting ? 'animate-[slideOutRight_0.3s_ease-in-out_forwards]' : 'animate-[slideInRight_0.3s_ease-in-out_forwards]'
       }`}
       onMouseEnter={handleMouseEnter}
@@ -296,7 +296,7 @@ const ToastItem = ({ toast, onClose }: ToastItemProps) => {
         <button 
           className="shrink-0 bg-transparent border-none cursor-pointer p-1 rounded-md flex items-center justify-center transition-all duration-200 text-[#94a3b8] hover:bg-bg-surface dark:hover:bg-bg-surface hover:text-[#475569] dark:hover:text-text-secondary"
           onClick={handleClose}
-          aria-label="Fechar notificação"
+          aria-label="بستن اعلان"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor"/>

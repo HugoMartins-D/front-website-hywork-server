@@ -22,7 +22,7 @@ export default function AdminLoginPage() {
       console.log('ورود موفق - token ذخیره شد');
       router.push('/admin/dashboard');
     } else {
-      setError("E-mail ou senha incorretos");
+      setError('ایمیل یا رمز عبور اشتباه است');
       console.log('ورود ناموفق:', { email, password });
     }
     setLoading(false);
@@ -32,13 +32,13 @@ export default function AdminLoginPage() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="bg-white rounded-3xl p-10 w-full max-w-400 shadow-[0_20px_35px_rgba(0,0,0,0.1)]">
         <h2 className="text-center mb-8 text-[#1e293b] text-2xl font-bold">
-          Entrar no painel administrativo
+          ورود به پنل مدیریت
         </h2>
         
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="mb-5">
             <label className="block mb-2 font-medium text-[#334155] text-sm">
-              E-mail
+              ایمیل
             </label>
             <input
               type="email"
@@ -52,7 +52,7 @@ export default function AdminLoginPage() {
           
           <div className="mb-5">
             <label className="block mb-2 font-medium text-[#334155] text-sm">
-              Senha
+              رمز عبور
             </label>
             <input
               type="password"
@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
             disabled={loading}
             className="w-full bg-[#1e293b] text-white border-none py-3 rounded-[40px] text-base font-semibold cursor-pointer transition-all hover:bg-[#334155] disabled:opacity-70 disabled:cursor-not-allowed mt-2.5"
           >
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? 'در حال ورود...' : 'ورود'}
           </button>
         </form>
       </div>

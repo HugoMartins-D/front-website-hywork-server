@@ -4,9 +4,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment-jalaali';
 
-import 'moment/locale/pt-br';
-
-moment.locale('pt-br');
+moment.locale('fa');
 
 interface PersianCalendarProps {
   onSelect: (date: Date) => void;
@@ -27,7 +25,7 @@ const PersianCalendar = ({
   onSelect, 
   onClose, 
   initialDate = null, 
-  title = "Selecionar data"
+  title = "انتخاب تاریخ" 
 }: PersianCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<moment.Moment>(() => {
     if (initialDate) return moment(initialDate);
@@ -39,22 +37,23 @@ const PersianCalendar = ({
   });
   const [daysInMonth, setDaysInMonth] = useState<DayType[]>([]);
   
-  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  const monthNames = [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  const weekDays = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+  const persianMonths = [
+    'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور',
+    'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
   ];
 
   // تبدیل عدد به فارسی
-  const formatNumber = (num: number | string) => {
-    return String(num);
+  const toPersianNumber = (num: number | string) => {
+    const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+    return num.toString().replace(/\d/g, d => persianDigits[parseInt(d)]);
   };
 
   // ساخت آرایه روزهای ماه جاری
   const generateDaysInMonth = useCallback(() => {
-    const startOfMonth = currentMonth.clone().startOf('month');
-    const endOfMonth = currentMonth.clone().endOf('month');
-    const startDayOfWeek = startOfMonth.day();
+    const startOfMonth = currentMonth.clone().startOf('jMonth');
+    const endOfMonth = currentMonth.clone().endOf('jMonth');
+    const startDayOfWeek = startOfMonth.weekday();
     
     const days: DayType[] = [];
     
@@ -76,7 +75,7 @@ const PersianCalendar = ({
       const isSelected = currentDay.isSame(selectedDate, 'day');
       
       days.push({
-        day: currentDay.date(),
+        day: currentDay.jDate(),
         isCurrentMonth: true,
         isToday,
         isSelected,
@@ -94,11 +93,11 @@ const PersianCalendar = ({
   }, [generateDaysInMonth]);
 
   const changeMonth = (delta: number) => {
-    setCurrentMonth(prev => prev.clone().add(delta, 'month'));
+    setCurrentMonth(prev => prev.clone().add(delta, 'jMonth'));
   };
 
   const changeYear = (delta: number) => {
-    setCurrentMonth(prev => prev.clone().add(delta, 'year'));
+    setCurrentMonth(prev => prev.clone().add(delta, 'jYear'));
   };
 
   const selectDay = (day: DayType) => {
@@ -111,11 +110,11 @@ const PersianCalendar = ({
     if (onClose) onClose();
   };
 
-  const currentYear = currentMonth.year();
-  const currentMonthIndex = currentMonth.month();
+  const currentJYear = currentMonth.jYear();
+  const currentJMonth = currentMonth.jMonth();
 
   return (
-    <div className="w-full max-w-[360px] bg-(--color-bg-secondary) rounded-2xl overflow-hidden shadow-[0_4px_20px_var(--color-shadow)] font-inherit ltr">
+    <div className="w-full max-w-[360px] bg-(--color-bg-secondary) rounded-2xl overflow-hidden shadow-[0_4px_20px_var(--color-shadow)] font-inherit rtl">
       {/* Header */}
       <div className="flex justify-center items-center px-5 py-4 bg-(--color-bg-secondary) border-b border-(--color-border-color)">
         <span className="text-[15px] font-semibold text-(--color-text-primary)">{title}</span>
@@ -127,33 +126,33 @@ const PersianCalendar = ({
           <button 
             onClick={() => changeYear(-1)} 
             className="w-8 h-8 rounded-lg border border-(--color-border-color) bg-(--color-bg-surface) cursor-pointer text-base flex items-center justify-center transition-all duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface) hover:border-(--color-accent-color)"
-            title="Ano anterior"
+            title="سال قبل"
           >
             ≪
           </button>
           <button 
             onClick={() => changeMonth(-1)} 
             className="w-8 h-8 rounded-lg border border-(--color-border-color) bg-(--color-bg-surface) cursor-pointer text-base flex items-center justify-center transition-all duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface) hover:border-(--color-accent-color)"
-            title="Mês anterior"
+            title="ماه قبل"
           >
             ‹
           </button>
         </div>
         <div className="text-[15px] font-semibold text-(--color-text-primary)">
-          {monthNames[currentMonthIndex]} {formatNumber(currentYear)}
+          {persianMonths[currentJMonth]} {toPersianNumber(currentJYear)}
         </div>
         <div className="flex gap-2">
           <button 
             onClick={() => changeMonth(1)} 
             className="w-8 h-8 rounded-lg border border-(--color-border-color) bg-(--color-bg-surface) cursor-pointer text-base flex items-center justify-center transition-all duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface) hover:border-(--color-accent-color)"
-            title="Próximo mês"
+            title="ماه بعد"
           >
             ›
           </button>
           <button 
             onClick={() => changeYear(1)} 
             className="w-8 h-8 rounded-lg border border-(--color-border-color) bg-(--color-bg-surface) cursor-pointer text-base flex items-center justify-center transition-all duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface) hover:border-(--color-accent-color)"
-            title="Próximo ano"
+            title="سال بعد"
           >
             ≫
           </button>
@@ -183,7 +182,7 @@ const PersianCalendar = ({
               ${day.isCurrentMonth && !day.isSelected ? 'hover:bg-(--color-bg-surface) hover:scale-105' : ''}
             `}
           >
-            {day.day ? formatNumber(day.day) : ''}
+            {day.day ? toPersianNumber(day.day) : ''}
           </div>
         ))}
       </div>
@@ -194,7 +193,7 @@ const PersianCalendar = ({
           onClick={handleConfirm} 
           className="w-full py-2.5 bg-(--color-accent-color) border-none rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-200 hover:bg-(--color-accent-hover) hover:-translate-y-0.5 hover:shadow-[0_4px_10px_var(--color-shadow)]"
         >
-          Confirmar
+          تایید
         </button>
       </div>
     </div>

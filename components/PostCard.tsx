@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import ImageWithFallback from './ImageWithFallback';
 import DropdownMenu from './DropdownMenu';
 import AvatarWithStatus from './AvatarWithStatus';
-import { formatNumber, formatPrice, formatRating } from '@/utils/numberUtils';
+import { toPersianNumber, formatPrice, formatRating } from '@/utils/numberUtils';
 
 interface PostCardProps {
   id: number;
@@ -59,8 +59,8 @@ export default function PostCard({
   const displayImage = getDisplayImage();
   const formattedPrice = formatPrice(price);
   const formattedRating = formatRating(rating);
-  const formattedStock = formatNumber(stock || 0);
-  const isService = category === "Serviços";
+  const formattedStock = toPersianNumber(stock || 0);
+  const isService = category === 'خدمات';
 
   const truncateTitle = (text: string, maxLength = compact ? 30 : 35) => {
     if (!text) return '';
@@ -68,32 +68,32 @@ export default function PostCard({
   };
 
   const truncateDescription = (text?: string, maxLength = 70) => {
-    if (!text) return "Este produto não tem descrição.";
+    if (!text) return 'توضیحاتی برای این محصول موجود نیست.';
     return text.length <= maxLength ? text : text.substring(0, maxLength - 3) + '...';
   };
 
-  const handleReport = () => alert(`Denúncia do produto "${title}" registrada com sucesso`);
+  const handleReport = () => alert(`گزارش محصول "${title}" با موفقیت ثبت شد`);
   const handleShare = () => {
     const url = `${window.location.origin}/product/${id}`;
     navigator.clipboard.writeText(url);
-    alert("Link do produto copiado");
+    alert('لینک محصول کپی شد');
   };
-  const handleSave = () => alert(`Produto "${title}" salvo na sua lista`);
+  const handleSave = () => alert(`محصول "${title}" در لیست ذخیره شده‌ها قرار گرفت`);
   const handleViewSeller = () => {
     if (sellerUsername && sellerUsername !== 'unknown') {
       router.push(`/profile?user=${sellerUsername}`);
     } else if (sellerId) {
       router.push(`/profile?user=${sellerId}`);
     } else {
-      router.push('/profile');
+      alert('اطلاعات فروشنده در دسترس نیست');
     }
   };
 
   const dropdownItems = [
-    { label: "Ver vendedor", icon: '👤', onClick: handleViewSeller },
-    { label: "Salvar", icon: '🔖', onClick: handleSave },
-    { label: "Compartilhar", icon: '📤', onClick: handleShare },
-    { label: "Denunciar", icon: '🚫', onClick: handleReport },
+    { label: 'مشاهده فروشنده', icon: '👤', onClick: handleViewSeller },
+    { label: 'ذخیره', icon: '🔖', onClick: handleSave },
+    { label: 'اشتراک گذاری', icon: '📤', onClick: handleShare },
+    { label: 'گزارش', icon: '🚫', onClick: handleReport },
   ];
 
   // حالت فشرده (compact) - برای پروفایل کاربر
@@ -109,12 +109,12 @@ export default function PostCard({
           />
           {isService && (
             <span className="absolute top-2 right-2 bg-green-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-              Serviços
+              خدمات
             </span>
           )}
           {stock === 0 && (
             <span className="absolute top-2 left-2 bg-red-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-              Indisponível
+              ناموجود
             </span>
           )}
         </div>
@@ -126,7 +126,7 @@ export default function PostCard({
             {truncateTitle(title, isMobile ? 30 : 35)}
           </h3>
           <div className={`text-[14px] font-bold text-(--color-accent-color) ${isMobile ? 'text-[11px]' : ''}`}>
-            {formattedPrice} tomans
+            {formattedPrice} تومان
           </div>
         </div>
       </div>
@@ -146,14 +146,14 @@ export default function PostCard({
             <div className="flex items-center gap-2">
               <AvatarWithStatus
                 src={sellerAvatar || '/images/avatars/default.png'}
-                alt={sellerName || sellerUsername || "Usuário"}
+                alt={sellerName || sellerUsername || 'کاربر'}
                 size={32}
                 status="online"
                 showStatus={true}
               />
               <div className="flex flex-col gap-0.5">
                 <span className="text-xs font-semibold text-(--color-text-primary) line-clamp-1">
-                  {sellerName || sellerUsername || "Não informado"}
+                  {sellerName || sellerUsername || 'نامشخص'}
                 </span>
                 <span className="text-[10px] text-(--color-text-muted) line-clamp-1">
                   @{sellerUsername || 'unknown'}
@@ -176,12 +176,12 @@ export default function PostCard({
         />
         {isService && (
           <span className="absolute top-2 right-2 bg-green-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-            Serviços
+            خدمات
           </span>
         )}
         {stock === 0 && (
           <span className="absolute top-2 left-2 bg-red-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-            Indisponível
+            ناموجود
           </span>
         )}
       </div>
@@ -202,8 +202,8 @@ export default function PostCard({
         <div className="flex items-center mb-1.5 w-full justify-between">
           <div />
           <div className="flex items-center gap-1 text-[11px]">
-            <span className="text-(--color-text-muted)">Estoque</span>
-            <span className="font-medium">{formattedStock} unidades</span>
+            <span className="text-(--color-text-muted)">موجودی</span>
+            <span className="font-medium">{formattedStock} عدد</span>
           </div>
           {rating > 0 && (
             <div className="flex items-center px-1.5">
@@ -214,7 +214,7 @@ export default function PostCard({
         </div>
         <div className="flex items-center justify-end">
           <div className="text-[15px] font-bold text-(--color-accent-color)">
-            {formattedPrice} tomans
+            {formattedPrice} تومان
           </div>
         </div>
       </div>

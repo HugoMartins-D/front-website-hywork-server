@@ -3,9 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import moment from 'moment-jalaali';
 
-import 'moment/locale/pt-br';
-
-moment.locale('pt-br');
+moment.locale('fa');
 
 // ==================== آیکون‌ها ====================
 const ChevronRight = ({ className }: { className?: string }) => (
@@ -131,17 +129,18 @@ export default function DateRangePicker({
     }
   }, [initialEndDate]);
 
-  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+  const weekDays = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+  const persianMonths = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
 
-  const formatNumber = (num: number | string): string => {
-    return String(num);
+  const toPersianNumber = (num: number | string): string => {
+    const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+    return num.toString().replace(/\d/g, (d) => persianDigits[parseInt(d)]);
   };
 
   const generateDaysInMonth = useCallback((): DayItem[] => {
-    const startOfMonth = currentMonth.clone().startOf('month');
-    const endOfMonth = currentMonth.clone().endOf('month');
-    const startDayOfWeek = startOfMonth.day();
+    const startOfMonth = currentMonth.clone().startOf('jMonth');
+    const endOfMonth = currentMonth.clone().endOf('jMonth');
+    const startDayOfWeek = startOfMonth.weekday();
     const days: DayItem[] = [];
 
     for (let i = 0; i < startDayOfWeek; i++) {
@@ -156,7 +155,7 @@ export default function DateRangePicker({
       const isTempInRange = startDate && tempStartDate && !endDate && currentDay.isBetween(startDate, tempStartDate, 'day', '[]');
 
       days.push({
-        day: currentDay.date(),
+        day: currentDay.jDate(),
         isCurrentMonth: true,
         isStart: isStart || false,
         isEnd: isEnd || false,
@@ -171,8 +170,8 @@ export default function DateRangePicker({
 
   const daysInMonth = useMemo(() => generateDaysInMonth(), [generateDaysInMonth]);
 
-  const changeMonth = (delta: number) => setCurrentMonth((prev) => prev.clone().add(delta, 'month'));
-  const changeYear = (delta: number) => setCurrentMonth((prev) => prev.clone().add(delta, 'year'));
+  const changeMonth = (delta: number) => setCurrentMonth((prev) => prev.clone().add(delta, 'jMonth'));
+  const changeYear = (delta: number) => setCurrentMonth((prev) => prev.clone().add(delta, 'jYear'));
 
   const selectDay = (day: DayItem) => {
     if (!day || !day.isCurrentMonth || !day.fullDate) return;
@@ -205,7 +204,7 @@ export default function DateRangePicker({
 
   const handleConfirm = () => {
     if (!startDate || !endDate) {
-      alert("Selecione a data de início e a data de fim");
+      alert('لطفاً ابتدا تاریخ شروع و پایان را انتخاب کنید');
       return;
     }
     const finalStart = startDate.clone().hour(startTime.hour).minute(startTime.minute);
@@ -216,16 +215,16 @@ export default function DateRangePicker({
 
   const formatDate = (date: moment.Moment | null): string => {
     if (!date) return '——';
-    return `${formatNumber(date.date())} ${monthNames[date.month()]}`;
+    return `${toPersianNumber(date.jDate())} ${persianMonths[date.jMonth()]}`;
   };
 
   const formatTimeValue = (hour: number, minute: number): string =>
-    `${formatNumber(hour.toString().padStart(2, '0'))}:${formatNumber(minute.toString().padStart(2, '0'))}`;
+    `${toPersianNumber(hour.toString().padStart(2, '0'))}:${toPersianNumber(minute.toString().padStart(2, '0'))}`;
 
   const hourOptions = Array.from({ length: 24 }, (_, i) => i);
   const minuteOptions = Array.from({ length: 60 }, (_, i) => i);
-  const currentYear = currentMonth.year();
-  const currentMonthIndex = currentMonth.month();
+  const currentJYear = currentMonth.jYear();
+  const currentJMonth = currentMonth.jMonth();
 
   const getDayClasses = (day: DayItem): string => {
     let classes =
@@ -258,7 +257,7 @@ export default function DateRangePicker({
       {/* هدر محدوده تاریخ */}
       <div className="flex items-center justify-between px-4 py-3.5 bg-bg-card border-b border-(--color-border-light)">
         <div className="flex-1 text-center">
-          <span className="block text-[10px] text-(--color-text-muted) mb-1">Início</span>
+          <span className="block text-[10px] text-(--color-text-muted) mb-1">شروع</span>
           <div className="text-sm font-semibold text-text-primary">{startDate ? formatDate(startDate) : '——'}</div>
           <div className="text-[11px] text-text-secondary mt-0.5">{formatTimeValue(startTime.hour, startTime.minute)}</div>
         </div>
@@ -266,7 +265,7 @@ export default function DateRangePicker({
           <ArrowRight className="w-5 h-5" />
         </div>
         <div className="flex-1 text-center">
-          <span className="block text-[10px] text-(--color-text-muted) mb-1">Fim</span>
+          <span className="block text-[10px] text-(--color-text-muted) mb-1">پایان</span>
           <div className="text-sm font-semibold text-text-primary">{endDate ? formatDate(endDate) : '——'}</div>
           <div className="text-[11px] text-text-secondary mt-0.5">{formatTimeValue(endTime.hour, endTime.minute)}</div>
         </div>
@@ -282,7 +281,7 @@ export default function DateRangePicker({
               : 'text-(--color-text-muted)'
           }`}
         >
-          <CalendarIcon className="w-4.5 h-4.5" /> Calendário
+          <CalendarIcon className="w-4.5 h-4.5" /> تقویم
         </button>
         <button
           onClick={() => setActiveTab('time')}
@@ -292,7 +291,7 @@ export default function DateRangePicker({
               : 'text-(--color-text-muted)'
           }`}
         >
-          <ClockIcon className="w-4.5 h-4.5" /> Horários
+          <ClockIcon className="w-4.5 h-4.5" /> زمان
         </button>
       </div>
 
@@ -304,36 +303,36 @@ export default function DateRangePicker({
               <div className="flex gap-1.5">
                 <button
                   onClick={() => changeYear(-1)}
-                  aria-label="Ano anterior"
+                  aria-label="سال قبل"
                   className="w-8 h-8 rounded-lg border border-border-color bg-bg-surface cursor-pointer flex items-center justify-center text-text-primary transition-all hover:bg-(--color-bg-hover) hover:border-accent-color"
                 >
-                  <DoubleChevronLeft className="w-4 h-4" />
+                  <DoubleChevronRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => changeMonth(-1)}
-                  aria-label="Mês anterior"
-                  className="w-8 h-8 rounded-lg border border-border-color bg-bg-surface cursor-pointer flex items-center justify-center text-text-primary transition-all hover:bg-(--color-bg-hover) hover:border-accent-color"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="text-sm font-semibold text-text-primary">
-                {monthNames[currentMonthIndex]} {formatNumber(currentYear)}
-              </div>
-              <div className="flex gap-1.5">
-                <button
-                  onClick={() => changeMonth(1)}
-                  aria-label="Próximo mês"
+                  aria-label="ماه قبل"
                   className="w-8 h-8 rounded-lg border border-border-color bg-bg-surface cursor-pointer flex items-center justify-center text-text-primary transition-all hover:bg-(--color-bg-hover) hover:border-accent-color"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
+              </div>
+              <div className="text-sm font-semibold text-text-primary">
+                {persianMonths[currentJMonth]} {toPersianNumber(currentJYear)}
+              </div>
+              <div className="flex gap-1.5">
                 <button
-                  onClick={() => changeYear(1)}
-                  aria-label="Próximo ano"
+                  onClick={() => changeMonth(1)}
+                  aria-label="ماه بعد"
                   className="w-8 h-8 rounded-lg border border-border-color bg-bg-surface cursor-pointer flex items-center justify-center text-text-primary transition-all hover:bg-(--color-bg-hover) hover:border-accent-color"
                 >
-                  <DoubleChevronRight className="w-4 h-4" />
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => changeYear(1)}
+                  aria-label="سال بعد"
+                  className="w-8 h-8 rounded-lg border border-border-color bg-bg-surface cursor-pointer flex items-center justify-center text-text-primary transition-all hover:bg-(--color-bg-hover) hover:border-accent-color"
+                >
+                  <DoubleChevronLeft className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -356,16 +355,16 @@ export default function DateRangePicker({
                   onMouseEnter={() => handleDayHover(day)}
                   className={getDayClasses(day)}
                 >
-                  {day.day ? formatNumber(day.day) : ''}
+                  {day.day ? toPersianNumber(day.day) : ''}
                 </div>
               ))}
             </div>
 
             {/* وضعیت */}
             <div className="mt-4 px-3 py-1.5 bg-bg-surface rounded-xl text-[11px] text-text-secondary text-center">
-              {!startDate && "Clique na data inicial do período"}
-              {startDate && !endDate && "Agora clique na data final"}
-              {startDate && endDate && "✓ Período selecionado"}
+              {!startDate && 'برای انتخاب بازه، روی تاریخ شروع کلیک کنید'}
+              {startDate && !endDate && 'اکنون روی تاریخ پایان کلیک کنید'}
+              {startDate && endDate && '✓ بازه تاریخی انتخاب شد'}
             </div>
           </div>
         )}
@@ -374,7 +373,7 @@ export default function DateRangePicker({
           <div className="flex gap-4 p-4 min-h-85">
             {/* ستون ساعت شروع */}
             <div className="flex-1 flex flex-col">
-              <div className="text-center text-xs font-semibold text-text-primary mb-2.5">Horário de início</div>
+              <div className="text-center text-xs font-semibold text-text-primary mb-2.5">ساعت شروع</div>
               <div className="flex gap-2 flex-1 min-h-0">
                 <div className="flex-1 h-70 overflow-y-auto border border-border-color rounded-xl p-1.5 bg-bg-primary [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-(--color-text-muted) [&::-webkit-scrollbar-thumb]:rounded-full">
                   {hourOptions.map((hour) => (
@@ -385,7 +384,7 @@ export default function DateRangePicker({
                         startTime.hour === hour ? 'bg-accent-color text-white' : 'text-text-primary hover:bg-bg-surface'
                       }`}
                     >
-                      {formatNumber(hour.toString().padStart(2, '0'))}
+                      {toPersianNumber(hour.toString().padStart(2, '0'))}
                     </button>
                   ))}
                 </div>
@@ -398,7 +397,7 @@ export default function DateRangePicker({
                         startTime.minute === min ? 'bg-accent-color text-white' : 'text-text-primary hover:bg-bg-surface'
                       }`}
                     >
-                      {formatNumber(min.toString().padStart(2, '0'))}
+                      {toPersianNumber(min.toString().padStart(2, '0'))}
                     </button>
                   ))}
                 </div>
@@ -407,7 +406,7 @@ export default function DateRangePicker({
 
             {/* ستون ساعت پایان */}
             <div className="flex-1 flex flex-col">
-              <div className="text-center text-xs font-semibold text-text-primary mb-2.5">Horário de fim</div>
+              <div className="text-center text-xs font-semibold text-text-primary mb-2.5">ساعت پایان</div>
               <div className="flex gap-2 flex-1 min-h-0">
                 <div className="flex-1 h-70 overflow-y-auto border border-border-color rounded-xl p-1.5 bg-bg-primary [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-(--color-text-muted) [&::-webkit-scrollbar-thumb]:rounded-full">
                   {hourOptions.map((hour) => (
@@ -418,7 +417,7 @@ export default function DateRangePicker({
                         endTime.hour === hour ? 'bg-accent-color text-white' : 'text-text-primary hover:bg-bg-surface'
                       }`}
                     >
-                      {formatNumber(hour.toString().padStart(2, '0'))}
+                      {toPersianNumber(hour.toString().padStart(2, '0'))}
                     </button>
                   ))}
                 </div>
@@ -431,7 +430,7 @@ export default function DateRangePicker({
                         endTime.minute === min ? 'bg-accent-color text-white' : 'text-text-primary hover:bg-bg-surface'
                       }`}
                     >
-                      {formatNumber(min.toString().padStart(2, '0'))}
+                      {toPersianNumber(min.toString().padStart(2, '0'))}
                     </button>
                   ))}
                 </div>
@@ -447,13 +446,13 @@ export default function DateRangePicker({
           onClick={onClose}
           className="flex-1 px-2 py-2 bg-bg-surface border-none rounded-[30px] text-xs font-medium text-text-primary cursor-pointer transition-all hover:bg-(--color-bg-hover)"
         >
-          Cancelar
+          انصراف
         </button>
         <button
           onClick={handleConfirm}
           className="flex-1 px-2 py-2 bg-accent-color border-none rounded-[30px] text-xs font-semibold text-white cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-0.5"
         >
-          Confirmar
+          تایید
         </button>
       </div>
     </div>
