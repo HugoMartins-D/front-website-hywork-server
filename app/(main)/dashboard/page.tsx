@@ -15,7 +15,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import type { ValueType } from 'recharts/types/component/DefaultTooltipContent';
-import { formatNumber } from '@/utils/numberUtils';
+import { toPersianNumber } from '@/utils/numberUtils';
 import { useToast } from '@/components/NotificationToast';
 
 // ============================================
@@ -95,12 +95,12 @@ type TabType = typeof TABS[keyof typeof TABS];
 
 /** داده‌های نمودار فروش */
 const SALES_DATA = [
-  { month: "Janeiro", فروش: 4000, خرید: 2400 },
-  { month: "Fevereiro", فروش: 3000, خرید: 1398 },
-  { month: "Março", فروش: 5000, خرید: 3800 },
-  { month: "Abril", فروش: 4780, خرید: 3908 },
-  { month: "Maio", فروش: 5890, خرید: 4800 },
-  { month: "Junho", فروش: 6390, خرید: 5800 },
+  { month: 'فروردین', فروش: 4000, خرید: 2400 },
+  { month: 'اردیبهشت', فروش: 3000, خرید: 1398 },
+  { month: 'خرداد', فروش: 5000, خرید: 3800 },
+  { month: 'تیر', فروش: 4780, خرید: 3908 },
+  { month: 'مرداد', فروش: 5890, خرید: 4800 },
+  { month: 'شهریور', فروش: 6390, خرید: 5800 },
 ];
 
 // ============================================
@@ -210,7 +210,7 @@ const StatCard = ({
   change, 
   color = '#3b82f6' 
 }: StatCardData) => {
-  const changeLabel = change !== undefined ? formatNumber(Math.abs(change).toString()) : '';
+  const persianChange = change !== undefined ? toPersianNumber(Math.abs(change).toString()) : '';
 
   return (
     <div 
@@ -225,7 +225,7 @@ const StatCard = ({
         <p className="text-xl font-bold text-text-primary m-0 wrap-break-word sm:text-lg">{value}</p>
         {change !== undefined && (
           <span className={`text-xs font-medium inline-block mt-1 ${change > 0 ? 'text-green-500' : 'text-red-500'}`}>
-            {change > 0 ? '↑' : '↓'} {changeLabel}%
+            {change > 0 ? '↑' : '↓'} %{persianChange}
           </span>
         )}
       </div>
@@ -271,9 +271,9 @@ const TabButton = ({
 const OrderCard = ({ order }: { order: Order }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Entregue":
+      case 'تحویل شده':
         return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
-      case "Em transporte":
+      case 'در حال ارسال':
         return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
       default:
         return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
@@ -288,7 +288,7 @@ const OrderCard = ({ order }: { order: Order }) => {
         </h4>
         <p className="text-xs text-text-muted mb-1">{order.date}</p>
         <p className="text-sm font-semibold text-accent-color">
-          {formatNumber(order.price.toLocaleString('pt-BR'))} tomans
+          {toPersianNumber(order.price.toLocaleString())} تومان
         </p>
       </div>
       <div className="text-center sm:w-full">
@@ -296,7 +296,7 @@ const OrderCard = ({ order }: { order: Order }) => {
           {order.status}
         </span>
         <button className="block mt-2 mx-auto px-4 py-1.5 bg-bg-secondary border-none rounded-lg text-xs cursor-pointer text-text-primary transition-colors hover:bg-border-color">
-          Detalhes
+          جزئیات
         </button>
       </div>
     </div>
@@ -329,7 +329,7 @@ export default function DashboardPage() {
   // ============================================
   const [activeTab, setActiveTab] = useState<TabType>(TABS.OVERVIEW);
   const [userData] = useState<UserData>({
-    name: "Ali Mohammadi",
+    name: 'علی محمدی',
     email: 'ali@example.com',
     balance: 2500000,
   });
@@ -340,34 +340,34 @@ export default function DashboardPage() {
 
   /** لیست تب‌ها */
   const tabs = useMemo(() => [
-    { id: TABS.OVERVIEW, label: "Visão geral", icon: ChartIcon },
-    { id: TABS.PRODUCTS, label: "Meus produtos", icon: LeafIcon },
-    { id: TABS.ORDERS, label: "Meus pedidos", icon: ShoppingCartIcon },
-    { id: TABS.WALLET, label: "Carteira", icon: WalletIcon },
+    { id: TABS.OVERVIEW, label: 'نمای کلی', icon: ChartIcon },
+    { id: TABS.PRODUCTS, label: 'محصولات من', icon: LeafIcon },
+    { id: TABS.ORDERS, label: 'سفارشات من', icon: ShoppingCartIcon },
+    { id: TABS.WALLET, label: 'کیف پول', icon: WalletIcon },
   ], []);
 
   /** لیست سفارشات نمونه */
   const orders: Order[] = useMemo(() => [
     {
       id: 1,
-      product: "Fone de ouvido sem fio Sony",
+      product: 'هدفون بی‌سیم سونی',
       price: 1250000,
-      status: "Em processamento",
-      date: "04/05/2024",
+      status: 'در حال پردازش',
+      date: '۱۴۰۳/۰۲/۱۵',
     },
     {
       id: 2,
-      product: "Livro de React",
+      product: 'کتاب آموزش React',
       price: 185000,
-      status: "Entregue",
-      date: "29/04/2024",
+      status: 'تحویل شده',
+      date: '۱۴۰۳/۰۲/۱۰',
     },
     {
       id: 3,
-      product: "Bolsa de couro legítimo",
+      product: 'کیف چرمی اصل',
       price: 890000,
-      status: "Em transporte",
-      date: "24/04/2024",
+      status: 'در حال ارسال',
+      date: '۱۴۰۳/۰۲/۰۵',
     },
   ], []);
 
@@ -379,7 +379,7 @@ export default function DashboardPage() {
    * فرمت مقدار محور Y برای نمودار
    */
   const formatYAxis = useCallback((value: number): string => {
-    return formatNumber(value);
+    return toPersianNumber(value);
   }, []);
 
   /**
@@ -387,7 +387,7 @@ export default function DashboardPage() {
    */
   const formatTooltip = useCallback((value: ValueType | undefined): string => {
     if (value == null) return '';
-    if (typeof value === 'number') return formatNumber(value);
+    if (typeof value === 'number') return toPersianNumber(value);
     return String(value);
   }, []);
 
@@ -404,7 +404,7 @@ export default function DashboardPage() {
    */
   const handleAddProduct = useCallback(() => {
     console.log('➕ افزودن محصول جدید');
-    success("Abrindo a página de criação de publicação...");
+    success('در حال انتقال به صفحه ایجاد پست...');
     // هدایت به صفحه ایجاد پست
     // router.push('/create-post');
   }, [success]);
@@ -414,7 +414,7 @@ export default function DashboardPage() {
    */
   const handleIncreaseBalance = useCallback(() => {
     console.log('💰 افزایش موجودی کیف پول');
-    success("Redirecionando para o pagamento...");
+    success('در حال انتقال به صفحه پرداخت...');
     // هدایت به صفحه پرداخت
     // router.push('/checkout');
   }, [success]);
@@ -424,7 +424,7 @@ export default function DashboardPage() {
    */
   const handleWithdrawBalance = useCallback(() => {
     console.log('💰 برداشت از کیف پول');
-    success("Abrindo a página de saque...");
+    success('در حال انتقال به صفحه برداشت...');
     // هدایت به صفحه برداشت
     // router.push('/withdraw');
   }, [success]);
@@ -456,29 +456,29 @@ export default function DashboardPage() {
         {/* کارت‌های آمار */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8">
           <StatCard
-            title="Total de vendas"
-            value="12.500.000 tomans"
+            title="کل فروش"
+            value="۱۲,۵۰۰,۰۰۰ تومان"
             icon={CurrencyCoinIcon}
             change={12.5}
             color="#3b82f6"
           />
           <StatCard
-            title="Total de compras"
-            value="3.200.000 tomans"
+            title="کل خرید"
+            value="۳,۲۰۰,۰۰۰ تومان"
             icon={HandbagIcon}
             change={-5.2}
             color="#8b5cf6"
           />
           <StatCard
-            title="Pedidos ativos"
-            value="8"
+            title="سفارشات فعال"
+            value="۸"
             icon={LayerIcon}
             change={2}
             color="#f59e0b"
           />
           <StatCard
-            title="Avaliação média dos usuários"
-            value="4.8"
+            title="میانگین امتیاز کاربران"
+            value="۴.۸"
             icon={StarIcon}
             change={0.3}
             color="#10b981"
@@ -489,7 +489,7 @@ export default function DashboardPage() {
         <div className="grid gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="bg-bg-card rounded-2xl p-4 sm:p-5 border border-border-color">
             <h3 className="text-base font-semibold text-text-primary mb-4 sm:mb-5 sm:text-sm">
-              Vendas e compras
+              نمودار فروش و خرید
             </h3>
             <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
               <LineChart data={SALES_DATA}>
@@ -516,8 +516,8 @@ export default function DashboardPage() {
                     fontSize: isMobile ? 10 : 12,
                   }}
                 />
-                <Line type="monotone" dataKey="Venda" stroke="#3b82f6" strokeWidth={2} />
-                <Line type="monotone" dataKey="Compra" stroke="#10b981" strokeWidth={2} />
+                <Line type="monotone" dataKey="فروش" stroke="#3b82f6" strokeWidth={2} />
+                <Line type="monotone" dataKey="خرید" stroke="#10b981" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -535,12 +535,12 @@ export default function DashboardPage() {
     return (
       <div>
         <div className="flex justify-between items-center mb-4 sm:mb-5 flex-wrap gap-3">
-          <h2 className="text-xl font-bold text-text-primary m-0 sm:text-lg">Meus produtos</h2>
+          <h2 className="text-xl font-bold text-text-primary m-0 sm:text-lg">محصولات من</h2>
           <button
             onClick={handleAddProduct}
             className="px-4 py-2.5 bg-bg-surface text-text-primary border-none rounded-lg cursor-pointer text-sm transition-colors hover:bg-border-color sm:px-3 sm:py-2 sm:text-xs"
           >
-            + Adicionar produto
+            + افزودن محصول جدید
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -554,19 +554,19 @@ export default function DashboardPage() {
               </div>
               <div className="p-4">
                 <h4 className="text-base font-semibold text-text-primary m-0 mb-2">
-                  Produto de demonstração {i}
+                  محصول نمونه {i}
                 </h4>
-                <p className="text-lg font-bold text-accent-color mb-2">1.250.000 tomans</p>
+                <p className="text-lg font-bold text-accent-color mb-2">۱,۲۵۰,۰۰۰ تومان</p>
                 <div className="flex justify-between text-xs text-text-muted mb-3 flex-wrap gap-2">
-                  <span>📊 Vendas: 23 unidades</span>
-                  <span>⭐ 4,8 (12 avaliações)</span>
+                  <span>📊 فروش: ۲۳ عدد</span>
+                  <span>⭐ ۴.۸ (۱۲ نظر)</span>
                 </div>
                 <div className="flex gap-2">
                   <button className="flex-1 px-3 py-2 bg-bg-secondary border-none rounded-lg text-xs cursor-pointer text-text-primary transition-colors hover:bg-border-color sm:py-1.5">
-                    Editar
+                    ویرایش
                   </button>
                   <button className="flex-1 px-3 py-2 bg-bg-surface border-none rounded-lg text-xs cursor-pointer text-text-primary transition-colors hover:bg-accent-color hover:text-white sm:py-1.5">
-                    Estatísticas
+                    آمار
                   </button>
                 </div>
               </div>
@@ -586,7 +586,7 @@ export default function DashboardPage() {
     return (
       <div>
         <h2 className="text-xl font-bold text-text-primary m-0 mb-4 sm:mb-5 sm:text-lg">
-          Meus pedidos
+          سفارشات من
         </h2>
         <div className="flex flex-col gap-3">
           {orders.map((order) => (
@@ -606,13 +606,13 @@ export default function DashboardPage() {
     return (
       <div>
         <h2 className="text-xl font-bold text-text-primary m-0 mb-4 sm:mb-5 sm:text-lg">
-          Minha carteira
+          کیف پول من
         </h2>
         <div className="bg-linear-to-br from-[#1e293b] to-text-primary rounded-2xl p-6 sm:p-8 text-white">
           <div className="text-center mb-6">
-            <p className="text-sm opacity-90 mb-2">Saldo atual</p>
+            <p className="text-sm opacity-90 mb-2">موجودی فعلی</p>
             <p className="text-3xl font-bold sm:text-2xl">
-              {formatNumber(userData.balance.toLocaleString('pt-BR'))} tomans
+              {toPersianNumber(userData.balance.toLocaleString())} تومان
             </p>
           </div>
           <div className="flex gap-3 justify-center flex-wrap sm:flex-col">
@@ -620,13 +620,13 @@ export default function DashboardPage() {
               onClick={handleIncreaseBalance}
               className="px-6 py-2.5 bg-white border-none rounded-lg text-[#1e293b] font-semibold cursor-pointer transition-transform active:scale-95 sm:w-full"
             >
-              Adicionar saldo
+              افزایش موجودی
             </button>
             <button
               onClick={handleWithdrawBalance}
               className="px-6 py-2.5 bg-white/20 border border-white/30 rounded-lg text-white font-semibold cursor-pointer transition-colors hover:bg-white/30 sm:w-full"
             >
-              Sacar
+              برداشت وجه
             </button>
           </div>
         </div>
@@ -647,15 +647,15 @@ export default function DashboardPage() {
       {/* کانتینر اصلی */}
       <div className={`
         min-h-screen bg-bg-primary overflow-x-hidden transition-all duration-300
-        ${!isMobile ? 'ms-18' : 'ms-0'}
+        ${!isMobile ? 'mr-18' : 'mr-0'}
       `}>
         <div className="max-w-[2000px] mx-auto w-full">
           {/* هدر داشبورد */}
-          <div className="flex justify-between items-center bg-bg-secondary border-b border-border-color flex-wrap gap-4 px-4 py-4 sm:px-8 sm:py-6 md:flex-row md:text-start flex-col text-center">
+          <div className="flex justify-between items-center bg-bg-secondary border-b border-border-color flex-wrap gap-4 px-4 py-4 sm:px-8 sm:py-6 md:flex-row md:text-right flex-col text-center">
             <div>
-              <h1 className="text-2xl font-bold text-text-primary m-0 sm:text-xl">Meu painel</h1>
+              <h1 className="text-2xl font-bold text-text-primary m-0 sm:text-xl">داشبورد کاربری</h1>
               <p className="text-sm text-text-muted mt-1 sm:text-xs">
-                Boas-vindas! Aqui você pode comprar e vender
+                خوش آمدید! شما هم خریدار و هم فروشنده هستید
               </p>
             </div>
             <div className="flex items-center gap-3 sm:justify-center">

@@ -41,17 +41,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // تابع برای دریافت کاربر از کوکی یا localStorage
   const fetchUser = async () => {
-    // 1. Carrega imediatamente do localStorage para resposta instantânea
+    // ۱. بارگذاری فوری کاربر از localStorage برای پاسخ سریع
     try {
       const savedUser = localStorage.getItem('user');
       if (savedUser) {
         setUser(JSON.parse(savedUser));
       }
     } catch {
-      // ignore JSON parse error
+      // خطای parse نادیده گرفته می‌شود
     }
 
-    // 2. Tenta checar o backend com timeout curto (1.5s) para não travar a aplicação caso o backend não esteja ativo
+    // ۲. بررسی بک‌اند با تایم‌اوت کوتاه (۱.۵ ثانیه) تا اگر بک‌اند فعال نبود برنامه قفل نشود
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const controller = new AbortController();
@@ -72,7 +72,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('user', JSON.stringify(userData));
       }
     } catch {
-      // Backend inacessível ou timeout - mantém o usuário do localStorage se houver
+      // بک‌اند در دسترس نیست یا تایم‌اوت شد - کاربر localStorage حفظ می‌شود
     }
   };
 

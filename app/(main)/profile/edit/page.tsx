@@ -13,12 +13,12 @@ import { UserContext } from '@/contexts/UserContext';
 // ==================== DYNAMIC IMPORTS ====================
 const PersianCalendar = dynamic(
   () => import('@/components/PersianCalendar'),
-  { ssr: false, loading: () => <div className="p-4 text-center text-text-secondary">Carregando calendário...</div> }
+  { ssr: false, loading: () => <div className="p-4 text-center text-text-secondary">در حال بارگذاری تقویم...</div> }
 );
 
 const MapComponent = dynamic(
   () => import('@/components/MapComponent'),
-  { ssr: false, loading: () => <div className="h-[250px] flex items-center justify-center bg-bg-surface rounded-xl text-text-secondary">Carregando mapa...</div> }
+  { ssr: false, loading: () => <div className="h-[250px] flex items-center justify-center bg-bg-surface rounded-xl text-text-secondary">در حال بارگذاری نقشه...</div> }
 );
 
 // ==================== ICONS ====================
@@ -99,39 +99,39 @@ const usernameValidation = {
     const trimmed = username.trim();
     
     if (!trimmed) {
-      errors.push("O nome de usuário não pode ficar vazio");
+      errors.push('نام کاربری نمی‌تواند خالی باشد');
       return { valid: false, errors };
     }
     
     if (trimmed.length < this.minLength) {
-      errors.push(`O nome de usuário deve ter pelo menos ${this.minLength} caracteres`);
+      errors.push(`نام کاربری باید حداقل ${this.minLength} کاراکتر باشد`);
     }
     if (trimmed.length > this.maxLength) {
-      errors.push(`O nome de usuário deve ter no máximo ${this.maxLength} caracteres`);
+      errors.push(`نام کاربری باید حداکثر ${this.maxLength} کاراکتر باشد`);
     }
     
     if (!this.pattern.test(trimmed)) {
-      errors.push("Use apenas letras sem acentos, números, sublinhado (_) e ponto (.)");
+      errors.push('نام کاربری فقط می‌تواند شامل حروف انگلیسی، اعداد، زیرخط (_) و نقطه (.) باشد');
     }
     
     if (!this.noSpaces.test(trimmed)) {
-      errors.push("O nome de usuário não pode conter espaços");
+      errors.push('نام کاربری نمی‌تواند شامل فاصله باشد');
     }
     
     if (trimmed.startsWith('.') || trimmed.endsWith('.')) {
-      errors.push("O nome de usuário não pode começar ou terminar com ponto");
+      errors.push('نام کاربری نمی‌تواند با نقطه شروع یا خاتمه یابد');
     }
     
     if (!this.noConsecutiveDots.test(trimmed)) {
-      errors.push("O nome de usuário não pode conter pontos consecutivos");
+      errors.push('نام کاربری نمی‌تواند شامل نقطه‌های پشت سر هم باشد');
     }
     
     if (!this.noConsecutiveUnderscores.test(trimmed)) {
-      errors.push("O nome de usuário não pode conter sublinhados consecutivos");
+      errors.push('نام کاربری نمی‌تواند شامل زیرخط‌های پشت سر هم باشد');
     }
     
     if (this.reservedUsernames.includes(trimmed.toLowerCase())) {
-      errors.push("Este nome de usuário não está disponível");
+      errors.push('این نام کاربری قابل استفاده نیست');
     }
     
     return {
@@ -192,7 +192,7 @@ export default function EditProfilePage() {
   useEffect(() => {
     if (isLoading) return;
     if (!user) {
-      warning("Entre na sua conta para continuar");
+      warning('لطفاً ابتدا وارد حساب کاربری خود شوید');
       router.replace('/login');
     }
   }, [user, isLoading, router, warning]);
@@ -235,12 +235,12 @@ export default function EditProfilePage() {
     if (!file) return;
     
     if (file.size > 2 * 1024 * 1024) {
-      warning("O arquivo deve ter menos de 2 MB");
+      warning('حجم فایل باید کمتر از ۲ مگابایت باشد');
       return;
     }
     
     if (!file.type.startsWith('image/')) {
-      error("Selecione um arquivo de imagem");
+      error('لطفاً فقط فایل تصویری انتخاب کنید');
       return;
     }
     
@@ -249,15 +249,15 @@ export default function EditProfilePage() {
       const result = reader.result as string;
       setAvatarPreview(result);
       handleInputChange('avatar', result);
-      success("Foto de perfil enviada");
+      success('آواتار با موفقیت آپلود شد');
     };
-    reader.onerror = () => error("Não foi possível enviar a foto de perfil");
+    reader.onerror = () => error('خطا در آپلود آواتار');
     reader.readAsDataURL(file);
   }, [handleInputChange, success, error, warning]);
 
   const handleAddAddress = useCallback(() => {
     if (newAddress.trim() === '') {
-      warning("Informe o endereço");
+      warning('لطفاً آدرس را وارد کنید');
       return;
     }
     
@@ -266,7 +266,7 @@ export default function EditProfilePage() {
       addresses: [...prev.addresses, newAddress.trim()]
     }));
     setNewAddress('');
-    success("Endereço adicionado");
+    success('آدرس با موفقیت اضافه شد');
   }, [newAddress, success, warning]);
 
   const handleRemoveAddress = useCallback((index: number) => {
@@ -274,25 +274,25 @@ export default function EditProfilePage() {
       ...prev,
       addresses: prev.addresses.filter((_, i) => i !== index)
     }));
-    success("Endereço removido");
+    success('آدرس با موفقیت حذف شد');
   }, [success]);
 
   const handleLocationSelect = useCallback((latlng: { lat: number; lng: number }) => {
     setSelectedLocation(latlng);
-    success("Localização selecionada");
+    success('موقعیت مکانی با موفقیت انتخاب شد');
   }, [success]);
 
   const handleDateSelect = useCallback((date: Date) => {
     setSelectedBirthDate(date);
     handleInputChange('birthDate', date.toISOString().split('T')[0]);
     setIsCalendarOpen(false);
-    success("Data de nascimento salva");
+    success('تاریخ تولد با موفقیت ثبت شد');
   }, [handleInputChange, success]);
 
   const clearBirthDate = useCallback(() => {
     setSelectedBirthDate(null);
     handleInputChange('birthDate', '');
-    info("Data de nascimento removida");
+    info('تاریخ تولد حذف شد');
   }, [handleInputChange, info]);
 
   // ==================== VALIDATION ====================
@@ -301,12 +301,12 @@ export default function EditProfilePage() {
     
     // ✅ نام کامل اختیاری است - فقط اگر وارد شده باشد اعتبارسنجی می‌شود
     if (formData.name && formData.name.length > 100) {
-      errors.push("O nome completo deve ter no máximo 100 caracteres");
+      errors.push('نام کامل نباید بیشتر از ۱۰۰ کاراکتر باشد');
     }
     
     // اعتبارسنجی نام کاربری (اجباری)
     if (!formData.username.trim()) {
-      errors.push("Digite seu nome de usuário");
+      errors.push('نام کاربری خود را وارد کنید');
     } else {
       const result = usernameValidation.validate(formData.username);
       if (!result.valid) {
@@ -316,11 +316,11 @@ export default function EditProfilePage() {
     
     // اعتبارسنجی ایمیل (اجباری)
     if (!formData.email.trim()) {
-      errors.push("Digite seu e-mail");
+      errors.push('ایمیل خود را وارد کنید');
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email)) {
-        errors.push("Informe um e-mail válido");
+        errors.push('ایمیل معتبر وارد کنید');
       }
     }
     
@@ -365,7 +365,7 @@ export default function EditProfilePage() {
       if (setUser) {
         await setUser(updatedUser);
         localStorage.setItem('user', JSON.stringify(updatedUser));
-        success("Seu perfil foi atualizado!");
+        success('پروفایل شما با موفقیت به‌روزرسانی شد!');
         
         setTimeout(() => {
           router.push('/profile');
@@ -375,21 +375,21 @@ export default function EditProfilePage() {
       }
     } catch (err) {
       console.error('Error updating profile:', err);
-      error("Ocorreu um erro. Tente novamente.");
+      error('خطایی رخ داده است. لطفاً دوباره تلاش کنید.');
     } finally {
       setIsSubmitting(false);
     }
   }, [formData, user, selectedLocation, setUser, validateForm, isSubmitting, success, error, router]);
 
   const handleCancel = useCallback(() => {
-    if (window.confirm("Deseja cancelar? As alterações não serão salvas.")) {
+    if (window.confirm('آیا از انصراف مطمئن هستید؟ تغییرات ذخیره نخواهد شد.')) {
       router.push('/profile');
     }
   }, [router]);
 
-  const formatDate = useCallback((date: Date) => {
+  const formatPersianDate = useCallback((date: Date) => {
     if (!date) return '';
-    return date.toLocaleDateString('pt-BR', {
+    return date.toLocaleDateString('fa-IR', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -405,7 +405,7 @@ export default function EditProfilePage() {
         <div className="min-h-[calc(100vh-70px)] bg-bg-primary p-5 md:p-10">
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
             <div className="w-10 h-10 border-3 border-border-color border-t-accent-color rounded-full animate-spin" />
-            <p className="text-text-muted text-sm">Carregando dados do usuário...</p>
+            <p className="text-text-muted text-sm">در حال بارگذاری اطلاعات کاربری...</p>
           </div>
         </div>
       </>
@@ -420,7 +420,7 @@ export default function EditProfilePage() {
       {!isMobile && <Sidebar />}
       {isMobile && <MobileBottomNav />}
 
-      <div className="min-h-[calc(100vh-70px)] bg-bg-primary overflow-x-hidden p-5 md:p-10 md:mb-0 mb-[70px] ltr">
+      <div className="min-h-[calc(100vh-70px)] bg-bg-primary overflow-x-hidden p-5 md:p-10 md:mb-0 mb-[70px] rtl">
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-10 max-w-[1000px] mx-auto bg-bg-secondary rounded-3xl p-8 md:p-6 sm:p-4 border border-border-color shadow-[0_4px_20px_var(--color-shadow)]">
           
           {/* Avatar Column */}
@@ -435,7 +435,7 @@ export default function EditProfilePage() {
               {avatarPreview ? (
                 <Image
                   src={avatarPreview}
-                  alt="Foto de perfil"
+                  alt="آواتار"
                   width={280}
                   height={280}
                   className="w-full h-full object-cover rounded-full"
@@ -443,7 +443,7 @@ export default function EditProfilePage() {
               ) : (
                 <>
                   <UploadIcon />
-                  <p className="mt-3 text-sm font-medium text-text-muted sm:text-xs sm:mt-2">Enviar foto de perfil</p>
+                  <p className="mt-3 text-sm font-medium text-text-muted sm:text-xs sm:mt-2">آپلود آواتار</p>
                 </>
               )}
               <input
@@ -460,32 +460,32 @@ export default function EditProfilePage() {
           <div className="flex-1">
             {/* ✅ Name Field - فقط یک فیلد و اختیاری */}
             <div className="mb-5 sm:mb-4">
-              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-start">
-                Nome completo
-                <span className="text-text-muted text-xs mr-1">(opcional)</span>
+              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-right">
+                نام کامل
+                <span className="text-text-muted text-xs mr-1">(اختیاری)</span>
               </label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-start ltr focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
-                placeholder="Digite seu nome completo (opcional)"
+                className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-right rtl focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
+                placeholder="نام و نام خانوادگی خود را وارد کنید (اختیاری)"
                 disabled={isSubmitting}
                 maxLength={100}
               />
-              <p className="mt-1 text-xs text-text-muted text-start">
-                Até 100 caracteres
+              <p className="mt-1 text-xs text-text-muted text-right">
+                حداکثر ۱۰۰ کاراکتر
               </p>
             </div>
 
             {/* Username with Validation */}
             <div className="mb-5 sm:mb-4">
-              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-start">Nome de usuário *</label>
+              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-right">نام کاربری *</label>
               <input
                 type="text"
                 value={formData.username}
                 onChange={(e) => handleInputChange('username', e.target.value)}
-                className={`w-full px-4 py-3 border rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-start ltr focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl ${
+                className={`w-full px-4 py-3 border rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-right rtl focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl ${
                   formData.username && !isUsernameValid 
                     ? 'border-red-500 focus:border-red-500' 
                     : formData.username && isUsernameValid 
@@ -511,23 +511,23 @@ export default function EditProfilePage() {
               
               {formData.username && isUsernameValid && (
                 <p className="mt-2 text-green-500 text-xs flex items-center gap-1.5">
-                  <span>✅</span> Nome de usuário válido
+                  <span>✅</span> نام کاربری معتبر است
                 </p>
               )}
               
               <p className="mt-1.5 text-text-muted text-xs">
-                Letras sem acentos, números, sublinhado (_) e ponto (.) — de 3 a 30 caracteres
+                فقط حروف انگلیسی، اعداد، زیرخط (_) و نقطه (.) - حداقل ۳ و حداکثر ۳۰ کاراکتر
               </p>
             </div>
 
             {/* Email */}
             <div className="mb-5 sm:mb-4">
-              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-start">E-mail *</label>
+              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-right">ایمیل *</label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-start ltr focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
+                className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-right rtl focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
                 disabled={isSubmitting}
                 required
                 dir="ltr"
@@ -536,15 +536,15 @@ export default function EditProfilePage() {
 
             {/* Birth Date */}
             <div className="mb-5 sm:mb-4">
-              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-start">Data de nascimento</label>
+              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-right">تاریخ تولد</label>
               <div className="flex gap-2.5 items-center">
                 <input
                   type="text"
-                  value={selectedBirthDate ? formatDate(selectedBirthDate) : ''}
-                  placeholder="Selecionar data de nascimento"
+                  value={selectedBirthDate ? formatPersianDate(selectedBirthDate) : ''}
+                  placeholder="انتخاب تاریخ تولد"
                   readOnly
                   onClick={() => !isSubmitting && setIsCalendarOpen(true)}
-                  className="flex-1 px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-start ltr cursor-pointer focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
+                  className="flex-1 px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-right rtl cursor-pointer focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
                 />
                 <button
                   type="button"
@@ -562,14 +562,14 @@ export default function EditProfilePage() {
                   disabled={isSubmitting}
                   className="mt-2 px-3 py-1.5 bg-red-500/15 border-none rounded-xl text-red-500 text-xs cursor-pointer transition-all hover:bg-red-500/30 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Remover data
+                  حذف تاریخ
                 </button>
               )}
             </div>
 
             {/* Gender */}
             <div className="mb-5 sm:mb-4">
-              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-start">Gênero</label>
+              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-right">جنسیت</label>
               <div className="flex gap-6 items-center flex-wrap justify-start sm:gap-4">
                 <label className="flex items-center gap-1.5 text-sm cursor-pointer text-text-primary sm:text-xs">
                   <input
@@ -580,7 +580,7 @@ export default function EditProfilePage() {
                     disabled={isSubmitting}
                     className="cursor-pointer disabled:cursor-not-allowed"
                   />
-                  Masculino
+                  مرد
                 </label>
                 <label className="flex items-center gap-1.5 text-sm cursor-pointer text-text-primary sm:text-xs">
                   <input
@@ -591,7 +591,7 @@ export default function EditProfilePage() {
                     disabled={isSubmitting}
                     className="cursor-pointer disabled:cursor-not-allowed"
                   />
-                  Feminino
+                  زن
                 </label>
                 <label className="flex items-center gap-1.5 text-sm cursor-pointer text-text-primary sm:text-xs">
                   <input
@@ -602,14 +602,14 @@ export default function EditProfilePage() {
                     disabled={isSubmitting}
                     className="cursor-pointer disabled:cursor-not-allowed"
                   />
-                  Outro
+                  سایر
                 </label>
               </div>
             </div>
 
             {/* Addresses */}
             <div className="mb-5 sm:mb-4">
-              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-start">Endereços</label>
+              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-right">آدرس‌ها</label>
               <button
                 type="button"
                 onClick={() => setIsAddressModalOpen(true)}
@@ -617,12 +617,12 @@ export default function EditProfilePage() {
                 className="w-full flex items-center gap-2.5 px-4 py-3 bg-bg-surface border border-border-color rounded-2xl cursor-pointer text-text-primary transition-all hover:bg-bg-hover hover:border-accent-color hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed justify-start sm:px-3.5 sm:py-2.5"
               >
                 <LocationIcon />
-                <span>Gerenciar endereços</span>
+                <span>مدیریت آدرس‌ها</span>
               </button>
               {formData.addresses.length > 0 && (
                 <div className="mt-3 flex flex-col gap-2">
                   {formData.addresses.map((addr, idx) => (
-                    <div key={idx} className="px-3 py-2 bg-bg-surface rounded-xl text-sm text-text-primary border border-border-color break-words text-start sm:text-xs sm:px-2.5 sm:py-1.5">
+                    <div key={idx} className="px-3 py-2 bg-bg-surface rounded-xl text-sm text-text-primary border border-border-color break-words text-right sm:text-xs sm:px-2.5 sm:py-1.5">
                       {addr}
                     </div>
                   ))}
@@ -632,13 +632,13 @@ export default function EditProfilePage() {
 
             {/* Bio */}
             <div className="mb-5 sm:mb-4">
-              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-start">Biografia</label>
+              <label className="block mb-2 font-semibold text-text-primary text-sm sm:text-xs sm:mb-1.5 text-right">بیوگرافی</label>
               <textarea
                 value={formData.bio}
                 onChange={(e) => handleInputChange('bio', e.target.value)}
                 rows={4}
-                placeholder="Conte um pouco sobre você..."
-                className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none resize-y font-sans text-start ltr bg-bg-primary text-text-primary transition-all focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
+                placeholder="درباره خودتان بنویسید..."
+                className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none resize-y font-sans text-right rtl bg-bg-primary text-text-primary transition-all focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
                 disabled={isSubmitting}
               />
             </div>
@@ -650,7 +650,7 @@ export default function EditProfilePage() {
                 disabled={isSubmitting || (formData.username && !isUsernameValid)}
                 className="flex-1 bg-accent-color text-white border-none px-4 py-3 rounded-[40px] text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(187,134,252,0.3)] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none sm:px-3.5 sm:py-2.5 sm:text-sm"
               >
-                {isSubmitting ? "Salvando..." : "Salvar alterações"}
+                {isSubmitting ? 'در حال ذخیره...' : 'ذخیره تغییرات'}
               </button>
               <button
                 type="button"
@@ -658,7 +658,7 @@ export default function EditProfilePage() {
                 disabled={isSubmitting}
                 className="flex-1 bg-bg-surface text-text-primary border border-border-color px-4 py-3 rounded-[40px] text-base font-semibold cursor-pointer transition-all hover:bg-bg-hover hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed sm:px-3.5 sm:py-2.5 sm:text-sm"
               >
-                Cancelar
+                انصراف
               </button>
             </div>
           </div>
@@ -671,8 +671,8 @@ export default function EditProfilePage() {
         onClose={() => setIsAddressModalOpen(false)}
         maxWidth={isMobile ? '90%' : '550px'}
       >
-        <div className="p-5 ltr sm:p-4">
-          <h3 className="text-lg font-semibold mb-4 text-center text-text-primary sm:text-base sm:mb-3">Gerenciar endereços</h3>
+        <div className="p-5 rtl sm:p-4">
+          <h3 className="text-lg font-semibold mb-4 text-center text-text-primary sm:text-base sm:mb-3">مدیریت آدرس‌ها</h3>
           
           <div className="w-full h-[250px] rounded-xl overflow-hidden mb-4 border border-border-color sm:h-[200px]">
             <MapComponent
@@ -692,9 +692,9 @@ export default function EditProfilePage() {
               type="text"
               value={newAddress}
               onChange={(e) => setNewAddress(e.target.value)}
-              placeholder="Digite seu endereço..."
+              placeholder="آدرس خود را وارد کنید..."
               onKeyDown={(e) => e.key === 'Enter' && handleAddAddress()}
-              className="flex-1 px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-start ltr focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
+              className="flex-1 px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all bg-bg-primary text-text-primary text-right rtl focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(187,134,252,0.2)] sm:px-3.5 sm:py-2.5 sm:text-xs sm:rounded-xl"
             />
             <button
               type="button"
@@ -707,10 +707,10 @@ export default function EditProfilePage() {
           
           <div className="max-h-[250px] overflow-y-auto mb-4">
             {formData.addresses.length === 0 ? (
-              <p className="text-center text-text-muted py-5 sm:py-4 sm:text-sm">Nenhum endereço cadastrado</p>
+              <p className="text-center text-text-muted py-5 sm:py-4 sm:text-sm">هیچ آدرسی ثبت نشده است</p>
             ) : (
               formData.addresses.map((addr, idx) => (
-                <div key={idx} className="flex justify-between items-center px-3 py-2.5 bg-bg-surface rounded-xl mb-2 break-words gap-2 text-start text-text-primary border border-border-color sm:px-2.5 sm:py-2 sm:text-sm">
+                <div key={idx} className="flex justify-between items-center px-3 py-2.5 bg-bg-surface rounded-xl mb-2 break-words gap-2 text-right text-text-primary border border-border-color sm:px-2.5 sm:py-2 sm:text-sm">
                   <span>{addr}</span>
                   <button
                     type="button"
@@ -730,7 +730,7 @@ export default function EditProfilePage() {
               onClick={() => setIsAddressModalOpen(false)}
               className="px-6 py-2.5 bg-bg-surface border-none rounded-[40px] text-sm cursor-pointer text-text-primary transition-all hover:bg-bg-hover hover:-translate-y-px sm:px-5 sm:py-2 sm:text-xs"
             >
-              Fechar
+              بستن
             </button>
           </div>
         </div>

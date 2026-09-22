@@ -40,7 +40,7 @@ export default function DropdownMenu({
       <button
         onClick={toggleDropdown}
         className="bg-transparent border-none cursor-pointer text-[var(--color-text-primary)] p-1.5 rounded hover:bg-[var(--color-bg-surface)] transition-colors flex items-center justify-center"
-        aria-label="Menu"
+        aria-label="منو"
         style={{ fontSize: iconSize }}
       >
         {triggerIcon}
@@ -55,7 +55,7 @@ export default function DropdownMenu({
                 item.onClick();
                 setIsOpen(false);
               }}
-              className="w-full text-start px-4 py-2.5 border-none bg-transparent cursor-pointer text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface)] transition-colors flex items-center gap-2"
+              className="w-full text-right px-4 py-2.5 border-none bg-transparent cursor-pointer text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface)] transition-colors flex items-center gap-2"
             >
               {item.icon && <span className="text-base">{item.icon}</span>}
               <span>{item.label}</span>

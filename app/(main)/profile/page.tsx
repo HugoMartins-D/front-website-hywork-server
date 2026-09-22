@@ -10,7 +10,7 @@ import PostCard from '@/components/PostCard';
 import { useTheme } from '@/contexts/ThemeContext';
 import { UserContext } from '@/contexts/UserContext';
 import { fetchUserByUsername, fetchPostsByUserId } from '@/services/postService';
-import { formatNumber } from '@/utils/numberUtils';
+import { toPersianNumber } from '@/utils/numberUtils';
 import type { Post, User } from '@/types';
 
 // ==================== آیکون‌ها ====================
@@ -77,11 +77,11 @@ const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 
 const MOCK_USER: User = {
   id: 1,
   username: 'mojtaba',
-  name: "Mojtaba Zarabi",
+  name: 'مجتبی زرابی',
   email: 'mojtaba@example.com',
   avatar: '/images/avatars/default.png',
-  bio: "Desenvolvedor web | Apaixonado por tecnologia",
-  location: "Teerã, Irã",
+  bio: 'توسعه‌دهنده وب | عاشق تکنولوژی',
+  location: 'تهران، ایران',
   followersCount: 120,
   followingCount: 85,
 };
@@ -100,9 +100,9 @@ export default function ProfilePage() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const [highlights] = useState([
-    { id: 3, cover: '/images/highlights/3.png', title: "Apresentação" },
-    { id: 2, cover: '/images/highlights/2.png', title: "Aviso" },
-    { id: 1, cover: '/images/highlights/1.png', title: "Programação" },
+    { id: 3, cover: '/images/highlights/3.png', title: 'معرفی' },
+    { id: 2, cover: '/images/highlights/2.png', title: 'اطلاعیه' },
+    { id: 1, cover: '/images/highlights/1.png', title: 'کدنویسی' },
   ]);
 
   useEffect(() => {
@@ -163,11 +163,11 @@ export default function ProfilePage() {
               {
                 id: 1,
                 userId: 1,
-                title: "Publicação de exemplo 1",
-                caption: "Esta é uma publicação de exemplo para o perfil",
+                title: 'پست نمونه ۱',
+                caption: 'این یک پست نمونه برای نمایش در پروفایل است',
                 price: 1250000,
                 stock: 10,
-                category: "Eletrônicos",
+                category: 'الکترونیک',
                 rating: 4.8,
                 image: '/images/posts/1.jpg',
                 images: ['/images/posts/1.jpg'],
@@ -217,7 +217,7 @@ export default function ProfilePage() {
       });
 
       if (!response.ok) {
-        throw new Error("Não foi possível seguir o perfil");
+        throw new Error('خطا در عملیات دنبال کردن');
       }
 
       setIsFollowing(!isFollowing);
@@ -226,9 +226,9 @@ export default function ProfilePage() {
         followersCount: isFollowing ? (prev!.followersCount || 0) - 1 : (prev!.followersCount || 0) + 1,
       }));
       
-      showToast(isFollowing ? "Você deixou de seguir este perfil" : "Você está seguindo este perfil", 'success');
+      showToast(isFollowing ? 'دنبال کردن لغو شد' : 'با موفقیت دنبال شدید', 'success');
     } catch (err) {
-      showToast(err instanceof Error ? err.message : "Não foi possível concluir a operação", 'error');
+      showToast(err instanceof Error ? err.message : 'خطا در عملیات', 'error');
     }
   };
 
@@ -261,7 +261,7 @@ export default function ProfilePage() {
         <div className="min-h-screen bg-bg-primary flex items-center justify-center">
           <div className="text-text-muted text-center">
             <div className="w-10 h-10 border-4 border-border-color border-t-accent-color rounded-full animate-spin mx-auto" />
-            <p className="mt-4">Carregando...</p>
+            <p className="mt-4">در حال بارگذاری...</p>
           </div>
         </div>
       </>
@@ -276,13 +276,13 @@ export default function ProfilePage() {
         {isMobile && <MobileBottomNav />}
         <div className="min-h-screen bg-bg-primary flex items-center justify-center p-5">
           <div className="text-center text-text-primary">
-            <h2 className="text-2xl font-bold mb-2">Entre na sua conta</h2>
-            <p className="text-text-muted">Entre na sua conta para ver seu perfil.</p>
+            <h2 className="text-2xl font-bold mb-2">لطفاً وارد شوید</h2>
+            <p className="text-text-muted">برای مشاهده پروفایل خود باید وارد حساب کاربری شوید.</p>
             <button
               onClick={() => router.push('/login')}
               className="mt-5 px-6 py-2.5 bg-accent-color text-white border-none rounded-lg cursor-pointer hover:bg-accent-hover transition-colors"
             >
-              Entrar
+              ورود به حساب
             </button>
           </div>
         </div>
@@ -298,13 +298,13 @@ export default function ProfilePage() {
         {isMobile && <MobileBottomNav />}
         <div className="min-h-screen bg-bg-primary flex items-center justify-center p-5">
           <div className="text-center text-text-primary">
-            <h2 className="text-2xl font-bold mb-2">Perfil não encontrado</h2>
-            <p className="text-text-muted">Este usuário não existe.</p>
+            <h2 className="text-2xl font-bold mb-2">پروفایل یافت نشد</h2>
+            <p className="text-text-muted">کاربر مورد نظر وجود ندارد.</p>
             <button
               onClick={() => router.push('/')}
               className="mt-5 px-6 py-2.5 bg-accent-color text-white border-none rounded-lg cursor-pointer hover:bg-accent-hover transition-colors"
             >
-              Voltar ao início
+              بازگشت به صفحه اصلی
             </button>
           </div>
         </div>
@@ -312,9 +312,9 @@ export default function ProfilePage() {
     );
   }
 
-  const postsCountLabel = formatNumber(posts.length);
-  const followersLabel = formatNumber((profileUser.followersCount || 0).toLocaleString('pt-BR'));
-  const followingLabel = formatNumber((profileUser.followingCount || 0).toLocaleString('pt-BR'));
+  const persianPostsCount = toPersianNumber(posts.length);
+  const persianFollowers = toPersianNumber((profileUser.followersCount || 0).toLocaleString());
+  const persianFollowing = toPersianNumber((profileUser.followingCount || 0).toLocaleString());
 
   const isOwn = isOwnProfile();
 
@@ -334,7 +334,7 @@ export default function ProfilePage() {
               className="flex items-center gap-2 text-text-primary bg-transparent border-none cursor-pointer p-2 mb-2 rounded-lg hover:bg-bg-surface transition-colors"
             >
               <BackIcon className="w-5 h-5" />
-              <span>Voltar</span>
+              <span>بازگشت</span>
             </button>
           )}
 
@@ -351,22 +351,22 @@ export default function ProfilePage() {
             <div className="profile-info-section">
               <div className="profile-stats">
                 <div className="profile-stat-item">
-                  <strong>{postsCountLabel}</strong>
-                  <span>Publicação</span>
+                  <strong>{persianPostsCount}</strong>
+                  <span>پست</span>
                 </div>
                 <div className="profile-stat-item">
-                  <strong>{followersLabel}</strong>
-                  <span>Seguidores</span>
+                  <strong>{persianFollowers}</strong>
+                  <span>دنبال‌کننده</span>
                 </div>
                 <div className="profile-stat-item">
-                  <strong>{followingLabel}</strong>
-                  <span>Seguindo</span>
+                  <strong>{persianFollowing}</strong>
+                  <span>دنبال‌شونده</span>
                 </div>
               </div>
 
               <div className="profile-bio">
                 <strong>{profileUser.name || profileUser.username}</strong>
-                <p>{profileUser.bio || "Boas-vindas ao meu perfil"}</p>
+                <p>{profileUser.bio || 'خوش آمدید به پروفایل من'}</p>
                 {profileUser.location && (
                   <p className="text-xs text-text-muted mt-1">📍 {profileUser.location}</p>
                 )}
@@ -381,7 +381,7 @@ export default function ProfilePage() {
                       onClick={() => router.push('/profile/edit')} 
                       className="profile-edit-btn"
                     >
-                      Editar perfil
+                      ویرایش پروفایل
                     </button>
                     <ThemeSwitch theme={theme} toggleTheme={toggleTheme} />
                     <button className="profile-icon-btn">
@@ -395,7 +395,7 @@ export default function ProfilePage() {
                       className={isFollowing ? 'profile-following-btn' : 'profile-follow-btn'}
                       onClick={handleFollow}
                     >
-                      {isFollowing ? "Seguindo" : "Seguir"}
+                      {isFollowing ? 'دنبال می‌کنید' : 'دنبال کردن'}
                     </button>
                     <button className="profile-icon-btn">
                       <SettingsIcon className="w-6 h-6" />
@@ -413,7 +413,7 @@ export default function ProfilePage() {
                 <div className="profile-add-highlight-circle">
                   <AddPlusIcon className="w-8 h-8" />
                 </div>
-                <span className="profile-highlight-title">Novo</span>
+                <span className="profile-highlight-title">جدید</span>
               </div>
 
               {highlights.map((item) => (
@@ -432,7 +432,7 @@ export default function ProfilePage() {
           <div className="profile-tabs">
             <button className="profile-active-tab">
               <GridIcon className="w-6 h-6" />
-              <span>Publicações</span>
+              <span>پست‌ها</span>
             </button>
           </div>
 
@@ -465,7 +465,7 @@ export default function ProfilePage() {
               ))
             ) : (
               <div className="text-center py-10 text-text-muted col-span-full">
-                <p>Nenhuma publicação encontrada</p>
+                <p>هیچ پستی یافت نشد</p>
               </div>
             )}
           </div>

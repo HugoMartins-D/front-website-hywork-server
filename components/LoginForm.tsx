@@ -23,7 +23,7 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
 
     const trimmedIdentifier = identifier.trim();
     if (!trimmedIdentifier) {
-      setError("Informe seu telefone ou e-mail");
+      setError('لطفاً شماره تلفن یا ایمیل را وارد کنید');
       return;
     }
 
@@ -31,14 +31,14 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
     const isPhone = /^09[0-9]{9}$/.test(trimmedIdentifier);
 
     if (!isEmail && !isPhone) {
-      setError("Informe um e-mail ou celular válido");
+      setError('لطفاً یک ایمیل معتبر یا شماره تلفن همراه معتبر وارد کنید');
       return;
     }
 
     try {
       await onSubmit({ identifier: trimmedIdentifier });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Não foi possível enviar o código");
+      setError(err instanceof Error ? err.message : 'خطا در ارسال کد');
     }
   };
 
@@ -47,10 +47,10 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
       <form 
         onSubmit={handleSubmit} 
         className="bg-bg-card shadow-[0_4px_20px_var(--color-shadow)] rounded-2xl px-6 sm:px-8 pt-6 pb-8 border border-border-color"
-        dir="ltr"
+        dir="rtl"
       >
         <h2 className="text-2xl font-bold text-center mb-6 text-text-primary">
-          Entrar na sua conta
+          ورود به حساب کاربری
         </h2>
         
         {error && (
@@ -61,19 +61,19 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
 
         <div className="mb-6">
           <label className="block text-text-secondary text-sm font-medium mb-2">
-            Telefone ou e-mail
+            شماره تلفن یا ایمیل
           </label>
           <input
             type="text"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             className="w-full px-4 py-3 border border-border-color rounded-xl text-sm outline-none transition-all bg-bg-primary text-text-primary font-sans focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(59,130,246,0.1)] disabled:opacity-60 disabled:cursor-not-allowed"
-            placeholder="09123456789 ou exemplo@email.com"
+            placeholder="09123456789 یا example@email.com"
             disabled={isLoading}
             dir="ltr"
           />
-          <p className="text-xs text-text-muted mt-1.5 text-start">
-            Enviaremos um código de 6 dígitos para seu telefone ou e-mail
+          <p className="text-xs text-text-muted mt-1.5 text-right">
+            کد تایید ۶ رقمی به شماره یا ایمیل شما ارسال خواهد شد
           </p>
         </div>
 
@@ -88,10 +88,10 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
-              Enviando código...
+              در حال ارسال کد...
             </span>
           ) : (
-            "Receber código"
+            'دریافت کد تایید'
           )}
         </button>
       </form>

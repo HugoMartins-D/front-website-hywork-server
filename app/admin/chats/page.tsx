@@ -388,17 +388,17 @@ const MessageDropdown = ({ messageId, isOpen, onClose, onPin, onReport, onDelete
       className="fixed bg-(--color-bg-card) rounded-xl shadow-lg min-w-45 z-[9999] overflow-hidden border border-(--color-border-color)"
       style={{ top: menuPosition.top, left: menuPosition.left }}
     >
-      <button onClick={() => { onPin(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+      <button onClick={() => { onPin(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
         <span className="w-4 h-4"><PinIcon /></span>
-        <span>Fixar mensagem</span>
+        <span>پین کردن پیام</span>
       </button>
-      <button onClick={() => { onReport(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+      <button onClick={() => { onReport(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
         <span className="w-4 h-4"><TriangleWarningIcon /></span>
-        <span>Denunciar mensagem</span>
+        <span>گزارش پیام</span>
       </button>
-      <button onClick={() => { onDelete(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-red-500 hover:bg-red-500/10">
+      <button onClick={() => { onDelete(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-red-500 hover:bg-red-500/10">
         <span className="w-4 h-4"><TrashFullIcon /></span>
-        <span>Excluir mensagem</span>
+        <span>حذف پیام</span>
       </button>
     </div>
   );
@@ -486,77 +486,78 @@ const ConversationDropdown = ({
       style={{ top: menuPosition.top, left: menuPosition.left }}
     >
       {!isBlocked ? (
-        <button onClick={() => { onBlock(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+        <button onClick={() => { onBlock(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
           <span className="w-4 h-4"><StopSignIcon /></span>
-          <span>Bloquear conversa</span>
+          <span>مسدود کردن مکالمه</span>
         </button>
       ) : (
         <>
-          <button onClick={() => { onUnblock(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+          <button onClick={() => { onUnblock(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
             <span className="w-4 h-4"><CloseSmIcon /></span>
-            <span>Desbloquear</span>
+            <span>رفع مسدودیت</span>
           </button>
-          <button onClick={() => { onEditBlock(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+          <button onClick={() => { onEditBlock(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
             <span className="w-4 h-4"><EditPencilIcon /></span>
-            <span>Editar bloqueio</span>
+            <span>ویرایش مسدودیت</span>
           </button>
           {conversation.blockStartDate && (
             <div className="px-4 py-2.5 bg-amber-500/15 border-t border-b border-(--color-border-color)">
-              <div className="text-[11px] font-semibold text-amber-600">🔒 Detalhes do bloqueio:</div>
+              <div className="text-[11px] font-semibold text-amber-600">🔒 اطلاعات مسدودیت:</div>
               <div className="text-[10px] text-(--color-text-primary) leading-relaxed">
-                de {conversation.blockStartDate} até {conversation.blockedUntil || "Permanente"}
-                {conversation.blockReason && <div>Motivo: {conversation.blockReason}</div>}
+                از {conversation.blockStartDate} تا {conversation.blockedUntil || 'دائم'}
+                {conversation.blockReason && <div>دلیل: {conversation.blockReason}</div>}
               </div>
             </div>
           )}
         </>
       )}
-      <button onClick={() => { onWarningHistory(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+      <button onClick={() => { onWarningHistory(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
         <span className="w-4 h-4"><TriangleWarningIcon /></span>
-        <span>Histórico de advertências ({warningCount})</span>
+        <span>تاریخچه اخطارها ({warningCount})</span>
       </button>
-      <button onClick={() => { onNewWarning(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+      <button onClick={() => { onNewWarning(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
         <span className="w-4 h-4"><NotificationSquare01Icon /></span>
-        <span>Enviar nova advertência</span>
+        <span>ارسال اخطار جدید</span>
       </button>
-      <button onClick={() => { onExport(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+      <button onClick={() => { onExport(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
         <span className="w-4 h-4"><FileDownloadIcon /></span>
-        <span>Exportar conversa</span>
+        <span>خروجی مکالمه</span>
       </button>
-      <button onClick={() => { onClear(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-red-500 hover:bg-red-500/10">
+      <button onClick={() => { onClear(); onClose(); }} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-red-500 hover:bg-red-500/10">
         <span className="w-4 h-4"><TrashFullIcon /></span>
-        <span>Limpar conversa</span>
+        <span>پاک کردن کل مکالمه</span>
       </button>
     </div>
   );
 };
 
 // ==================== توابع کمکی ====================
-const formatNumber = (num: number | string) => {
-  return String(num);
+const toPersianNumber = (num: number | string) => {
+  const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+  return num.toString().replace(/\d/g, d => persianDigits[parseInt(d)]);
 };
 
-const badWords = ["palavrão", "palavra ofensiva", "spam", "ofensa", "linguagem ofensiva"];
+const badWords = ['فحش', 'کلمه بد', 'اسپم', 'توهین', 'فحاشی'];
 const containsBadWord = (text: string) => badWords.some(word => text?.includes(word));
 
 // ==================== داده‌های نمونه (mock) ====================
 const getInitialConversations = (): Conversation[] => [
-  { id: 1, user1: { id: 101, name: "Ali Mohammadi", avatar: "A", status: 'online' }, user2: { id: 102, name: "Zahra Karimi", avatar: "Z", status: 'offline' }, lastMessage: "Oi, tudo bem?", lastMessageTime: "05/05/2024 14:30", unreadCount: 3, isBlocked: false, blockedUntil: null, blockStartDate: null, blockReason: null, reportedCount: 0, warningCount: 0, selected: false },
-  { id: 2, user1: { id: 103, name: "Mohammad Rezaei", avatar: "M", status: 'online' }, user2: { id: 104, name: "Sara Hosseini", avatar: "S", status: 'online' }, lastMessage: "Você viu o filme?", lastMessageTime: "05/05/2024 13:15", unreadCount: 0, isBlocked: false, blockedUntil: null, blockStartDate: null, blockReason: null, reportedCount: 2, warningCount: 1, selected: false },
-  { id: 3, user1: { id: 105, name: "Reza Ahmadi", avatar: "R", status: 'offline' }, user2: { id: 106, name: "Nazanin Karimi", avatar: "N", status: 'offline' }, lastMessage: "Obrigado pela orientação", lastMessageTime: "04/05/2024 22:10", unreadCount: 1, isBlocked: true, blockedUntil: "21/05/2024", blockStartDate: "09/05/2024", blockReason: "Ofensas e linguagem inadequada", reportedCount: 5, warningCount: 3, selected: false },
+  { id: 1, user1: { id: 101, name: 'علی محمدی', avatar: 'ع', status: 'online' }, user2: { id: 102, name: 'زهرا کریمی', avatar: 'ز', status: 'offline' }, lastMessage: 'سلام چطوری؟', lastMessageTime: '۱۴۰۳/۰۲/۱۶ ۱۴:۳۰', unreadCount: 3, isBlocked: false, blockedUntil: null, blockStartDate: null, blockReason: null, reportedCount: 0, warningCount: 0, selected: false },
+  { id: 2, user1: { id: 103, name: 'محمد رضایی', avatar: 'م', status: 'online' }, user2: { id: 104, name: 'سارا حسینی', avatar: 'س', status: 'online' }, lastMessage: 'فیلم رو دیدی؟', lastMessageTime: '۱۴۰۳/۰۲/۱۶ ۱۳:۱۵', unreadCount: 0, isBlocked: false, blockedUntil: null, blockStartDate: null, blockReason: null, reportedCount: 2, warningCount: 1, selected: false },
+  { id: 3, user1: { id: 105, name: 'رضا احمدی', avatar: 'ر', status: 'offline' }, user2: { id: 106, name: 'نازنین کریمی', avatar: 'ن', status: 'offline' }, lastMessage: 'ممنون از راهنماییت', lastMessageTime: '۱۴۰۳/۰۲/۱۵ ۲۲:۱۰', unreadCount: 1, isBlocked: true, blockedUntil: '۱۴۰۳/۰۳/۰۱', blockStartDate: '۱۴۰۳/۰۲/۲۰', blockReason: 'توهین و الفاظ نامناسب', reportedCount: 5, warningCount: 3, selected: false },
 ];
 
 const getInitialWarningHistory = (): WarningHistoryItem[] => [
-  { id: 1, conversationId: 2, message: "Uso de linguagem inadequada", date: "29/04/2024", time: "14:30", admin: "Administrador" },
-  { id: 2, conversationId: 3, message: "Envio de conteúdo irrelevante", date: "24/04/2024", time: "11:20", admin: "Administrador" },
-  { id: 3, conversationId: 3, message: "Ofensa a outro usuário", date: "20/04/2024", time: "09:15", admin: "Administrador principal" },
+  { id: 1, conversationId: 2, message: 'استفاده از الفاظ نامناسب', date: '۱۴۰۳/۰۲/۱۰', time: '۱۴:۳۰', admin: 'مدیر سایت' },
+  { id: 2, conversationId: 3, message: 'ارسال محتوای نامرتبط', date: '۱۴۰۳/۰۲/۰۵', time: '۱۱:۲۰', admin: 'مدیر سایت' },
+  { id: 3, conversationId: 3, message: 'توهین به کاربر دیگر', date: '۱۴۰۳/۰۲/۰۱', time: '۰۹:۱۵', admin: 'مدیر ارشد' },
 ];
 
 const getMockMessages = (conversation: Conversation): ChatMessage[] => [
-  { id: 1, senderId: conversation.user1.id, senderName: conversation.user1.name, senderAvatar: conversation.user1.avatar, receiverId: conversation.user2.id, receiverName: conversation.user2.name, text: "Oi, tudo bem?", type: 'text', timestamp: "2024-05-05T10:00:00", isReported: false, isPinned: false },
-  { id: 2, senderId: conversation.user2.id, senderName: conversation.user2.name, senderAvatar: conversation.user2.avatar, receiverId: conversation.user1.id, receiverName: conversation.user1.name, text: "Oi, tudo bem! E você?", type: 'text', timestamp: "2024-05-05T10:05:00", isReported: false, isPinned: false },
-  { id: 3, senderId: conversation.user1.id, senderName: conversation.user1.name, senderAvatar: conversation.user1.avatar, receiverId: conversation.user2.id, receiverName: conversation.user2.name, text: "Tudo bem, obrigado 😊", type: 'text', timestamp: "2024-05-05T10:10:00", isReported: false, isPinned: false },
-  { id: 4, senderId: conversation.user2.id, senderName: conversation.user2.name, senderAvatar: conversation.user2.avatar, receiverId: conversation.user1.id, receiverName: conversation.user1.name, text: "Foto do produto", type: 'image', imageUrl: 'https://picsum.photos/300/200?random=1', timestamp: "2024-05-05T10:15:00", isReported: false, isPinned: false },
+  { id: 1, senderId: conversation.user1.id, senderName: conversation.user1.name, senderAvatar: conversation.user1.avatar, receiverId: conversation.user2.id, receiverName: conversation.user2.name, text: 'سلام چطوری؟', type: 'text', timestamp: '۱۴۰۳/۰۲/۱۶ ۱۰:۰۰', isReported: false, isPinned: false },
+  { id: 2, senderId: conversation.user2.id, senderName: conversation.user2.name, senderAvatar: conversation.user2.avatar, receiverId: conversation.user1.id, receiverName: conversation.user1.name, text: 'سلام خوبم تو چطوری؟', type: 'text', timestamp: '۱۴۰۳/۰۲/۱۶ ۱۰:۰۵', isReported: false, isPinned: false },
+  { id: 3, senderId: conversation.user1.id, senderName: conversation.user1.name, senderAvatar: conversation.user1.avatar, receiverId: conversation.user2.id, receiverName: conversation.user2.name, text: 'خوبم ممنون 😊', type: 'text', timestamp: '۱۴۰۳/۰۲/۱۶ ۱۰:۱۰', isReported: false, isPinned: false },
+  { id: 4, senderId: conversation.user2.id, senderName: conversation.user2.name, senderAvatar: conversation.user2.avatar, receiverId: conversation.user1.id, receiverName: conversation.user1.name, text: 'عکس محصول', type: 'image', imageUrl: 'https://picsum.photos/300/200?random=1', timestamp: '۱۴۰۳/۰۲/۱۶ ۱۰:۱۵', isReported: false, isPinned: false },
 ];
 
 // ==================== کامپوننت اصلی ====================
@@ -638,50 +639,50 @@ export default function ChatManagement() {
 
   // عملیات‌ها
   const handleDeleteMessage = useCallback((messageId: number) => {
-    showConfirmModal("Excluir mensagem", "Deseja excluir esta mensagem?", () => {
+    showConfirmModal('حذف پیام', 'آیا از حذف این پیام مطمئن هستید؟', () => {
       setMessages(prev => prev.filter(m => m.id !== messageId));
-      addToast("Mensagem excluída", 'success');
+      addToast('پیام با موفقیت حذف شد', 'success');
       setOpenDropdownId(null);
     });
   }, [addToast]);
 
   const handleBulkDeleteMessages = useCallback(() => {
-    if (selectedMessages.length === 0) { addToast("Selecione pelo menos uma mensagem", 'warning'); return; }
-    showConfirmModal("Excluir mensagens selecionadas", `Deseja excluir ${formatNumber(selectedMessages.length)} mensagens selecionadas?`, () => {
+    if (selectedMessages.length === 0) { addToast('لطفا حداقل یک پیام را انتخاب کنید', 'warning'); return; }
+    showConfirmModal('حذف گروهی پیام‌ها', `آیا از حذف ${toPersianNumber(selectedMessages.length)} پیام انتخاب شده مطمئن هستید؟`, () => {
       setMessages(prev => prev.filter(m => !selectedMessages.includes(m.id)));
       setSelectedMessages([]);
       setIsBulkDeleteMode(false);
-      addToast(`${formatNumber(selectedMessages.length)} Mensagem excluída`, 'success');
+      addToast(`${toPersianNumber(selectedMessages.length)} پیام با موفقیت حذف شد`, 'success');
     });
   }, [addToast, selectedMessages]);
 
   const handleBulkWarningMessages = useCallback(() => {
-    if (selectedMessages.length === 0) { addToast("Selecione pelo menos uma mensagem", 'warning'); return; }
-    showConfirmModal("Advertir mensagens selecionadas", `Deseja enviar uma advertência para ${formatNumber(selectedMessages.length)} mensagens selecionadas?`, () => {
-      addToast(`${formatNumber(selectedMessages.length)} mensagens receberam uma advertência`, 'info');
+    if (selectedMessages.length === 0) { addToast('لطفا حداقل یک پیام را انتخاب کنید', 'warning'); return; }
+    showConfirmModal('اخطار گروهی پیام‌ها', `آیا از ارسال اخطار برای ${toPersianNumber(selectedMessages.length)} پیام انتخاب شده مطمئن هستید؟`, () => {
+      addToast(`${toPersianNumber(selectedMessages.length)} پیام با اخطار مواجه شد`, 'info');
       setSelectedMessages([]);
       setIsBulkDeleteMode(false);
     });
   }, [addToast, selectedMessages]);
 
   const handleClearConversation = useCallback(() => {
-    showConfirmModal("Limpar conversa", `Deseja excluir todas as mensagens desta conversa?`, () => {
+    showConfirmModal('پاک کردن مکالمه', `آیا از پاک کردن تمام پیام‌های این مکالمه مطمئن هستید؟`, () => {
       setMessages([]);
-      addToast("Conversa limpa", 'success');
+      addToast('کل مکالمه با موفقیت پاک شد', 'success');
       setOpenDropdownId(null);
     });
   }, [addToast]);
 
   const handlePinMessage = useCallback((messageId: number) => {
     setMessages(prev => prev.map(m => m.id === messageId ? { ...m, isPinned: !m.isPinned } : m));
-    addToast("Mensagem fixada", 'success');
+    addToast('پیام با موفقیت پین شد', 'success');
     setOpenDropdownId(null);
   }, [addToast]);
 
   const handleReportMessage = useCallback((messageId: number) => {
-    showConfirmModal("Denunciar mensagem", "Deseja denunciar esta mensagem?", () => {
+    showConfirmModal('گزارش پیام', 'آیا از گزارش این پیام مطمئن هستید؟', () => {
       setMessages(prev => prev.map(m => m.id === messageId ? { ...m, isReported: true } : m));
-      addToast("Mensagem denunciada", 'info');
+      addToast('پیام گزارش شد', 'info');
       setOpenDropdownId(null);
     });
   }, [addToast]);
@@ -690,23 +691,23 @@ export default function ChatManagement() {
     if (!selectedConversation) return;
     let untilText = '', blockEndDate: string | null = null, blockStartDate: string | null = null;
     if (blockDateRange) {
-      blockStartDate = new Date(blockDateRange.start).toLocaleDateString('pt-BR');
-      blockEndDate = new Date(blockDateRange.end).toLocaleDateString('pt-BR');
-      untilText = ` de ${blockStartDate} até ${blockEndDate}`;
+      blockStartDate = new Date(blockDateRange.start).toLocaleDateString('fa-IR');
+      blockEndDate = new Date(blockDateRange.end).toLocaleDateString('fa-IR');
+      untilText = ` از ${blockStartDate} تا ${blockEndDate}`;
     } else if (blockDuration !== 'permanent') {
       const days = parseInt(blockDuration);
-      blockStartDate = new Date().toLocaleDateString('pt-BR');
+      blockStartDate = new Date().toLocaleDateString('fa-IR');
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + days);
-      blockEndDate = endDate.toLocaleDateString('pt-BR');
-      untilText = ` até a data ${blockEndDate}`;
+      blockEndDate = endDate.toLocaleDateString('fa-IR');
+      untilText = ` تا تاریخ ${blockEndDate}`;
     }
-    const confirmMessage = isEditingBlock ? `Deseja editar o bloqueio da conversa${untilText} ?` : `Deseja bloquear a conversa${untilText} ?`;
-    showConfirmModal(isEditingBlock ? "Editar bloqueio" : "Bloquear conversa", confirmMessage, () => {
+    const confirmMessage = isEditingBlock ? `آیا از ویرایش مسدودیت مکالمه${untilText} مطمئن هستید؟` : `آیا از مسدود کردن مکالمه${untilText} مطمئن هستید؟`;
+    showConfirmModal(isEditingBlock ? 'ویرایش مسدودیت' : 'مسدود کردن مکالمه', confirmMessage, () => {
       const updated = conversations.map(c => c.id === selectedConversation.id ? { ...c, isBlocked: true, blockedUntil: blockEndDate, blockStartDate: blockStartDate, blockReason: blockReason } : c);
       setConversations(updated);
       setSelectedConversation(updated.find(c => c.id === selectedConversation.id) || null);
-      addToast(isEditingBlock ? `Bloqueio da conversa atualizado${untilText}` : `Conversa bloqueada${untilText}`, 'warning');
+      addToast(isEditingBlock ? `مسدودیت مکالمه ویرایش شد${untilText}` : `مکالمه مسدود شد${untilText}`, 'warning');
       setShowBlockModal(false);
       setBlockDuration('permanent');
       setBlockDateRange(null);
@@ -718,11 +719,11 @@ export default function ChatManagement() {
 
   const handleUnblockConversation = useCallback(() => {
     if (!selectedConversation) return;
-    showConfirmModal("Desbloquear conversa", "Deseja desbloquear esta conversa?", () => {
+    showConfirmModal('رفع مسدودیت مکالمه', 'آیا از رفع مسدودیت این مکالمه مطمئن هستید؟', () => {
       const updated = conversations.map(c => c.id === selectedConversation.id ? { ...c, isBlocked: false, blockedUntil: null, blockStartDate: null, blockReason: null } : c);
       setConversations(updated);
       setSelectedConversation(updated.find(c => c.id === selectedConversation.id) || null);
-      addToast("Conversa desbloqueada", 'success');
+      addToast('مسدودیت مکالمه لغو شد', 'success');
       setOpenDropdownId(null);
     });
   }, [addToast, selectedConversation, conversations]);
@@ -740,15 +741,15 @@ export default function ChatManagement() {
   }, [selectedConversation]);
 
   const handleSendWarning = useCallback(() => {
-    if (!warningMessage.trim()) { addToast("Digite a advertência", 'warning'); return; }
+    if (!warningMessage.trim()) { addToast('لطفا متن اخطار را وارد کنید', 'warning'); return; }
     if (!selectedConversation) return;
-    const newWarning: WarningHistoryItem = { id: Date.now(), conversationId: selectedConversation.id, message: warningMessage, date: new Date().toLocaleDateString('pt-BR'), time: new Date().toLocaleTimeString('pt-BR'), admin: "Administrador" };
-    showConfirmModal("Enviar advertência", `Deseja enviar uma advertência para ${selectedConversation.user1.name} e ${selectedConversation.user2.name} ? Texto: ${warningMessage}`, () => {
+    const newWarning: WarningHistoryItem = { id: Date.now(), conversationId: selectedConversation.id, message: warningMessage, date: new Date().toLocaleDateString('fa-IR'), time: new Date().toLocaleTimeString('fa-IR'), admin: 'مدیر سایت' };
+    showConfirmModal('ارسال اخطار', `آیا از ارسال اخطار به ${selectedConversation.user1.name} و ${selectedConversation.user2.name} مطمئن هستید؟\nمتن: ${warningMessage}`, () => {
       setWarningHistory(prev => [...prev, newWarning]);
       const updated = conversations.map(c => c.id === selectedConversation.id ? { ...c, warningCount: (c.warningCount || 0) + 1 } : c);
       setConversations(updated);
       setSelectedConversation(updated.find(c => c.id === selectedConversation.id) || null);
-      addToast(`Advertência enviada`, 'info');
+      addToast(`اخطار ارسال شد`, 'info');
       setWarningMessage('');
       setShowWarningModal(false);
       setOpenDropdownId(null);
@@ -763,20 +764,20 @@ export default function ChatManagement() {
     link.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
     link.download = `conversation_${selectedConversation.user1.name}_${selectedConversation.user2.name}_${Date.now()}.json`;
     link.click();
-    addToast("Conversa salva", 'success');
+    addToast('مکالمه با موفقیت ذخیره شد', 'success');
     setOpenDropdownId(null);
   }, [addToast, selectedConversation, warningHistory]);
 
   const handleSendBroadcast = useCallback(() => {
-    if (!broadcastMessage.trim()) { addToast("Digite a mensagem", 'warning'); return; }
-    addToast(`Aviso geral enviado: ${broadcastMessage}`, 'success');
+    if (!broadcastMessage.trim()) { addToast('لطفا متن پیام را وارد کنید', 'warning'); return; }
+    addToast(`اعلان سراسری ارسال شد: ${broadcastMessage}`, 'success');
     setShowBroadcastModal(false);
     setBroadcastMessage('');
   }, [addToast, broadcastMessage]);
 
   const handleBulkBlock = useCallback(() => {
     const selectedConvs = selectAllMode ? conversations : conversations.filter(c => c.selected);
-    if (selectedConvs.length === 0) { addToast("Selecione pelo menos uma conversa", 'warning'); return; }
+    if (selectedConvs.length === 0) { addToast('لطفا حداقل یک مکالمه را انتخاب کنید', 'warning'); return; }
     setShowBulkBlockModal(true);
   }, [addToast, selectAllMode, conversations]);
 
@@ -785,20 +786,20 @@ export default function ChatManagement() {
     const selectedIds = selectedConvs.map(c => c.id);
     let blockEndDate: string | null = null, blockStartDate: string | null = null;
     if (bulkBlockDateRange) {
-      blockStartDate = new Date(bulkBlockDateRange.start).toLocaleDateString('pt-BR');
-      blockEndDate = new Date(bulkBlockDateRange.end).toLocaleDateString('pt-BR');
+      blockStartDate = new Date(bulkBlockDateRange.start).toLocaleDateString('fa-IR');
+      blockEndDate = new Date(bulkBlockDateRange.end).toLocaleDateString('fa-IR');
     } else if (bulkBlockDuration !== 'permanent') {
-      blockStartDate = new Date().toLocaleDateString('pt-BR');
+      blockStartDate = new Date().toLocaleDateString('fa-IR');
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + parseInt(bulkBlockDuration));
-      blockEndDate = endDate.toLocaleDateString('pt-BR');
+      blockEndDate = endDate.toLocaleDateString('fa-IR');
     }
-    showConfirmModal("Bloquear conversas selecionadas", `Deseja bloquear ${formatNumber(selectedConvs.length)} conversas?`, () => {
+    showConfirmModal('مسدودیت گروهی', `آیا از مسدود کردن ${toPersianNumber(selectedConvs.length)} مکالمه مطمئن هستید؟`, () => {
       const updated = conversations.map(conv => selectedIds.includes(conv.id) ? { ...conv, isBlocked: true, blockedUntil: blockEndDate, blockStartDate: blockStartDate, blockReason: bulkBlockReason } : conv);
       setConversations(updated);
       if (selectedConversation && selectedIds.includes(selectedConversation.id))
         setSelectedConversation(updated.find(c => c.id === selectedConversation.id) || null);
-      addToast(`${formatNumber(selectedConvs.length)} Conversa bloqueada`, 'warning');
+      addToast(`${toPersianNumber(selectedConvs.length)} مکالمه مسدود شد`, 'warning');
       setShowBulkBlockModal(false);
       setBulkBlockDuration('permanent');
       setBulkBlockDateRange(null);
@@ -810,13 +811,13 @@ export default function ChatManagement() {
 
   const handleBulkExport = useCallback(() => {
     const selectedConvs = selectAllMode ? conversations : conversations.filter(c => c.selected);
-    if (selectedConvs.length === 0) { addToast("Selecione pelo menos uma conversa", 'warning'); return; }
+    if (selectedConvs.length === 0) { addToast('لطفا حداقل یک مکالمه را انتخاب کنید', 'warning'); return; }
     const exportData = { exportDate: new Date().toISOString(), conversations: selectedConvs.map((conv) => ({ ...conv, messages: [], warningHistory: warningHistory.filter(w => w.conversationId === conv.id) })) };
     const link = document.createElement('a');
     link.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportData, null, 2));
     link.download = `conversations_export_${Date.now()}.json`;
     link.click();
-    addToast(`Exportação de ${formatNumber(selectedConvs.length)} conversas concluída`, 'success');
+    addToast(`خروجی ${toPersianNumber(selectedConvs.length)} مکالمه گرفته شد`, 'success');
     setSelectAllMode(false);
     setConversations(prev => prev.map(c => ({ ...c, selected: false })));
   }, [addToast, selectAllMode, conversations, warningHistory]);
@@ -852,7 +853,7 @@ export default function ChatManagement() {
             {msg.imageUrl && (
               <Image
                 src={msg.imageUrl}
-                alt="Imagem"
+                alt="تصویر"
                 width={200}
                 height={133}
                 unoptimized
@@ -880,15 +881,15 @@ export default function ChatManagement() {
       case 'location':
         return (
           <div>
-            <div>📍 Localização:</div>
-            <a href={`https://www.google.com/maps?q=${msg.location?.lat},${msg.location?.lng}`} target="_blank" rel="noopener noreferrer" className="text-blue-500">Ver no mapa</a>
+            <div>📍 موقعیت مکانی:</div>
+            <a href={`https://www.google.com/maps?q=${msg.location?.lat},${msg.location?.lng}`} target="_blank" rel="noopener noreferrer" className="text-blue-500">مشاهده روی نقشه</a>
           </div>
         );
       default:
         return (
           <div>
             {hasBadWord && (
-              <div className="bg-red-100 text-red-500 text-[10px] px-1.5 py-0.5 rounded mb-1">⚠️ Conteúdo inadequado detectado</div>
+              <div className="bg-red-100 text-red-500 text-[10px] px-1.5 py-0.5 rounded mb-1">⚠️ محتوای نامناسب شناسایی شد</div>
             )}
             <div>{msg.text}</div>
           </div>
@@ -899,7 +900,7 @@ export default function ChatManagement() {
   if (loading && !selectedConversation) {
     return (
       <div className="flex items-center justify-center min-h-100 text-(--color-text-secondary)">
-        Carregando...
+        در حال بارگذاری...
       </div>
     );
   }
@@ -908,20 +909,20 @@ export default function ChatManagement() {
     <div className="w-full max-w-350 mx-auto">
       {/* Header */}
       <div className="mb-7">
-        <h1 className="text-[28px] font-bold text-(--color-text-primary) m-0">Gerenciar conversas</h1>
-        <p className="text-sm text-(--color-text-secondary) mt-1">Veja e gerencie as mensagens entre usuários</p>
+        <h1 className="text-[28px] font-bold text-(--color-text-primary) m-0">مدیریت چت‌های کاربران</h1>
+        <p className="text-sm text-(--color-text-secondary) mt-1">مشاهده و مدیریت پیام‌های بین کاربران</p>
       </div>
 
       {/* Stats Bar */}
       <div className="flex flex-wrap gap-4 mb-5 p-3 px-5 bg-(--color-bg-card) rounded-2xl border border-(--color-border-color)">
         <div className="flex items-center gap-1.5 text-[13px] text-(--color-text-secondary) px-3 py-1 bg-(--color-bg-surface) rounded-full">
-          <ChatCircleIcon /> Conversas ativas: {formatNumber(stats.activeConversations)}
+          <ChatCircleIcon /> مکالمات فعال: {toPersianNumber(stats.activeConversations)}
         </div>
         <div className="flex items-center gap-1.5 text-[13px] text-(--color-text-secondary) px-3 py-1 bg-(--color-bg-surface) rounded-full">
-          <ChatConversationCircleIcon /> Total de mensagens: {formatNumber(stats.totalMessages)}
+          <ChatConversationCircleIcon /> کل پیام‌ها: {toPersianNumber(stats.totalMessages)}
         </div>
         <div className="flex items-center gap-1.5 text-[13px] text-(--color-text-secondary) px-3 py-1 bg-(--color-bg-surface) rounded-full">
-          <TriangleWarningIcon /> Mensagens denunciadas: {formatNumber(stats.reportedCount)}
+          <TriangleWarningIcon /> پیام‌های گزارش شده: {toPersianNumber(stats.reportedCount)}
         </div>
       </div>
 
@@ -934,7 +935,7 @@ export default function ChatManagement() {
               <SearchIcon />
               <input
                 type="text"
-                placeholder="Buscar conversas..."
+                placeholder="جستجوی مکالمات..."
                 className="flex-1 px-3.5 py-2.5 rounded-full border border-(--color-border-color) text-[13px] outline-none bg-(--color-bg-primary) text-(--color-text-primary)"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -948,21 +949,21 @@ export default function ChatManagement() {
             </div>
             {showGroupActions && (
               <div className="mt-3 p-3 bg-(--color-bg-surface) rounded-xl border border-(--color-border-color)">
-                <h4 className="text-[13px] font-semibold text-(--color-text-primary) mb-2">Ações em lote</h4>
-                <button onClick={() => setShowBroadcastModal(true)} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer mb-1.5 text-start text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-                  <BellRingIcon /> <span className="mr-2">Enviar aviso geral</span>
+                <h4 className="text-[13px] font-semibold text-(--color-text-primary) mb-2">عملیات گروهی</h4>
+                <button onClick={() => setShowBroadcastModal(true)} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer mb-1.5 text-right text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
+                  <BellRingIcon /> <span className="mr-2">ارسال اعلان سراسری</span>
                 </button>
-                <button onClick={handleBulkBlock} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer mb-1.5 text-start text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-                  <StopSignIcon /> <span className="mr-2">Bloquear conversas selecionadas</span>
+                <button onClick={handleBulkBlock} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer mb-1.5 text-right text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
+                  <StopSignIcon /> <span className="mr-2">مسدودیت گروهی مکالمات</span>
                 </button>
-                <button onClick={handleBulkExport} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer mb-1.5 text-start text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-                  <FileCodeIcon /> <span className="mr-2">Exportar conversas selecionadas</span>
+                <button onClick={handleBulkExport} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer mb-1.5 text-right text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
+                  <FileCodeIcon /> <span className="mr-2">خروجی گروهی مکالمات</span>
                 </button>
-                <button onClick={() => addToast("Relatório de infrações exportado", 'info')} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer mb-1.5 text-start text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-                  <TriangleWarningIcon /> <span className="mr-2">Relatório de infrações</span>
+                <button onClick={() => addToast('گزارش تخلفات صادر شد', 'info')} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer mb-1.5 text-right text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
+                  <TriangleWarningIcon /> <span className="mr-2">گزارش تخلفات</span>
                 </button>
-                <button onClick={() => setSelectAllMode(!selectAllMode)} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer text-start text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-                  <SquareCheckIcon /> <span className="mr-2">{selectAllMode ? "Desmarcar todas" : "Selecionar todas as conversas"}</span>
+                <button onClick={() => setSelectAllMode(!selectAllMode)} className="flex items-center w-full p-2 bg-(--color-bg-card) border border-(--color-border-color) rounded-lg text-[12px] cursor-pointer text-right text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
+                  <SquareCheckIcon /> <span className="mr-2">{selectAllMode ? 'لغو انتخاب همه' : 'انتخاب همه مکالمات'}</span>
                 </button>
               </div>
             )}
@@ -989,15 +990,15 @@ export default function ChatManagement() {
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] font-semibold text-(--color-text-primary) flex items-center gap-1.5 flex-wrap">
                     {conv.user1.name} ↔ {conv.user2.name}
-                    {conv.isBlocked && <span className="text-[9px] bg-red-500 text-white px-1.5 py-0.5 rounded-full">Bloqueado</span>}
-                    {conv.warningCount > 0 && <span className="text-[9px] bg-amber-500 text-white px-1.5 py-0.5 rounded-full">{formatNumber(conv.warningCount)} Advertência</span>}
+                    {conv.isBlocked && <span className="text-[9px] bg-red-500 text-white px-1.5 py-0.5 rounded-full">مسدود</span>}
+                    {conv.warningCount > 0 && <span className="text-[9px] bg-amber-500 text-white px-1.5 py-0.5 rounded-full">{toPersianNumber(conv.warningCount)} اخطار</span>}
                   </div>
                   <div className="text-[11px] text-(--color-text-muted) truncate">{conv.lastMessage}</div>
                 </div>
                 <div className="flex flex-col items-end gap-1 shrink-0">
                   {conv.unreadCount > 0 && (
                     <div className="bg-blue-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-4.5 text-center">
-                      {formatNumber(conv.unreadCount)}
+                      {toPersianNumber(conv.unreadCount)}
                     </div>
                   )}
                   <div className="text-[9px] text-(--color-text-muted)">{conv.lastMessageTime}</div>
@@ -1019,8 +1020,8 @@ export default function ChatManagement() {
                   </div>
                   <div className="text-[11px] text-(--color-text-muted) mt-0.5">
                     {selectedConversation.isBlocked
-                      ? `🔒 Bloqueado ${selectedConversation.blockedUntil ? `até ${selectedConversation.blockedUntil}` : "Permanente"}`
-                      : `${selectedConversation.user1.status === 'online' ? "🟢 Online" : "⚫ Offline"} | ${selectedConversation.user2.status === 'online' ? "🟢 Online" : "⚫ Offline"}`
+                      ? `🔒 مسدود شده ${selectedConversation.blockedUntil ? `تا ${selectedConversation.blockedUntil}` : 'دائم'}`
+                      : `${selectedConversation.user1.status === 'online' ? '🟢 آنلاین' : '⚫ آفلاین'} | ${selectedConversation.user2.status === 'online' ? '🟢 آنلاین' : '⚫ آفلاین'}`
                     }
                   </div>
                 </div>
@@ -1051,33 +1052,33 @@ export default function ChatManagement() {
                     className="flex items-center gap-1 px-3.5 py-1.5 bg-(--color-bg-surface) border border-(--color-border-color) rounded-full text-[12px] cursor-pointer text-(--color-text-primary)"
                   >
                     {isBulkDeleteMode ? (
-                      <><CloseSmIcon /> Cancelar</>
+                      <><CloseSmIcon /> لغو</>
                     ) : (
-                      <><CheckboxCheckIcon /> Selecionar mensagens</>
+                      <><CheckboxCheckIcon /> انتخاب گروهی پیام</>
                     )}
                   </button>
                   <CustomSelect
                     options={[
-                      { value: 'all', label: "Todas as mensagens" },
-                      { value: 'text', label: "Texto" },
-                      { value: 'image', label: "Imagens" },
-                      { value: 'video', label: "Vídeos" },
-                      { value: 'audio', label: "Áudios" },
-                      { value: 'location', label: "Localização" }
+                      { value: 'all', label: 'همه پیام‌ها' },
+                      { value: 'text', label: 'متن' },
+                      { value: 'image', label: 'تصاویر' },
+                      { value: 'video', label: 'ویدیوها' },
+                      { value: 'audio', label: 'صوت‌ها' },
+                      { value: 'location', label: 'لوکیشن' }
                     ]}
                     value={filterType}
                     onChange={setFilterType}
-                    placeholder="Tipo de mensagem"
+                    placeholder="نوع پیام"
                   />
                   <CustomSelect
                     options={[
-                      { value: 'all', label: "Qualquer período" },
-                      { value: 'today', label: "Hoje" },
-                      { value: 'week', label: "Esta semana" }
+                      { value: 'all', label: 'همه زمان‌ها' },
+                      { value: 'today', label: 'امروز' },
+                      { value: 'week', label: 'هفته جاری' }
                     ]}
                     value={filterDate}
                     onChange={setFilterDate}
-                    placeholder="Período"
+                    placeholder="زمان"
                   />
                 </div>
               </div>
@@ -1085,7 +1086,7 @@ export default function ChatManagement() {
               {/* Pinned Messages */}
               {pinnedMessages.length > 0 && (
                 <div className="p-3 px-5 bg-amber-500/10 border-b border-(--color-border-color)">
-                  <div className="text-[12px] font-bold text-amber-600 mb-2">📌 Mensagens fixadas</div>
+                  <div className="text-[12px] font-bold text-amber-600 mb-2">📌 پیام‌های پین شده</div>
                   {pinnedMessages.map((msg) => (
                     <div key={msg.id} className="text-[12px] text-(--color-text-primary) py-1">
                       <strong>{msg.senderName}:</strong> {msg.text}
@@ -1097,9 +1098,9 @@ export default function ChatManagement() {
               {/* Messages Area */}
               <div className="flex-1 p-5 overflow-y-auto flex flex-col gap-4">
                 {loading ? (
-                  <div className="text-center py-10 text-(--color-text-muted)">Carregando...</div>
+                  <div className="text-center py-10 text-(--color-text-muted)">در حال بارگذاری...</div>
                 ) : filteredMessages.length === 0 ? (
-                  <div className="text-center py-16 text-(--color-text-muted)">Nenhuma mensagem</div>
+                  <div className="text-center py-16 text-(--color-text-muted)">پیامی وجود ندارد</div>
                 ) : (
                   filteredMessages.map((msg) => {
                     const isCurrentUser = msg.senderId === selectedConversation.user1.id;
@@ -1126,12 +1127,12 @@ export default function ChatManagement() {
                                 />
                               )}
                               <div className="text-[10px] font-bold mb-1 opacity-80 flex items-center gap-1.5 flex-wrap">
-                                {msg.isReported && <span className="bg-red-500 text-white px-1.5 py-0.5 rounded-full">⚠️ Denunciada</span>}
+                                {msg.isReported && <span className="bg-red-500 text-white px-1.5 py-0.5 rounded-full">⚠️ گزارش شده</span>}
                                 {msg.isPinned && <span>📌</span>}
                               </div>
                               {renderMessageContent(msg)}
                               <div className="text-[9px] mt-1.5 flex justify-end gap-2 items-center opacity-60">
-                                {new Date(msg.timestamp).toLocaleString('pt-BR')}
+                                {msg.timestamp}
                                 <div ref={(el) => { messageButtonRefs.current[msg.id] = el; }}>
                                   <button
                                     onClick={(e) => { e.stopPropagation(); handleOpenMenu(openDropdownId === msgDropdownId ? null : msgDropdownId); }}
@@ -1170,13 +1171,13 @@ export default function ChatManagement() {
               {/* Bulk Delete Bar */}
               {isBulkDeleteMode && selectedMessages.length > 0 && (
                 <div className="p-3 px-5 bg-amber-500/10 border-t border-(--color-border-color) flex justify-between items-center">
-                  <span>{formatNumber(selectedMessages.length)} mensagens selecionadas</span>
+                  <span>{toPersianNumber(selectedMessages.length)} پیام انتخاب شده</span>
                   <div className="flex gap-2">
                     <button onClick={handleBulkDeleteMessages} className="px-3.5 py-1.5 bg-red-500 border-none rounded-full text-white cursor-pointer text-[12px] hover:bg-red-600 transition-colors">
-                      Excluir selecionadas
+                      حذف گروهی
                     </button>
                     <button onClick={handleBulkWarningMessages} className="px-3.5 py-1.5 bg-amber-500 border-none rounded-full text-white cursor-pointer text-[12px] hover:bg-amber-600 transition-colors">
-                      Advertir selecionadas
+                      اخطار گروهی
                     </button>
                   </div>
                 </div>
@@ -1184,7 +1185,7 @@ export default function ChatManagement() {
             </>
           ) : (
             <div className="flex items-center justify-center h-full text-(--color-text-muted)">
-              Selecione uma conversa para ver as mensagens
+              برای مشاهده پیام‌ها، یک مکالمه را انتخاب کنید
             </div>
           )}
         </div>
@@ -1195,37 +1196,37 @@ export default function ChatManagement() {
       {/* مودال مسدودیت گروهی */}
       <Modal isOpen={showBulkBlockModal} onClose={() => setShowBulkBlockModal(false)} size="md">
         <div className="p-6 bg-(--color-bg-card) rounded-2xl max-h-[70vh] overflow-y-auto">
-          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">🚫 Bloquear conversas selecionadas</h3>
+          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">🚫 مسدودیت گروهی مکالمات</h3>
           <div className="bg-amber-500/15 p-3 rounded-lg mb-4 text-(--color-text-primary)">
-            Bloqueando {formatNumber(selectAllMode ? conversations.length : conversations.filter((c) => c.selected).length)} conversas
+            در حال مسدود کردن {toPersianNumber(selectAllMode ? conversations.length : conversations.filter((c) => c.selected).length)} مکالمه
           </div>
           <div className="mb-4">
-            <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">Duração:</label>
+            <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">مدت زمان:</label>
             <CustomSelect
               options={[
-                { value: 'permanent', label: "Permanente" },
-                { value: '1', label: "1 dia" },
-                { value: '3', label: "3 dias" },
-                { value: '7', label: "1 semana" },
-                { value: '30', label: "1 mês" },
-                { value: 'custom', label: "Período" },
+                { value: 'permanent', label: 'دائم' },
+                { value: '1', label: '۱ روز' },
+                { value: '3', label: '۳ روز' },
+                { value: '7', label: '۱ هفته' },
+                { value: '30', label: '۱ ماه' },
+                { value: 'custom', label: 'بازه زمانی' },
               ]}
               value={bulkBlockDuration}
               onChange={(val) => { setBulkBlockDuration(val); if (val !== 'custom') setShowBulkDateRangePicker(false); }}
-              placeholder="Selecionar duração"
+              placeholder="انتخاب مدت"
             />
           </div>
           {bulkBlockDuration === 'custom' && (
             <div className="mb-4">
-              <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">Período:</label>
+              <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">بازه زمانی:</label>
               <button
                 ref={bulkDateRangeBtnRef}
                 onClick={() => setShowBulkDateRangePicker(!showBulkDateRangePicker)}
-                className="w-full p-2.5 border border-(--color-border-color) rounded-lg text-[13px] bg-(--color-bg-primary) cursor-pointer text-start text-(--color-text-primary) flex items-center justify-between"
+                className="w-full p-2.5 border border-(--color-border-color) rounded-lg text-[13px] bg-(--color-bg-primary) cursor-pointer text-right text-(--color-text-primary) flex items-center justify-between"
               >
                 {bulkBlockDateRange ?
-                  `${new Date(bulkBlockDateRange.start).toLocaleDateString('pt-BR')} - ${new Date(bulkBlockDateRange.end).toLocaleDateString('pt-BR')}` :
-                  "Selecionar data"}
+                  `${new Date(bulkBlockDateRange.start).toLocaleDateString('fa-IR')} - ${new Date(bulkBlockDateRange.end).toLocaleDateString('fa-IR')}` :
+                  'انتخاب تاریخ'}
                 <CalendarIcon />
               </button>
             </div>
@@ -1239,10 +1240,10 @@ export default function ChatManagement() {
             </div>
           )}
           <div className="mb-4">
-            <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">Motivo do bloqueio:</label>
+            <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">دلیل مسدودیت:</label>
             <textarea
               className="w-full p-2.5 border border-(--color-border-color) rounded-lg text-[13px] font-inherit resize-y bg-(--color-bg-primary) text-(--color-text-primary)"
-              placeholder="Motivo..."
+              placeholder="دلیل..."
               value={bulkBlockReason}
               onChange={(e) => setBulkBlockReason(e.target.value)}
               rows={3}
@@ -1250,10 +1251,10 @@ export default function ChatManagement() {
           </div>
           <div className="flex justify-end gap-3 mt-6">
             <button onClick={() => setShowBulkBlockModal(false)} className="px-5 py-2 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-[13px] text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-              Cancelar
+              لغو
             </button>
             <button onClick={confirmBulkBlock} className="px-5 py-2 bg-red-500 border-none rounded-xl text-white cursor-pointer text-[13px] hover:bg-red-600 transition-colors">
-              Confirmar bloqueio das conversas
+              تایید مسدودیت گروهی
             </button>
           </div>
         </div>
@@ -1262,23 +1263,23 @@ export default function ChatManagement() {
       {/* مودال ارسال اخطار */}
       <Modal isOpen={showWarningModal} onClose={() => setShowWarningModal(false)} size="md">
         <div className="p-6 bg-(--color-bg-card) rounded-2xl max-h-[70vh] overflow-y-auto">
-          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">⚠️ Enviar advertência</h3>
+          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">⚠️ ارسال اخطار</h3>
           <div className="bg-amber-500/15 p-3 rounded-lg mb-4 text-(--color-text-primary)">
-            Enviar para {selectedConversation?.user1.name} e {selectedConversation?.user2.name}
+            ارسال به {selectedConversation?.user1.name} و {selectedConversation?.user2.name}
           </div>
           <textarea
             className="w-full p-2.5 border border-(--color-border-color) rounded-lg text-[13px] font-inherit resize-y bg-(--color-bg-primary) text-(--color-text-primary)"
-            placeholder="Texto da advertência..."
+            placeholder="متن اخطار..."
             value={warningMessage}
             onChange={(e) => setWarningMessage(e.target.value)}
             rows={4}
           />
           <div className="flex justify-end gap-3 mt-6">
             <button onClick={() => setShowWarningModal(false)} className="px-5 py-2 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-[13px] text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-              Cancelar
+              لغو
             </button>
             <button onClick={handleSendWarning} className="px-5 py-2 bg-amber-500 border-none rounded-xl text-white cursor-pointer text-[13px] hover:bg-amber-600 transition-colors">
-              Enviar advertência
+              ارسال اخطار
             </button>
           </div>
         </div>
@@ -1287,34 +1288,34 @@ export default function ChatManagement() {
       {/* مودال مسدودیت تکی */}
       <Modal isOpen={showBlockModal} onClose={() => { setShowBlockModal(false); setIsEditingBlock(false); setBlockDuration('permanent'); setBlockDateRange(null); setBlockReason(''); setShowDateRangePicker(false); }} size="md">
         <div className="p-6 bg-(--color-bg-card) rounded-2xl max-h-[70vh] overflow-y-auto">
-          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">{isEditingBlock ? "✏️ Editar bloqueio" : "🚫 Bloquear conversa"}</h3>
+          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">{isEditingBlock ? '✏️ ویرایش مسدودیت' : '🚫 مسدود کردن مکالمه'}</h3>
           <div className="mb-4">
-            <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">Duração do bloqueio:</label>
+            <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">مدت زمان مسدودیت:</label>
             <CustomSelect
               options={[
-                { value: 'permanent', label: "Permanente" },
-                { value: '1', label: "1 dia" },
-                { value: '3', label: "3 dias" },
-                { value: '7', label: "1 semana" },
-                { value: '30', label: "1 mês" },
-                { value: 'custom', label: "Período personalizado" },
+                { value: 'permanent', label: 'دائم' },
+                { value: '1', label: '۱ روز' },
+                { value: '3', label: '۳ روز' },
+                { value: '7', label: '۱ هفته' },
+                { value: '30', label: '۱ ماه' },
+                { value: 'custom', label: 'بازه زمانی (انتخاب دستی)' },
               ]}
               value={blockDuration}
               onChange={(val) => { setBlockDuration(val); if (val !== 'custom') { setShowDateRangePicker(false); setBlockDateRange(null); } }}
-              placeholder="Selecionar duração"
+              placeholder="انتخاب مدت"
             />
           </div>
           {blockDuration === 'custom' && (
             <div className="mb-4">
-              <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">Período:</label>
+              <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">بازه زمانی:</label>
               <button
                 ref={dateRangeBtnRef}
                 onClick={() => setShowDateRangePicker(!showDateRangePicker)}
-                className="w-full p-2.5 border border-(--color-border-color) rounded-lg text-[13px] bg-(--color-bg-primary) cursor-pointer text-start text-(--color-text-primary) flex items-center justify-between"
+                className="w-full p-2.5 border border-(--color-border-color) rounded-lg text-[13px] bg-(--color-bg-primary) cursor-pointer text-right text-(--color-text-primary) flex items-center justify-between"
               >
                 {blockDateRange ?
-                  `${new Date(blockDateRange.start).toLocaleDateString('pt-BR')} - ${new Date(blockDateRange.end).toLocaleDateString('pt-BR')}` :
-                  "Selecionar início e fim"}
+                  `${new Date(blockDateRange.start).toLocaleDateString('fa-IR')} - ${new Date(blockDateRange.end).toLocaleDateString('fa-IR')}` :
+                  'انتخاب تاریخ شروع و پایان'}
                 <CalendarIcon />
               </button>
             </div>
@@ -1328,10 +1329,10 @@ export default function ChatManagement() {
             </div>
           )}
           <div className="mb-4">
-            <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">Motivo do bloqueio:</label>
+            <label className="block text-[13px] font-medium text-(--color-text-secondary) mb-1.5">دلیل مسدودیت:</label>
             <textarea
               className="w-full p-2.5 border border-(--color-border-color) rounded-lg text-[13px] font-inherit resize-y bg-(--color-bg-primary) text-(--color-text-primary)"
-              placeholder="Informe o motivo do bloqueio..."
+              placeholder="دلیل مسدودیت را وارد کنید..."
               value={blockReason}
               onChange={(e) => setBlockReason(e.target.value)}
               rows={3}
@@ -1339,10 +1340,10 @@ export default function ChatManagement() {
           </div>
           <div className="flex justify-end gap-3 mt-6">
             <button onClick={() => setShowBlockModal(false)} className="px-5 py-2 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-[13px] text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-              Cancelar
+              لغو
             </button>
             <button onClick={handleBlockConversation} className="px-5 py-2 bg-red-500 border-none rounded-xl text-white cursor-pointer text-[13px] hover:bg-red-600 transition-colors">
-              {isEditingBlock ? "Salvar alterações" : "Confirmar bloqueio"}
+              {isEditingBlock ? 'ذخیره تغییرات' : 'تایید مسدودیت'}
             </button>
           </div>
         </div>
@@ -1351,24 +1352,24 @@ export default function ChatManagement() {
       {/* مودال تاریخچه اخطارها */}
       <Modal isOpen={showWarningHistoryModal} onClose={() => setShowWarningHistoryModal(false)} size="lg">
         <div className="p-6 bg-(--color-bg-card) rounded-2xl max-h-[70vh] overflow-y-auto">
-          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">⚠️ Histórico de advertências</h3>
+          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">⚠️ تاریخچه اخطارها</h3>
           {conversationWarnings.length === 0 ? (
-            <div className="text-center py-10 text-(--color-text-muted)">Nenhuma advertência registrada</div>
+            <div className="text-center py-10 text-(--color-text-muted)">هیچ اخطاری ثبت نشده</div>
           ) : (
             <table className="w-full border-collapse mb-4">
               <thead>
                 <tr className="border-b border-(--color-border-color)">
-                  <th className="text-start p-2 text-[13px] font-semibold text-(--color-text-secondary)">Nº</th>
-                  <th className="text-start p-2 text-[13px] font-semibold text-(--color-text-secondary)">Texto</th>
-                  <th className="text-start p-2 text-[13px] font-semibold text-(--color-text-secondary)">Data</th>
-                  <th className="text-start p-2 text-[13px] font-semibold text-(--color-text-secondary)">Hora</th>
-                  <th className="text-start p-2 text-[13px] font-semibold text-(--color-text-secondary)">Remetente</th>
+                  <th className="text-right p-2 text-[13px] font-semibold text-(--color-text-secondary)">ردیف</th>
+                  <th className="text-right p-2 text-[13px] font-semibold text-(--color-text-secondary)">متن</th>
+                  <th className="text-right p-2 text-[13px] font-semibold text-(--color-text-secondary)">تاریخ</th>
+                  <th className="text-right p-2 text-[13px] font-semibold text-(--color-text-secondary)">ساعت</th>
+                  <th className="text-right p-2 text-[13px] font-semibold text-(--color-text-secondary)">ارسال‌کننده</th>
                 </tr>
               </thead>
               <tbody>
                 {conversationWarnings.map((w, idx) => (
                   <tr key={w.id} className="border-b border-(--color-border-light)">
-                    <td className="p-2 text-[13px] text-(--color-text-primary)">{formatNumber(idx + 1)}</td>
+                    <td className="p-2 text-[13px] text-(--color-text-primary)">{toPersianNumber(idx + 1)}</td>
                     <td className="p-2 text-[13px] text-(--color-text-primary)">{w.message}</td>
                     <td className="p-2 text-[13px] text-(--color-text-primary)">{w.date}</td>
                     <td className="p-2 text-[13px] text-(--color-text-primary)">{w.time}</td>
@@ -1380,7 +1381,7 @@ export default function ChatManagement() {
           )}
           <div className="flex justify-end">
             <button onClick={() => setShowWarningHistoryModal(false)} className="px-5 py-2 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-[13px] text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-              Fechar
+              بستن
             </button>
           </div>
         </div>
@@ -1389,20 +1390,20 @@ export default function ChatManagement() {
       {/* مودال ارسال اعلان سراسری */}
       <Modal isOpen={showBroadcastModal} onClose={() => setShowBroadcastModal(false)} size="md">
         <div className="p-6 bg-(--color-bg-card) rounded-2xl max-h-[70vh] overflow-y-auto">
-          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">📢 Enviar aviso geral</h3>
+          <h3 className="text-lg font-semibold text-(--color-text-primary) mb-4">📢 ارسال اعلان سراسری</h3>
           <textarea
             className="w-full p-2.5 border border-(--color-border-color) rounded-lg text-[13px] font-inherit resize-y bg-(--color-bg-primary) text-(--color-text-primary)"
-            placeholder="Texto do aviso..."
+            placeholder="متن اعلان..."
             value={broadcastMessage}
             onChange={(e) => setBroadcastMessage(e.target.value)}
             rows={5}
           />
           <div className="flex justify-end gap-3 mt-6">
             <button onClick={() => setShowBroadcastModal(false)} className="px-5 py-2 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-[13px] text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-              Cancelar
+              لغو
             </button>
             <button onClick={handleSendBroadcast} className="px-5 py-2 bg-purple-500 border-none rounded-xl text-white cursor-pointer text-[13px] hover:bg-purple-600 transition-colors">
-              Enviar para todos
+              ارسال به همه
             </button>
           </div>
         </div>
@@ -1415,10 +1416,10 @@ export default function ChatManagement() {
           <p className="text-sm text-(--color-text-secondary) mb-5 leading-relaxed whitespace-pre-line">{modalConfig.message}</p>
           <div className="flex justify-end gap-3">
             <button onClick={() => setModalConfig({ ...modalConfig, isOpen: false })} className="px-5 py-2 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-[13px] text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">
-              Cancelar
+              انصراف
             </button>
             <button onClick={() => { modalConfig.onConfirm?.(); setModalConfig({ ...modalConfig, isOpen: false }); }} className="px-5 py-2 bg-red-500 border-none rounded-xl text-white cursor-pointer text-[13px] hover:bg-red-600 transition-colors">
-              Confirmar
+              تایید
             </button>
           </div>
         </div>
