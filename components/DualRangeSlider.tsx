@@ -8,7 +8,7 @@ import React, {
   useCallback,
 } from 'react';
 
-import { toPersianNumber } from '@/utils/numberUtils';
+
 
 
 interface DualRangeSliderProps {
@@ -103,60 +103,11 @@ const DualRangeSlider: React.FC<DualRangeSliderProps> = ({
   // Format
   // ===============================
 
-  const formatNumber = useCallback(
-    (num:number)=>{
-
-
-      if(num >= 1_000_000_000){
-
-        return (
-          toPersianNumber(
-            (num / 1_000_000_000)
-            .toFixed(1)
-          )
-          + ' میلیارد'
-        );
-
-      }
-
-
-
-      if(num >= 1_000_000){
-
-        return (
-          toPersianNumber(
-            (num / 1_000_000)
-            .toFixed(1)
-          )
-          + ' م'
-        );
-
-      }
-
-
-
-
-      if(num >= 1_000){
-
-        return (
-          toPersianNumber(
-            (num / 1_000)
-            .toFixed(0)
-          )
-          + ' هزار'
-        );
-
-      }
-
-
-
-      return toPersianNumber(
-        num.toString()
-      );
-
-
-    },
-    []
+  const formatNumber = useCallback((num: number) =>
+    new Intl.NumberFormat('pt-BR', {
+      notation: 'compact',
+      maximumFractionDigits: 1,
+    }).format(num), []
   );
 
 
@@ -585,7 +536,7 @@ const DualRangeSlider: React.FC<DualRangeSliderProps> = ({
         text-xs
         text-text-muted
       ">
-        محدوده قیمت تکی
+        Faixa de preço unitário
       </div>
 
     );
@@ -680,7 +631,7 @@ const DualRangeSlider: React.FC<DualRangeSliderProps> = ({
       >
 
         <div className={tooltipClasses}>
-          تا {formatNumber(maxVal)} تومان
+          até {formatNumber(maxVal)} tomans
         </div>
 
       </div>
@@ -721,7 +672,7 @@ const DualRangeSlider: React.FC<DualRangeSliderProps> = ({
       >
 
         <div className={tooltipClasses}>
-          از {formatNumber(minVal)} تومان
+          de {formatNumber(minVal)} tomans
         </div>
 
       </div>

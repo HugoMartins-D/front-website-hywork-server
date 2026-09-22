@@ -53,7 +53,7 @@ const MapComponent = dynamic(() => import('@/components/MapComponent'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-75 flex items-center justify-center bg-bg-surface rounded-lg">
-      <span className="text-text-muted">در حال بارگذاری نقشه...</span>
+      <span className="text-text-muted">Carregando mapa...</span>
     </div>
   ),
 });
@@ -146,11 +146,11 @@ const MobileFilterDrawer = ({
       <div className="fixed bottom-0 left-0 right-0 z-1201 flex flex-col max-h-[85vh] bg-bg-secondary rounded-t-2xl shadow-[0_-4px_20px_var(--color-shadow)] transition-transform duration-300 ease-in-out translate-y-0">
         {/* header */}
         <div className="flex justify-between items-center px-5 py-4 border-b border-border-color bg-bg-secondary rounded-t-2xl">
-          <h3 className="m-0 text-lg font-semibold text-text-primary">فیلتر محصولات</h3>
+          <h3 className="m-0 text-lg font-semibold text-text-primary">Filtrar produtos</h3>
           <button
             onClick={onClose}
             className="bg-transparent border-none text-2xl cursor-pointer text-text-secondary p-2 flex items-center justify-center rounded-full w-9 h-9 hover:bg-bg-surface transition-colors"
-            aria-label="بستن فیلتر"
+            aria-label="Fechar filtros"
           >
             ✕
           </button>
@@ -171,13 +171,13 @@ const MobileFilterDrawer = ({
             onClick={handleReset}
             className="flex-1 py-2.5 px-4 bg-bg-surface border-none rounded-lg text-sm font-medium text-text-secondary cursor-pointer hover:bg-border-color transition-colors"
           >
-            حذف همه فیلترها
+            Limpar todos os filtros
           </button>
           <button
             onClick={handleApply}
             className="flex-1 py-2.5 px-4 bg-accent-color border-none rounded-lg text-sm font-medium text-white cursor-pointer hover:bg-accent-hover transition-colors"
           >
-            اعمال فیلترها
+            Aplicar filtros
           </button>
         </div>
       </div>
@@ -255,11 +255,11 @@ const FilterModal = ({
       >
         {/* header */}
         <div className="flex justify-between items-center px-5 py-4 border-b border-border-color">
-          <h3 className="m-0 text-lg font-semibold text-text-primary">فیلتر محصولات</h3>
+          <h3 className="m-0 text-lg font-semibold text-text-primary">Filtrar produtos</h3>
           <button
             onClick={onClose}
             className="bg-transparent border-none text-2xl cursor-pointer text-text-secondary p-2 flex items-center justify-center rounded-full w-9 h-9 hover:bg-bg-surface transition-colors"
-            aria-label="بستن فیلتر"
+            aria-label="Fechar filtros"
           >
             ✕
           </button>
@@ -280,13 +280,13 @@ const FilterModal = ({
             onClick={handleReset}
             className="flex-1 py-2.5 px-4 bg-bg-surface border-none rounded-lg text-sm font-medium text-text-secondary cursor-pointer hover:bg-border-color transition-colors"
           >
-            حذف همه فیلترها
+            Limpar todos os filtros
           </button>
           <button
             onClick={handleApply}
             className="flex-1 py-2.5 px-4 bg-accent-color border-none rounded-lg text-sm font-medium text-white cursor-pointer hover:bg-accent-hover transition-colors"
           >
-            اعمال فیلترها
+            Aplicar filtros
           </button>
         </div>
       </div>
@@ -364,7 +364,7 @@ export default function HomePage() {
             console.log('✅ پست‌ها با موفقیت بارگذاری شدند');
           } else {
             console.warn('⚠️ هیچ پستی یافت نشد');
-            setError('هیچ محصولی برای نمایش وجود ندارد');
+            setError("Nenhum produto para exibir");
             setPosts([]);
           }
           setLoading(false);
@@ -373,9 +373,9 @@ export default function HomePage() {
         console.error('❌ خطا در بارگذاری پست‌ها:', err);
         
         if (isMounted) {
-          const errorMessage = err instanceof Error ? err.message : 'خطا در بارگذاری محصولات';
+          const errorMessage = err instanceof Error ? err.message : "Não foi possível carregar os produtos";
           setError(errorMessage);
-          toastError('خطا در بارگذاری محصولات');
+          toastError("Não foi possível carregar os produtos");
           setLoading(false);
         }
       }
@@ -494,7 +494,7 @@ export default function HomePage() {
    */
   const handleAddToCart = useCallback((post: Post) => {
     console.log('🛒 افزودن به سبد خرید:', { id: post.id, title: post.title });
-    success(`${post.title} به سبد خرید اضافه شد!`);
+    success(`${post.title} foi adicionado ao carrinho!`);
   }, [success]);
 
   /**
@@ -502,16 +502,15 @@ export default function HomePage() {
    */
   const handleSellerClick = useCallback(
     (sellerId: number) => {
-      console.log('👤 کلیک روی فروشنده:', { sellerId });
-      
+      closeModal();
       const seller = posts.find((p) => p.userId === sellerId);
-      if (seller && seller.authorUsername) {
+      if (seller && seller.authorUsername && seller.authorUsername !== 'unknown') {
         router.push(`/profile?user=${seller.authorUsername}`);
       } else {
         router.push(`/profile?user=${sellerId}`);
       }
     },
-    [posts, router]
+    [posts, router, closeModal]
   );
 
   /**
@@ -563,7 +562,7 @@ export default function HomePage() {
       <div className="flex items-center justify-center min-h-screen text-base text-text-secondary bg-bg-primary">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-accent-color border-t-transparent rounded-full animate-spin" />
-          <span>در حال بارگذاری محصولات...</span>
+          <span>Carregando produtos...</span>
         </div>
       </div>
     );
@@ -583,7 +582,7 @@ export default function HomePage() {
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-accent-color text-white rounded-lg hover:bg-accent-hover transition-colors"
           >
-            تلاش مجدد
+            Tentar novamente
           </button>
         </div>
       </div>
@@ -604,8 +603,8 @@ export default function HomePage() {
       <div
         className={`min-h-screen bg-bg-primary w-full max-w-full overflow-x-hidden transition-[margin] duration-300 box-border ${
           !isMobile
-            ? 'mr-18 w-[calc(100%-72px)] max-w-[calc(100vw-72px)]'
-            : 'mr-0 w-full max-w-screen'
+            ? 'ms-18 w-[calc(100%-72px)] max-w-[calc(100vw-72px)]'
+            : 'ms-0 w-full max-w-screen'
         } ${isMobile ? 'mb-70px' : 'mb-0'}`}
       >
         <main className="flex flex-col w-full max-w-full overflow-x-hidden">
@@ -617,7 +616,7 @@ export default function HomePage() {
             <button
               onClick={openFilter}
               className="flex items-center gap-2 px-4 py-2 bg-bg-secondary border border-border-color rounded-full text-sm font-medium text-text-primary cursor-pointer relative transition-colors duration-200 hover:bg-bg-surface shrink-0"
-              aria-label="باز کردن فیلترها"
+              aria-label="Abrir filtros"
             >
               <svg
                 width="16"
@@ -631,13 +630,13 @@ export default function HomePage() {
                 <line x1="4" y1="12" x2="20" y2="12" />
                 <line x1="4" y1="18" x2="20" y2="18" />
               </svg>
-              فیلترها
+              Filtros
               {hasActiveFilters && (
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-bg-primary" />
               )}
             </button>
             <div className="text-[13px] text-text-secondary whitespace-nowrap shrink-0">
-              {filteredPosts.length.toLocaleString('fa-IR')} محصول
+              {filteredPosts.length.toLocaleString('pt-BR')} Produto
             </div>
           </div>
 
@@ -645,13 +644,13 @@ export default function HomePage() {
           {filteredPosts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-text-secondary gap-4">
               <div className="text-6xl">📦</div>
-              <p className="text-lg">هیچ محصولی یافت نشد</p>
+              <p className="text-lg">Nenhum produto encontrado</p>
               {hasActiveFilters && (
                 <button
                   onClick={resetFilters}
                   className="px-4 py-2 bg-accent-color text-white rounded-lg hover:bg-accent-hover transition-colors"
                 >
-                  حذف همه فیلترها
+                  Limpar todos os filtros
                 </button>
               )}
             </div>
@@ -664,7 +663,7 @@ export default function HomePage() {
                   className="cursor-pointer w-full min-w-0"
                   role="button"
                   tabIndex={0}
-                  aria-label={`مشاهده ${post.title}`}
+                  aria-label={`Visualizar ${post.title}`}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       openModal(post);

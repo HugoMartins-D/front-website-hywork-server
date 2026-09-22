@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import ImageWithFallback from './ImageWithFallback';
 import DropdownMenu from './DropdownMenu';
 import AvatarWithStatus from './AvatarWithStatus';
-import { toPersianNumber, formatPrice, formatRating } from '@/utils/numberUtils';
+import { formatNumber, formatPrice, formatRating } from '@/utils/numberUtils';
 
 interface PostCardProps {
   id: number;
@@ -53,14 +53,14 @@ export default function PostCard({
 
   const getDisplayImage = () => {
     if (images && Array.isArray(images) && images.length > 0) return images[0];
-    return '/images/posts/placeholder.jpg';
+    return '/images/posts/placeholder.svg';
   };
 
   const displayImage = getDisplayImage();
   const formattedPrice = formatPrice(price);
   const formattedRating = formatRating(rating);
-  const formattedStock = toPersianNumber(stock || 0);
-  const isService = category === 'خدمات';
+  const formattedStock = formatNumber(stock || 0);
+  const isService = category === "Serviços";
 
   const truncateTitle = (text: string, maxLength = compact ? 30 : 35) => {
     if (!text) return '';
@@ -68,32 +68,32 @@ export default function PostCard({
   };
 
   const truncateDescription = (text?: string, maxLength = 70) => {
-    if (!text) return 'توضیحاتی برای این محصول موجود نیست.';
+    if (!text) return "Este produto não tem descrição.";
     return text.length <= maxLength ? text : text.substring(0, maxLength - 3) + '...';
   };
 
-  const handleReport = () => alert(`گزارش محصول "${title}" با موفقیت ثبت شد`);
+  const handleReport = () => alert(`Denúncia do produto "${title}" registrada com sucesso`);
   const handleShare = () => {
     const url = `${window.location.origin}/product/${id}`;
     navigator.clipboard.writeText(url);
-    alert('لینک محصول کپی شد');
+    alert("Link do produto copiado");
   };
-  const handleSave = () => alert(`محصول "${title}" در لیست ذخیره شده‌ها قرار گرفت`);
+  const handleSave = () => alert(`Produto "${title}" salvo na sua lista`);
   const handleViewSeller = () => {
     if (sellerUsername && sellerUsername !== 'unknown') {
-      router.push(`/${sellerUsername}`);
+      router.push(`/profile?user=${sellerUsername}`);
     } else if (sellerId) {
-      router.push(`/profile/${sellerId}`);
+      router.push(`/profile?user=${sellerId}`);
     } else {
-      alert('اطلاعات فروشنده در دسترس نیست');
+      router.push('/profile');
     }
   };
 
   const dropdownItems = [
-    { label: 'مشاهده فروشنده', icon: '👤', onClick: handleViewSeller },
-    { label: 'ذخیره', icon: '🔖', onClick: handleSave },
-    { label: 'اشتراک گذاری', icon: '📤', onClick: handleShare },
-    { label: 'گزارش', icon: '🚫', onClick: handleReport },
+    { label: "Ver vendedor", icon: '👤', onClick: handleViewSeller },
+    { label: "Salvar", icon: '🔖', onClick: handleSave },
+    { label: "Compartilhar", icon: '📤', onClick: handleShare },
+    { label: "Denunciar", icon: '🚫', onClick: handleReport },
   ];
 
   // حالت فشرده (compact) - برای پروفایل کاربر
@@ -104,17 +104,17 @@ export default function PostCard({
           <ImageWithFallback
             src={displayImage}
             alt={title}
-            fallbackSrc="/images/posts/placeholder.jpg"
+            fallbackSrc="/images/posts/placeholder.svg"
             className="w-full h-full object-cover"
           />
           {isService && (
             <span className="absolute top-2 right-2 bg-green-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-              خدمات
+              Serviços
             </span>
           )}
           {stock === 0 && (
             <span className="absolute top-2 left-2 bg-red-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-              ناموجود
+              Indisponível
             </span>
           )}
         </div>
@@ -126,7 +126,7 @@ export default function PostCard({
             {truncateTitle(title, isMobile ? 30 : 35)}
           </h3>
           <div className={`text-[14px] font-bold text-(--color-accent-color) ${isMobile ? 'text-[11px]' : ''}`}>
-            {formattedPrice} تومان
+            {formattedPrice} tomans
           </div>
         </div>
       </div>
@@ -139,21 +139,21 @@ export default function PostCard({
       {!hideHeader && (
         <div className="flex justify-between items-center px-3 py-2.5 bg-(--color-bg-card) border-b border-(--color-border-light) relative">
           <Link
-            href={sellerUsername ? `/${sellerUsername}` : sellerId ? `/profile/${sellerId}` : '#'}
+            href={sellerUsername && sellerUsername !== 'unknown' ? `/profile?user=${sellerUsername}` : sellerId ? `/profile?user=${sellerId}` : '/profile'}
             className="no-underline flex-1"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-2">
               <AvatarWithStatus
                 src={sellerAvatar || '/images/avatars/default.png'}
-                alt={sellerName || sellerUsername || 'کاربر'}
+                alt={sellerName || sellerUsername || "Usuário"}
                 size={32}
                 status="online"
                 showStatus={true}
               />
               <div className="flex flex-col gap-0.5">
                 <span className="text-xs font-semibold text-(--color-text-primary) line-clamp-1">
-                  {sellerName || sellerUsername || 'نامشخص'}
+                  {sellerName || sellerUsername || "Não informado"}
                 </span>
                 <span className="text-[10px] text-(--color-text-muted) line-clamp-1">
                   @{sellerUsername || 'unknown'}
@@ -171,17 +171,17 @@ export default function PostCard({
         <ImageWithFallback
           src={displayImage}
           alt={title}
-          fallbackSrc="/images/posts/placeholder.jpg"
+          fallbackSrc="/images/posts/placeholder.svg"
           className="w-full h-full object-cover"
         />
         {isService && (
           <span className="absolute top-2 right-2 bg-green-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-            خدمات
+            Serviços
           </span>
         )}
         {stock === 0 && (
           <span className="absolute top-2 left-2 bg-red-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-            ناموجود
+            Indisponível
           </span>
         )}
       </div>
@@ -202,8 +202,8 @@ export default function PostCard({
         <div className="flex items-center mb-1.5 w-full justify-between">
           <div />
           <div className="flex items-center gap-1 text-[11px]">
-            <span className="text-(--color-text-muted)">موجودی</span>
-            <span className="font-medium">{formattedStock} عدد</span>
+            <span className="text-(--color-text-muted)">Estoque</span>
+            <span className="font-medium">{formattedStock} unidades</span>
           </div>
           {rating > 0 && (
             <div className="flex items-center px-1.5">
@@ -214,7 +214,7 @@ export default function PostCard({
         </div>
         <div className="flex items-center justify-end">
           <div className="text-[15px] font-bold text-(--color-accent-color)">
-            {formattedPrice} تومان
+            {formattedPrice} tomans
           </div>
         </div>
       </div>

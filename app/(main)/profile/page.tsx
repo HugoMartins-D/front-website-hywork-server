@@ -10,7 +10,7 @@ import PostCard from '@/components/PostCard';
 import { useTheme } from '@/contexts/ThemeContext';
 import { UserContext } from '@/contexts/UserContext';
 import { fetchUserByUsername, fetchPostsByUserId } from '@/services/postService';
-import { toPersianNumber } from '@/utils/numberUtils';
+import { formatNumber } from '@/utils/numberUtils';
 import type { Post, User } from '@/types';
 
 // ==================== آیکون‌ها ====================
@@ -77,11 +77,11 @@ const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 
 const MOCK_USER: User = {
   id: 1,
   username: 'mojtaba',
-  name: 'مجتبی زرابی',
+  name: "Mojtaba Zarabi",
   email: 'mojtaba@example.com',
   avatar: '/images/avatars/default.png',
-  bio: 'توسعه‌دهنده وب | عاشق تکنولوژی',
-  location: 'تهران، ایران',
+  bio: "Desenvolvedor web | Apaixonado por tecnologia",
+  location: "Teerã, Irã",
   followersCount: 120,
   followingCount: 85,
 };
@@ -100,9 +100,9 @@ export default function ProfilePage() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const [highlights] = useState([
-    { id: 3, cover: '/images/highlights/3.png', title: 'معرفی' },
-    { id: 2, cover: '/images/highlights/2.png', title: 'اطلاعیه' },
-    { id: 1, cover: '/images/highlights/1.png', title: 'کدنویسی' },
+    { id: 3, cover: '/images/highlights/3.png', title: "Apresentação" },
+    { id: 2, cover: '/images/highlights/2.png', title: "Aviso" },
+    { id: 1, cover: '/images/highlights/1.png', title: "Programação" },
   ]);
 
   useEffect(() => {
@@ -155,50 +155,33 @@ export default function ProfilePage() {
 
         if (userData) {
           setProfileUser(userData);
-          
-          if (userData.id === MOCK_USER.id) {
+          const userPosts = await fetchPostsByUserId(userData.id);
+          if (userPosts && userPosts.length > 0) {
+            setPosts(userPosts);
+          } else if (userData.username === 'mojtaba') {
             const mockPosts: Post[] = [
               {
                 id: 1,
                 userId: 1,
-                title: 'پست نمونه ۱',
-                caption: 'این یک پست نمونه برای نمایش در پروفایل است',
+                title: "Publicação de exemplo 1",
+                caption: "Esta é uma publicação de exemplo para o perfil",
                 price: 1250000,
                 stock: 10,
-                category: 'الکترونیک',
+                category: "Eletrônicos",
                 rating: 4.8,
                 image: '/images/posts/1.jpg',
                 images: ['/images/posts/1.jpg'],
                 likesCount: 25,
                 commentsCount: 5,
                 createdAt: new Date().toISOString(),
-                authorName: 'مجتبی زرابی',
-                authorUsername: 'mojtaba',
-                authorAvatar: '/images/avatars/default.png',
-              },
-              {
-                id: 2,
-                userId: 1,
-                title: 'پست نمونه ۲',
-                caption: 'توضیحات پست نمونه دوم',
-                price: 890000,
-                stock: 5,
-                category: 'کتاب',
-                rating: 4.5,
-                image: '/images/posts/2.png',
-                images: ['/images/posts/2.png'],
-                likesCount: 12,
-                commentsCount: 3,
-                createdAt: new Date().toISOString(),
-                authorName: 'مجتبی زرابی',
-                authorUsername: 'mojtaba',
-                authorAvatar: '/images/avatars/default.png',
+                authorName: userData.name || userData.username,
+                authorUsername: userData.username,
+                authorAvatar: userData.avatar || '/images/avatars/default.png',
               },
             ];
             setPosts(mockPosts);
           } else {
-            const userPosts = await fetchPostsByUserId(userData.id);
-            setPosts(userPosts);
+            setPosts([]);
           }
         } else {
           setProfileUser(null);
@@ -234,7 +217,7 @@ export default function ProfilePage() {
       });
 
       if (!response.ok) {
-        throw new Error('خطا در عملیات دنبال کردن');
+        throw new Error("Não foi possível seguir o perfil");
       }
 
       setIsFollowing(!isFollowing);
@@ -243,9 +226,9 @@ export default function ProfilePage() {
         followersCount: isFollowing ? (prev!.followersCount || 0) - 1 : (prev!.followersCount || 0) + 1,
       }));
       
-      showToast(isFollowing ? 'دنبال کردن لغو شد' : 'با موفقیت دنبال شدید', 'success');
+      showToast(isFollowing ? "Você deixou de seguir este perfil" : "Você está seguindo este perfil", 'success');
     } catch (err) {
-      showToast(err instanceof Error ? err.message : 'خطا در عملیات', 'error');
+      showToast(err instanceof Error ? err.message : "Não foi possível concluir a operação", 'error');
     }
   };
 
@@ -278,7 +261,7 @@ export default function ProfilePage() {
         <div className="min-h-screen bg-bg-primary flex items-center justify-center">
           <div className="text-text-muted text-center">
             <div className="w-10 h-10 border-4 border-border-color border-t-accent-color rounded-full animate-spin mx-auto" />
-            <p className="mt-4">در حال بارگذاری...</p>
+            <p className="mt-4">Carregando...</p>
           </div>
         </div>
       </>
@@ -293,13 +276,13 @@ export default function ProfilePage() {
         {isMobile && <MobileBottomNav />}
         <div className="min-h-screen bg-bg-primary flex items-center justify-center p-5">
           <div className="text-center text-text-primary">
-            <h2 className="text-2xl font-bold mb-2">لطفاً وارد شوید</h2>
-            <p className="text-text-muted">برای مشاهده پروفایل خود باید وارد حساب کاربری شوید.</p>
+            <h2 className="text-2xl font-bold mb-2">Entre na sua conta</h2>
+            <p className="text-text-muted">Entre na sua conta para ver seu perfil.</p>
             <button
               onClick={() => router.push('/login')}
               className="mt-5 px-6 py-2.5 bg-accent-color text-white border-none rounded-lg cursor-pointer hover:bg-accent-hover transition-colors"
             >
-              ورود به حساب
+              Entrar
             </button>
           </div>
         </div>
@@ -315,13 +298,13 @@ export default function ProfilePage() {
         {isMobile && <MobileBottomNav />}
         <div className="min-h-screen bg-bg-primary flex items-center justify-center p-5">
           <div className="text-center text-text-primary">
-            <h2 className="text-2xl font-bold mb-2">پروفایل یافت نشد</h2>
-            <p className="text-text-muted">کاربر مورد نظر وجود ندارد.</p>
+            <h2 className="text-2xl font-bold mb-2">Perfil não encontrado</h2>
+            <p className="text-text-muted">Este usuário não existe.</p>
             <button
               onClick={() => router.push('/')}
               className="mt-5 px-6 py-2.5 bg-accent-color text-white border-none rounded-lg cursor-pointer hover:bg-accent-hover transition-colors"
             >
-              بازگشت به صفحه اصلی
+              Voltar ao início
             </button>
           </div>
         </div>
@@ -329,9 +312,9 @@ export default function ProfilePage() {
     );
   }
 
-  const persianPostsCount = toPersianNumber(posts.length);
-  const persianFollowers = toPersianNumber((profileUser.followersCount || 0).toLocaleString());
-  const persianFollowing = toPersianNumber((profileUser.followingCount || 0).toLocaleString());
+  const postsCountLabel = formatNumber(posts.length);
+  const followersLabel = formatNumber((profileUser.followersCount || 0).toLocaleString('pt-BR'));
+  const followingLabel = formatNumber((profileUser.followingCount || 0).toLocaleString('pt-BR'));
 
   const isOwn = isOwnProfile();
 
@@ -351,7 +334,7 @@ export default function ProfilePage() {
               className="flex items-center gap-2 text-text-primary bg-transparent border-none cursor-pointer p-2 mb-2 rounded-lg hover:bg-bg-surface transition-colors"
             >
               <BackIcon className="w-5 h-5" />
-              <span>بازگشت</span>
+              <span>Voltar</span>
             </button>
           )}
 
@@ -368,22 +351,22 @@ export default function ProfilePage() {
             <div className="profile-info-section">
               <div className="profile-stats">
                 <div className="profile-stat-item">
-                  <strong>{persianPostsCount}</strong>
-                  <span>پست</span>
+                  <strong>{postsCountLabel}</strong>
+                  <span>Publicação</span>
                 </div>
                 <div className="profile-stat-item">
-                  <strong>{persianFollowers}</strong>
-                  <span>دنبال‌کننده</span>
+                  <strong>{followersLabel}</strong>
+                  <span>Seguidores</span>
                 </div>
                 <div className="profile-stat-item">
-                  <strong>{persianFollowing}</strong>
-                  <span>دنبال‌شونده</span>
+                  <strong>{followingLabel}</strong>
+                  <span>Seguindo</span>
                 </div>
               </div>
 
               <div className="profile-bio">
                 <strong>{profileUser.name || profileUser.username}</strong>
-                <p>{profileUser.bio || 'خوش آمدید به پروفایل من'}</p>
+                <p>{profileUser.bio || "Boas-vindas ao meu perfil"}</p>
                 {profileUser.location && (
                   <p className="text-xs text-text-muted mt-1">📍 {profileUser.location}</p>
                 )}
@@ -398,7 +381,7 @@ export default function ProfilePage() {
                       onClick={() => router.push('/profile/edit')} 
                       className="profile-edit-btn"
                     >
-                      ویرایش پروفایل
+                      Editar perfil
                     </button>
                     <ThemeSwitch theme={theme} toggleTheme={toggleTheme} />
                     <button className="profile-icon-btn">
@@ -412,7 +395,7 @@ export default function ProfilePage() {
                       className={isFollowing ? 'profile-following-btn' : 'profile-follow-btn'}
                       onClick={handleFollow}
                     >
-                      {isFollowing ? 'دنبال می‌کنید' : 'دنبال کردن'}
+                      {isFollowing ? "Seguindo" : "Seguir"}
                     </button>
                     <button className="profile-icon-btn">
                       <SettingsIcon className="w-6 h-6" />
@@ -430,7 +413,7 @@ export default function ProfilePage() {
                 <div className="profile-add-highlight-circle">
                   <AddPlusIcon className="w-8 h-8" />
                 </div>
-                <span className="profile-highlight-title">جدید</span>
+                <span className="profile-highlight-title">Novo</span>
               </div>
 
               {highlights.map((item) => (
@@ -449,7 +432,7 @@ export default function ProfilePage() {
           <div className="profile-tabs">
             <button className="profile-active-tab">
               <GridIcon className="w-6 h-6" />
-              <span>پست‌ها</span>
+              <span>Publicações</span>
             </button>
           </div>
 
@@ -469,7 +452,7 @@ export default function ProfilePage() {
                     stock={post.stock}
                     category={post.category}
                     rating={post.rating}
-                    images={post.images || [post.image || '/images/placeholder.jpg']}
+                    images={post.images || [post.image || '/images/posts/placeholder.svg']}
                     description={post.caption}
                     sellerName={post.authorName}
                     sellerUsername={post.authorUsername}
@@ -482,7 +465,7 @@ export default function ProfilePage() {
               ))
             ) : (
               <div className="text-center py-10 text-text-muted col-span-full">
-                <p>هیچ پستی یافت نشد</p>
+                <p>Nenhuma publicação encontrada</p>
               </div>
             )}
           </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import DualRangeSlider from './DualRangeSlider';
-import { toPersianNumber, toEnglishNumber } from '@/utils/numberUtils';
+import { formatNumber, normalizeDigits } from '@/utils/numberUtils';
 
 // ==================== تعریف نوع‌ها ====================
 interface AdvancedFilterProps {
@@ -73,10 +73,10 @@ export default function AdvancedFilter({
     initialFilters?.inStockOnly || false
   );
   const [displayMin, setDisplayMin] = useState<string>(
-    toPersianNumber(priceRange[0])
+    formatNumber(String(priceRange[0]))
   );
   const [displayMax, setDisplayMax] = useState<string>(
-    toPersianNumber(priceRange[1])
+    formatNumber(String(priceRange[1]))
   );
 
   // ==================== تشخیص اندازه صفحه ====================
@@ -109,30 +109,30 @@ export default function AdvancedFilter({
   // ==================== هندلرها ====================
   const handlePriceMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
-    const eng = toEnglishNumber(raw);
+    const eng = normalizeDigits(raw);
     let val = parseInt(eng, 10);
     if (isNaN(val)) val = minPrice;
     val = Math.min(val, priceRange[1] - 1000);
     val = Math.max(val, minPrice);
     setPriceRange([val, priceRange[1]]);
-    setDisplayMin(toPersianNumber(val));
+    setDisplayMin(formatNumber(String(val)));
   };
 
   const handlePriceMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
-    const eng = toEnglishNumber(raw);
+    const eng = normalizeDigits(raw);
     let val = parseInt(eng, 10);
     if (isNaN(val)) val = maxPrice;
     val = Math.max(val, priceRange[0] + 1000);
     val = Math.min(val, maxPrice);
     setPriceRange([priceRange[0], val]);
-    setDisplayMax(toPersianNumber(val));
+    setDisplayMax(formatNumber(String(val)));
   };
 
   const handleSliderChange = (newRange: [number, number]) => {
     setPriceRange(newRange);
-    setDisplayMin(toPersianNumber(newRange[0]));
-    setDisplayMax(toPersianNumber(newRange[1]));
+    setDisplayMin(formatNumber(String(newRange[0])));
+    setDisplayMax(formatNumber(String(newRange[1])));
   };
 
   const toggleCategory = (cat: string) => {
@@ -143,8 +143,8 @@ export default function AdvancedFilter({
 
   const resetFilters = () => {
     setPriceRange([minPrice, maxPrice]);
-    setDisplayMin(toPersianNumber(minPrice));
-    setDisplayMax(toPersianNumber(maxPrice));
+    setDisplayMin(formatNumber(String(minPrice)));
+    setDisplayMax(formatNumber(String(maxPrice)));
     setSelectedCats([]);
     setMinRating(0);
     setInStockOnly(false);
@@ -205,26 +205,26 @@ export default function AdvancedFilter({
         }`}
       >
         <span className="text-sm font-semibold text-[var(--color-text-primary)]">
-          فیلترها
+          Filtros
         </span>
         <button
           onClick={resetFilters}
           className="bg-none border-none text-xs text-[var(--color-text-muted)] cursor-pointer hover:text-[var(--color-text-primary)] transition-colors"
         >
-          ریست
+          Limpar
         </button>
       </div>
 
       {/* بخش قیمت */}
       <div className={sectionClasses}>
         <div className="text-xs font-medium mb-3 text-[var(--color-text-primary)]">
-          قیمت (تومان)
+          Preço (tomans)
         </div>
 
         <div className={priceInputsRowClasses}>
           <div className="flex-1 flex items-center gap-2">
             <label className="text-xs text-[var(--color-text-muted)] min-w-[28px]">
-              از
+              de
             </label>
             <input
               type="text"
@@ -235,7 +235,7 @@ export default function AdvancedFilter({
           </div>
           <div className="flex-1 flex items-center gap-2">
             <label className="text-xs text-[var(--color-text-muted)] min-w-[28px]">
-              تا
+              até
             </label>
             <input
               type="text"
@@ -252,8 +252,8 @@ export default function AdvancedFilter({
               isSmallMobile ? 'text-[10px] mb-2.5' : ''
             }`}
           >
-            <span>{toPersianNumber(minPrice)}</span>
-            <span>{toPersianNumber(maxPrice)}</span>
+            <span>{formatNumber(String(minPrice))}</span>
+            <span>{formatNumber(String(maxPrice))}</span>
           </div>
 
           <DualRangeSlider
@@ -270,7 +270,7 @@ export default function AdvancedFilter({
       {categories.length > 0 && (
         <div className={sectionClasses}>
           <div className="text-xs font-medium mb-3 text-[var(--color-text-primary)]">
-            دسته‌بندی
+            Categoria
           </div>
           <div className={checkboxGroupClasses}>
             {categories.map((cat) => (
@@ -288,7 +288,7 @@ export default function AdvancedFilter({
       {/* بخش امتیاز */}
       <div className={sectionClasses}>
         <div className="text-xs font-medium mb-3 text-[var(--color-text-primary)]">
-          حداقل امتیاز
+          Avaliação mínima
         </div>
         <div className={ratingGroupClasses}>
           {ratingOptions.map((r) => (
@@ -297,7 +297,7 @@ export default function AdvancedFilter({
               onClick={() => setMinRating(r)}
               className={getRatingBtnClasses(minRating === r)}
             >
-              {r === 0 ? 'همه' : toPersianNumber(r)}
+              {r === 0 ? "Todos" : formatNumber(r)}
             </button>
           ))}
         </div>
@@ -308,7 +308,7 @@ export default function AdvancedFilter({
         <CustomCheckbox
           checked={inStockOnly}
           onChange={() => setInStockOnly(!inStockOnly)}
-          label="فقط کالاهای موجود"
+          label="Somente produtos em estoque"
         />
       </div>
     </div>

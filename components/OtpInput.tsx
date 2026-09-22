@@ -169,7 +169,7 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>(({
             textAlign: 'center',
           }}
           autoComplete="one-time-code"
-          aria-label={`رقم ${index + 1} از ${length}`}
+          aria-label={`Dígito ${index + 1} de ${length}`}
         />
       ))}
     </div>

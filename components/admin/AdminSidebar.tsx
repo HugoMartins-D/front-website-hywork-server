@@ -12,26 +12,26 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
   const pathname = usePathname();
 
   const menuItems = [
-    { path: '/admin/dashboard', label: 'داشبورد', icon: '📊' },
-    { path: '/admin/postmanagments', label: 'محصولات', icon: '📦' },
-    { path: '/admin/usersmanagement', label: 'کاربران', icon: '👥' },
-    { path: '/admin/orders', label: 'سفارشات', icon: '🛒' },
-    { path: '/admin/chats', label: 'چت‌ها', icon: '💬' },
-    { path: '/admin/settings', label: 'تنظیمات', icon: '⚙️' },
+    { path: '/admin/dashboard', label: "Painel", icon: '📊' },
+    { path: '/admin/postmanagments', label: "Produtos", icon: '📦' },
+    { path: '/admin/usersmanagement', label: "Usuários", icon: '👥' },
+    { path: '/admin/orders', label: "Pedidos", icon: '🛒' },
+    { path: '/admin/chats', label: "Conversas", icon: '💬' },
+    { path: '/admin/settings', label: "Configurações", icon: '⚙️' },
   ];
 
   return (
     <>
       {/* سایدبار */}
       <aside 
-        className={`fixed right-0 top-0 h-full w-[260px] bg-(--color-bg-secondary) border-l border-(--color-border-color) overflow-y-auto z-50 transition-transform duration-300 ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed start-0 top-0 h-full w-[260px] bg-(--color-bg-secondary) border-e border-(--color-border-color) overflow-y-auto z-50 transition-transform duration-300 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="p-4 border-b border-(--color-border-color)">
           <Link href="/admin/dashboard" className="flex items-center gap-2 no-underline">
             <span className="text-2xl">🚀</span>
-            <span className="text-lg font-bold text-(--color-text-primary)">پنل مدیریت</span>
+            <span className="text-lg font-bold text-(--color-text-primary)">Administração</span>
           </Link>
         </div>
         <nav className="p-4">
@@ -58,7 +58,7 @@ export default function AdminSidebar({ isOpen = true, onToggle }: AdminSidebarPr
       {/* دکمه همبرگر */}
       <button
         onClick={onToggle}
-        className="fixed top-4 right-4 z-[60] md:hidden p-2 bg-(--color-bg-card) rounded-lg border border-(--color-border-color) text-(--color-text-primary)"
+        className="fixed top-4 start-4 z-[60] md:hidden p-2 bg-(--color-bg-card) rounded-lg border border-(--color-border-color) text-(--color-text-primary)"
       >
         {isOpen ? '✕' : '☰'}
       </button>

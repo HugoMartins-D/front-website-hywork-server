@@ -77,13 +77,13 @@ export default function VerifyForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-text-primary">تایید کد</h1>
+        <h1 className="text-2xl font-bold text-text-primary">Confirmar código</h1>
         <p className="mt-2 text-sm text-text-secondary">
-          کد ۶ رقمی ارسال شده به{' '}
+          Digite o código de 6 dígitos enviado para{' '}
           <span dir="ltr" className="font-medium text-text-primary">
             {formatIdentifier(identifier)}
           </span>{' '}
-          را وارد کنید
+          para continuar
         </p>
       </div>
 
@@ -99,7 +99,7 @@ export default function VerifyForm({
 
       {error && (
         <p className="text-center text-sm text-red-500">
-          کد وارد شده صحیح نیست. لطفاً دوباره تلاش کنید.
+          Código incorreto. Tente novamente.
         </p>
       )}
 
@@ -114,10 +114,10 @@ export default function VerifyForm({
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
             </svg>
-            در حال بررسی...
+            Verificando...
           </span>
         ) : (
-          'تایید کد'
+          "Confirmar código"
         )}
       </button>
 
@@ -138,12 +138,12 @@ export default function VerifyForm({
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
-              در حال ارسال...
+              Enviando...
             </span>
           ) : canResend ? (
-            'ارسال مجدد کد'
+            "Reenviar código"
           ) : (
-            `ارسال مجدد کد پس از ${timer} ثانیه`
+            `Reenviar código em ${timer} segundos`
           )}
         </button>
       </div>

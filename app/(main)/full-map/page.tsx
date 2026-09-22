@@ -148,7 +148,7 @@ const MapContainer = dynamic(
     ssr: false, 
     loading: () => (
       <div className="flex items-center justify-center h-full text-text-secondary">
-        در حال بارگذاری نقشه...
+        Carregando mapa...
       </div>
     ) 
   }
@@ -212,10 +212,10 @@ const SAMPLE_POSTS: Post[] = [
   { 
     id: 1, 
     userId: 1, 
-    title: 'هدفون بی‌سیم سونی', 
+    title: "Fone de ouvido sem fio Sony",
     price: 3250000, 
-    caption: 'هدفون بی‌سیم با کیفیت صدای فوق‌العاده', 
-    category: 'الکترونیک', 
+    caption: "Fone sem fio com excelente qualidade de som",
+    category: "Eletrônicos",
     rating: 4.8, 
     likesCount: 45, 
     commentsCount: 12, 
@@ -225,10 +225,10 @@ const SAMPLE_POSTS: Post[] = [
   { 
     id: 2, 
     userId: 1, 
-    title: 'بلیت دورهمی آنلاین برنامه‌نویسان', 
+    title: "Ingresso para encontro online de programação",
     price: 89000, 
-    caption: 'دورهمی اختصاصی برنامه‌نویس‌های ری اکت', 
-    category: 'رویداد', 
+    caption: "Encontro exclusivo para desenvolvedores React",
+    category: "Evento",
     rating: 4.5, 
     likesCount: 89, 
     commentsCount: 23, 
@@ -238,10 +238,10 @@ const SAMPLE_POSTS: Post[] = [
   { 
     id: 3, 
     userId: 2, 
-    title: 'قالب حرفه‌ای UI/UX', 
+    title: "Template profissional de UI/UX",
     price: 350000, 
-    caption: 'مجموعه کامل قالب‌های رابط کاربری', 
-    category: 'طراحی', 
+    caption: "Coleção completa de templates de interface",
+    category: "Design",
     rating: 4.9, 
     likesCount: 112, 
     commentsCount: 31, 
@@ -251,10 +251,10 @@ const SAMPLE_POSTS: Post[] = [
   { 
     id: 4, 
     userId: 2, 
-    title: 'تابلو الهامات طبیعت', 
+    title: "Quadro inspirado na natureza",
     price: 0, 
-    caption: 'تابلو دیجیتال با کیفیت چاپ بالا', 
-    category: 'هنر', 
+    caption: "Arte digital em alta resolução para impressão",
+    category: "Arte",
     rating: 4.2, 
     likesCount: 67, 
     commentsCount: 14, 
@@ -264,10 +264,10 @@ const SAMPLE_POSTS: Post[] = [
   { 
     id: 5, 
     userId: 3, 
-    title: 'دوره فول‌استک جاوااسکریپت', 
+    title: "Curso de JavaScript full stack",
     price: 1280000, 
-    caption: 'از صفر تا صد توسعه وب با React', 
-    category: 'آموزش', 
+    caption: "Desenvolvimento web com React do básico ao avançado",
+    category: "Educação",
     rating: 5.0, 
     likesCount: 203, 
     commentsCount: 58, 
@@ -277,10 +277,10 @@ const SAMPLE_POSTS: Post[] = [
   { 
     id: 6, 
     userId: 3, 
-    title: 'چالش کدنویسی روزانه', 
+    title: "Desafio diário de programação",
     price: 0, 
-    caption: 'دریافت مسئله‌های برنامه‌نویسی روزانه', 
-    category: 'آموزش', 
+    caption: "Receba exercícios de programação todos os dias",
+    category: "Educação",
     rating: 4.7, 
     likesCount: 78, 
     commentsCount: 19, 
@@ -290,10 +290,10 @@ const SAMPLE_POSTS: Post[] = [
   { 
     id: 7, 
     userId: 4, 
-    title: 'مجموعه آثار ترکیب رنگ‌های گرم', 
+    title: "Coleção de artes em cores quentes",
     price: 450000, 
-    caption: 'پکیج ۱۰ اثر هنری دیجیتال', 
-    category: 'هنر', 
+    caption: "Pacote com 10 obras de arte digital",
+    category: "Arte",
     rating: 4.9, 
     likesCount: 156, 
     commentsCount: 42, 
@@ -303,10 +303,10 @@ const SAMPLE_POSTS: Post[] = [
   { 
     id: 8, 
     userId: 4, 
-    title: 'نقاشی دیجیتال آرامش', 
+    title: "Pintura digital: serenidade",
     price: 290000, 
-    caption: 'اثر هنری با موضوع آرامش و مدیتیشن', 
-    category: 'هنر', 
+    caption: "Obra sobre tranquilidade e meditação",
+    category: "Arte",
     rating: 4.4, 
     likesCount: 94, 
     commentsCount: 27, 
@@ -317,10 +317,10 @@ const SAMPLE_POSTS: Post[] = [
 
 /** داده‌های نمونه کاربران */
 const SAMPLE_USERS: User[] = [
-  { id: 1, name: 'آریا حسینی', username: 'aria_react', avatar: '/images/avatars/1.jpg' },
-  { id: 2, name: 'سارا حسینی', username: 'sara_h', avatar: '/images/avatars/2.jpg' },
-  { id: 3, name: 'محمد رضایی', username: 'mohammad_r', avatar: '/images/avatars/3.jpg' },
-  { id: 4, name: 'علی محمدی', username: 'ali_m', avatar: '/images/avatars/4.jpg' }
+  { id: 1, name: "Aria Hosseini", username: 'aria_react', avatar: '/images/avatars/1.jpg' },
+  { id: 2, name: "Sara Hosseini", username: 'sara_h', avatar: '/images/avatars/2.jpg' },
+  { id: 3, name: "Mohammad Rezaei", username: 'mohammad_r', avatar: '/images/avatars/3.jpg' },
+  { id: 4, name: "Ali Mohammadi", username: 'ali_m', avatar: '/images/avatars/4.jpg' }
 ];
 
 // ============================================================
@@ -388,11 +388,11 @@ const HorizontalProductCard: React.FC<{
         flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer transition-all duration-200
         ${theme === 'dark' ? 'bg-bg-card' : 'bg-white'}
         border border-border-color shadow-[0_4px_12px_var(--color-shadow)]
-        h-32.5 w-full max-w-[320px] rtl
+        h-32.5 w-full max-w-[320px] ltr
       `}
       role="button"
       tabIndex={0}
-      aria-label={`مشاهده ${post.title}`}
+      aria-label={`Visualizar ${post.title}`}
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
           onClick(post);
@@ -402,7 +402,7 @@ const HorizontalProductCard: React.FC<{
       {/* تصویر */}
       <div className="w-22.5 h-22.5 relative shrink-0 rounded-2xl overflow-hidden bg-gray-100 order-2">
         <Image
-          src={post.image || '/images/posts/placeholder.jpg'}
+          src={post.image || '/images/posts/placeholder.svg'}
           alt={post.title}
           fill
           className="object-cover"
@@ -420,12 +420,12 @@ const HorizontalProductCard: React.FC<{
         </p>
         <div className="flex justify-between items-center mt-1">
           <span className={`text-[15px] font-bold ${post.price === 0 ? 'text-emerald-500' : 'text-accent-color'}`}>
-            {post.price === 0 ? 'رایگان' : formatPrice(post.price)}
+            {post.price === 0 ? "Grátis" : formatPrice(post.price)}
           </span>
           <div className="text-[11px] text-text-muted flex items-center gap-1">
             <span>⭐ {post.rating}</span>
             <span>|</span>
-            <span>👤 {user?.name || 'ناشناس'}</span>
+            <span>👤 {user?.name || "Anônimo"}</span>
           </div>
         </div>
       </div>
@@ -448,14 +448,14 @@ const HorizontalSlider: React.FC<{
   console.log('🔄 رندر اسلایدر:', { productsCount: products.length });
 
   return (
-    <div className="w-full relative rtl">
+    <div className="w-full relative ltr">
       <Swiper
         modules={[Pagination]}
         spaceBetween={16}
         slidesPerView={1.25}
         centeredSlides={true}
         pagination={{ clickable: true, dynamicBullets: true }}
-        dir="rtl"
+        dir="ltr"
         className="pb-10"
         breakpoints={{
           320: { slidesPerView: 1.2, spaceBetween: 12 },
@@ -510,7 +510,7 @@ const DesktopSidebar: React.FC<{
         absolute top-5 right-5 bottom-5 w-85 rounded-3xl flex flex-col overflow-hidden z-1000
         ${theme === 'dark' ? 'bg-bg-card/85' : 'bg-white/85'}
         backdrop-blur-[20px] border border-border-color
-        shadow-[0_20px_40px_var(--color-shadow)] rtl
+        shadow-[0_20px_40px_var(--color-shadow)] ltr
       `}
     >
       {/* هدر */}
@@ -518,7 +518,7 @@ const DesktopSidebar: React.FC<{
         <button
           onClick={onBack}
           className="w-10 h-10 rounded-full border border-border-color flex items-center justify-center cursor-pointer transition-all duration-200 text-text-primary hover:bg-bg-surface shrink-0"
-          aria-label="بازگشت"
+          aria-label="Voltar"
         >
           <ArrowBackIcon />
         </button>
@@ -526,14 +526,14 @@ const DesktopSidebar: React.FC<{
           <SearchIcon />
           <input
             type="text"
-            placeholder="جستجوی محصول..."
+            placeholder="Buscar produto..."
             value={searchTerm}
             onChange={(e) => {
               console.log('🔍 جستجو:', e.target.value);
               onSearchChange(e.target.value);
             }}
             className="flex-1 border-none bg-transparent text-sm outline-none text-text-primary font-sans"
-            aria-label="جستجوی محصولات"
+            aria-label="Buscar produtos"
           />
         </div>
       </div>
@@ -550,7 +550,7 @@ const DesktopSidebar: React.FC<{
         ))}
         {products.length === 0 && (
           <div className="text-center py-10 px-5 text-text-muted text-sm font-sans">
-            هیچ محصولی یافت نشد.
+            Nenhum produto encontrado.
           </div>
         )}
       </div>
@@ -571,7 +571,7 @@ const MobileHeader: React.FC<{
   return (
     <div
       className={`
-        absolute top-0 left-0 right-0 p-3 px-4 flex items-center gap-3 z-1000 border-b border-border-color rtl
+        absolute top-0 left-0 right-0 p-3 px-4 flex items-center gap-3 z-1000 border-b border-border-color ltr
         ${theme === 'dark' ? 'bg-bg-card/85' : 'bg-white/85'}
         backdrop-blur-[20px]
       `}
@@ -580,20 +580,20 @@ const MobileHeader: React.FC<{
         <SearchIcon />
         <input
           type="text"
-          placeholder="جستجوی محصول..."
+          placeholder="Buscar produto..."
           value={searchTerm}
           onChange={(e) => {
             console.log('🔍 جستجو (موبایل):', e.target.value);
             onSearchChange(e.target.value);
           }}
           className="flex-1 border-none bg-transparent text-sm outline-none text-text-primary font-sans"
-          aria-label="جستجوی محصولات"
+          aria-label="Buscar produtos"
         />
       </div>
       <button
         onClick={onBack}
         className="w-10 h-10 rounded-full border border-border-color flex items-center justify-center cursor-pointer text-text-primary bg-bg-surface/50"
-        aria-label="بازگشت"
+        aria-label="Voltar"
       >
         <ArrowBackIcon />
       </button>
@@ -618,12 +618,12 @@ const DesktopLocationButton: React.FC<{
         absolute bottom-5 left-5 z-1000 px-4 py-3 rounded-lg flex items-center gap-2 text-sm font-medium
         ${theme === 'dark' ? 'bg-bg-card/85' : 'bg-white/85'}
         backdrop-blur-[20px] border border-border-color shadow-[0_2px_6px_var(--color-shadow)]
-        text-text-primary transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed rtl
+        text-text-primary transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed ltr
       `}
-      aria-label="پیدا کردن موقعیت من"
+      aria-label="Encontrar minha localização"
     >
       <TargetIcon />
-      <span>{isLocating ? 'در حال پیدا کردن...' : 'موقعیت من'}</span>
+      <span>{isLocating ? "Localizando..." : "Minha localização"}</span>
     </button>
   );
 };
@@ -652,7 +652,7 @@ const MobileLocationButton: React.FC<{
           backdrop-blur-[20px] border border-border-color shadow-[0_2px_8px_var(--color-shadow)]
           text-text-primary hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed
         `}
-        aria-label="پیدا کردن موقعیت من"
+        aria-label="Encontrar minha localização"
       >
         {isLocating ? (
           <div className="w-5 h-5 border-2 border-text-primary border-t-transparent rounded-full animate-spin" />
@@ -662,7 +662,7 @@ const MobileLocationButton: React.FC<{
       </button>
       {showTooltip && (
         <div className="absolute bottom-15 right-1/2 translate-x-1/2 bg-black/80 text-white px-3 py-1.5 rounded-lg text-xs whitespace-nowrap z-1001 pointer-events-none animate-fade-in">
-          موقعیت من
+          Minha localização
         </div>
       )}
     </div>
@@ -798,7 +798,7 @@ export default function FullMapPage() {
         return;
       }
       const marker = LeafletModule.marker([latlng.lat, latlng.lng], { icon: customIcon })
-        .bindPopup('📍 موقعیت شما')
+        .bindPopup("📍 Sua localização")
         .openPopup();
       marker.addTo(mapInstance);
       setLocationMarker(marker);
@@ -838,10 +838,10 @@ export default function FullMapPage() {
         console.error('❌ خطا در پیدا کردن موقعیت:', e);
         setIsLocating(false);
         
-        let errorMessage = 'امکان یافتن موقعیت شما وجود ندارد. ';
+        let errorMessage = "Não foi possível encontrar sua localização. ";
         errorMessage += e.code === 1
-          ? 'لطفاً دسترسی به موقعیت مکانی را در مرورگر خود فعال کنید.'
-          : 'لطفاً تنظیمات موقعیت مکانی را بررسی کنید.';
+          ? "Permita o acesso à localização no navegador."
+          : "Verifique as configurações de localização.";
         alert(errorMessage);
       });
   }, [mapInstance, removeLocationMarker, addLocationMarker]);
@@ -912,7 +912,7 @@ export default function FullMapPage() {
           className: 'custom-marker',
           html: `
             <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-[11px] shadow-md border-2 border-white">
-              رایگان
+              Grátis
             </div>
           `,
           iconSize: [40, 40],
@@ -967,7 +967,7 @@ export default function FullMapPage() {
   if (!leafletLoaded) {
     return (
       <div className="flex items-center justify-center w-full h-screen bg-bg-primary">
-        <div className="text-text-secondary">در حال بارگذاری نقشه...</div>
+        <div className="text-text-secondary">Carregando mapa...</div>
       </div>
     );
   }
@@ -1006,10 +1006,10 @@ export default function FullMapPage() {
                 eventHandlers={{ click: () => handleMarkerClick(post) }}
               >
                 <Popup>
-                  <div className="text-center min-w-55 rtl font-sans">
+                  <div className="text-center min-w-55 ltr font-sans">
                     <div className="w-25 h-25 relative mx-auto mb-3 rounded-xl overflow-hidden bg-gray-100">
                       <Image
-                        src={post.image || '/images/posts/placeholder.jpg'}
+                        src={post.image || '/images/posts/placeholder.svg'}
                         alt={post.title}
                         fill
                         className="object-cover"
@@ -1023,7 +1023,7 @@ export default function FullMapPage() {
                       </span>
                     </div>
                     <p className={`font-bold my-2 text-lg ${post.price === 0 ? 'text-emerald-500' : 'text-accent-color'}`}>
-                      {post.price === 0 ? 'رایگان' : formatPrice(post.price)}
+                      {post.price === 0 ? "Grátis" : formatPrice(post.price)}
                     </p>
                     <div className="flex justify-between items-center my-2 text-xs text-text-secondary">
                       <span>⭐ {post.rating}</span>
@@ -1034,7 +1034,7 @@ export default function FullMapPage() {
                       onClick={() => handleMarkerClick(post)}
                       className="w-full bg-accent-color text-white border-none py-2 px-4 rounded-lg cursor-pointer mt-2 font-sans"
                     >
-                      مشاهده محصول
+                      Ver produto
                     </button>
                   </div>
                 </Popup>
@@ -1083,14 +1083,14 @@ export default function FullMapPage() {
       {/* پیام عدم وجود محصول */}
       {filteredPosts.length === 0 && !isMobile && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-bg-card/90 px-6 py-5 rounded-[40px] text-text-primary text-sm z-1000 whitespace-nowrap border border-border-color font-sans shadow-lg">
-          هیچ محصولی یافت نشد.
+          Nenhum produto encontrado.
         </div>
       )}
 
       {/* استایل‌های گلوبال */}
       <style jsx global>{`
         .leaflet-popup-content-wrapper {
-          direction: rtl;
+          direction: ltr;
           background: var(--color-bg-card);
           color: var(--color-text-primary);
         }

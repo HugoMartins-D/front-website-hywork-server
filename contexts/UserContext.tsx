@@ -41,36 +41,38 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // تابع برای دریافت کاربر از کوکی یا localStorage
   const fetchUser = async () => {
+    // 1. Carrega imediatamente do localStorage para resposta instantânea
+    try {
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
+      }
+    } catch {
+      // ignore JSON parse error
+    }
+
+    // 2. Tenta checar o backend com timeout curto (1.5s) para não travar a aplicação caso o backend não esteja ativo
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      
-      // اول از کوکی چک کن (با credentials: include)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500);
+
       const response = await fetch(`${API_URL}/auth/me`, {
+        signal: controller.signal,
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      clearTimeout(timeoutId);
 
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
-        // همزمان در localStorage هم ذخیره کن
         localStorage.setItem('user', JSON.stringify(userData));
-        return;
       }
-    } catch (error) {
-      console.log('Error fetching user from cookie:', error);
-    }
-
-    // اگر کوکی کار نکرد، از localStorage بخون
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch {
-        setUser(null);
-      }
+    } catch {
+      // Backend inacessível ou timeout - mantém o usuário do localStorage se houver
     }
   };
 

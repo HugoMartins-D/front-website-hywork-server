@@ -80,7 +80,7 @@ export default function Modal({
 
   // کلاس‌های دکمه بستن در یک متغیر جداگانه
   const closeButtonClasses = [
-    'absolute top-3 left-3 z-10 w-8 h-8 rounded-full flex items-center justify-center',
+    'absolute top-3 end-3 z-10 w-8 h-8 rounded-full flex items-center justify-center',
     'bg-[var(--color-bg-surface)] border-none text-[18px] cursor-pointer',
     'text-[var(--color-text-primary)] shadow-[0_1px_3px_var(--color-shadow)]',
     'transition-all duration-200 hover:bg-[var(--color-bg-hover)] hover:scale-105',
@@ -113,7 +113,7 @@ export default function Modal({
           <button
             onClick={onClose}
             className={closeButtonClasses}
-            aria-label="بستن"
+            aria-label="Fechar"
           >
             ✕
           </button>

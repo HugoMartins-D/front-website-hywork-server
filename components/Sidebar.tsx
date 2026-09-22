@@ -124,12 +124,12 @@ const ConfirmLogoutModal = ({
       >
         <div className="p-5 border-b border-[var(--color-border-color)]">
           <h3 className="m-0 text-lg font-semibold text-[var(--color-text-primary)] text-center">
-            خروج از حساب کاربری
+            Sair da conta
           </h3>
         </div>
         <div className="p-6 text-center">
           <p className="m-0 text-sm text-[var(--color-text-secondary)]">
-            آیا مطمئن هستید که می‌خواهید از حساب خود خارج شوید؟
+            Deseja sair da sua conta?
           </p>
         </div>
         <div className="flex gap-3 p-4 border-t border-[var(--color-border-color)]">
@@ -137,13 +137,13 @@ const ConfirmLogoutModal = ({
             onClick={onClose}
             className="flex-1 py-2.5 px-4 bg-[var(--color-bg-surface)] border-none rounded-lg text-sm font-medium text-[var(--color-text-primary)] cursor-pointer transition-colors hover:bg-[var(--color-border-color)]"
           >
-            انصراف
+            Cancelar
           </button>
           <button
             onClick={onConfirm}
             className="flex-1 py-2.5 px-4 bg-red-600 border-none rounded-lg text-sm font-medium text-white cursor-pointer transition-colors hover:bg-red-700"
           >
-            خروج
+            Sair
           </button>
         </div>
       </div>
@@ -189,7 +189,7 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
 
   const isActive = (item: MenuItem) => {
     if (item.path) return isActivePath(item.path);
-    if (item.name === 'پروفایل') return pathname === '/profile';
+    if (item.name === "Perfil") return pathname === '/profile';
     return false;
   };
 
@@ -203,19 +203,19 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
 
 
   const menuItems: MenuItem[] = [
-    { name: 'خانه', path: '/', icon: House01Icon },
-    { name: 'جستجو', path: '/search', icon: SearchIcon },
-{ name: 'اکسپلور', path: '/explor', icon: CompassIcon },  
-  { name: 'پیام‌ها', path: '/messages', icon: MessagesIcon },
-    { name: 'ساخت پست', path: '/create-post', icon: CreatePostIcon },
+    { name: "Início", path: '/', icon: House01Icon },
+    { name: "Buscar", path: '/search', icon: SearchIcon },
+{ name: "Explorar", path: '/explor', icon: CompassIcon },
+  { name: "Mensagens", path: '/messages', icon: MessagesIcon },
+    { name: "Criar publicação", path: '/create-post', icon: CreatePostIcon },
 // در بخش menuItems، آیتم پروفایل رو اینطور تغییر بده:
 { 
-  name: 'پروفایل', 
+  name: "Perfil",
   path: '/profile',  // از action به path تغییر بده
   icon: ProfileIcon 
 },
-    { name: 'سبد خرید', path: '/cart', icon: CartIcon },
-    { name: 'داشبورد', path: '/dashboard', icon: DashboardIcon },
+    { name: "Carrinho", path: '/cart', icon: CartIcon },
+    { name: "Painel", path: '/dashboard', icon: DashboardIcon },
   ];
 
   const activeColor = theme === 'dark' ? '#ffffff' : '#000000';
@@ -227,7 +227,7 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
   return (
     <>
       <aside
-        className="fixed right-0 top-0 h-screen bg-[var(--color-bg-secondary)] border-l border-[var(--color-border-color)] py-5 px-0 overflow-y-auto z-[1000] transition-all duration-300 ease-in-out"
+        className="fixed start-0 top-0 h-screen bg-[var(--color-bg-secondary)] border-e border-[var(--color-border-color)] py-5 px-0 overflow-y-auto z-[1000] transition-all duration-300 ease-in-out"
         style={{ 
           width: sidebarWidth,
           overflowX: 'hidden',
@@ -283,7 +283,7 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
                   <button
                     onClick={item.action}
                     className={`
-                      flex items-center py-3 text-sm rounded-xl mx-2 w-[calc(100%-16px)] text-right
+                      flex items-center py-3 text-sm rounded-xl mx-2 w-[calc(100%-16px)] text-start
                       transition-all duration-200 border-none cursor-pointer
                       ${active ? 'bg-[var(--color-bg-surface)]' : 'bg-transparent'}
                       ${isHovered ? 'px-5 justify-start' : 'px-0 justify-center'}
@@ -306,7 +306,7 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
                 <Link
                   href={item.path!}
                   className={`
-                    flex items-center py-3 text-sm rounded-xl mx-2 w-[calc(100%-16px)] text-right
+                    flex items-center py-3 text-sm rounded-xl mx-2 w-[calc(100%-16px)] text-start
                     transition-all duration-200 no-underline
                     ${active ? 'bg-[var(--color-bg-surface)]' : 'bg-transparent'}
                     ${isHovered ? 'px-5 justify-start' : 'px-0 justify-center'}
@@ -329,7 +329,7 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
             <button
               onClick={() => setShowLogoutModal(true)}
               className={`
-                flex items-center py-3 text-sm rounded-xl mx-2 w-[calc(100%-16px)] text-right
+                flex items-center py-3 text-sm rounded-xl mx-2 w-[calc(100%-16px)] text-start
                 transition-all duration-200 border-none cursor-pointer bg-transparent
                 ${isHovered ? 'px-5 justify-start' : 'px-0 justify-center'}
               `}
@@ -349,7 +349,7 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
                   color: inactiveColor,
                 }}
               >
-                خروج
+                Sair
               </span>
             </button>
           </li>

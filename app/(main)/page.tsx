@@ -59,7 +59,7 @@ export default function HomePage() {
         }
       } catch (err) {
         console.error('Error loading posts:', err);
-        if (isMounted) setError('خطا در بارگذاری محصولات. لطفاً دوباره تلاش کنید.');
+        if (isMounted) setError("Não foi possível carregar os produtos. Tente novamente.");
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -81,25 +81,26 @@ export default function HomePage() {
   }, []);
 
   const handleAddToCart = useCallback((post: Post) => {
-    alert(`${post.title} به سبد خرید اضافه شد!`);
+    alert(`${post.title} foi adicionado ao carrinho!`);
   }, []);
 
   const handleSellerClick = useCallback(
     (sellerId: string | number) => {
+      closeModal();
       const seller = posts.find((p) => p.userId === sellerId);
-      if (seller && seller.authorUsername) {
-        router.push(`/${seller.authorUsername}`);
+      if (seller && seller.authorUsername && seller.authorUsername !== 'unknown') {
+        router.push(`/profile?user=${seller.authorUsername}`);
       } else {
-        router.push(`/profile/${sellerId}`);
+        router.push(`/profile?user=${sellerId}`);
       }
     },
-    [posts, router]
+    [posts, router, closeModal]
   );
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-base text-text-secondary bg-bg-primary">
-        در حال بارگذاری محصولات...
+        Carregando produtos...
       </div>
     );
   }
@@ -121,7 +122,7 @@ export default function HomePage() {
       <div className="flex-1 min-h-screen pb-[70px] md:pb-0">
         <div className="flex flex-col items-center py-5 gap-[2px] max-w-[600px] mx-auto w-full">
           {posts.length === 0 ? (
-            <div className="text-center p-8 text-text-secondary">هیچ محصولی یافت نشد.</div>
+            <div className="text-center p-8 text-text-secondary">Nenhum produto encontrado.</div>
           ) : (
             posts.map((post) => (
               <div

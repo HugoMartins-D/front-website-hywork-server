@@ -12,7 +12,7 @@ interface AvatarWithStatusProps {
 
 export default function AvatarWithStatus({
   src,
-  alt = 'کاربر',
+  alt = "Usuário",
   size = 77,
   status = 'online',
   showStatus = true,

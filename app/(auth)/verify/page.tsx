@@ -65,7 +65,7 @@ async function apiRequest<T>(endpoint: string, data: Record<string, unknown>): P
 
   // اگر پاسخ موفقیت‌آمیز نبود، خطا پرتاب کن
   if (!response.ok) {
-    throw new Error(result.message || 'عملیات با شکست مواجه شد');
+    throw new Error(result.message || "Não foi possível concluir a operação");
   }
 
   return result;
@@ -125,7 +125,7 @@ export default function VerifyPage() {
     // بررسی وجود شماره تلفن
     if (!phoneNumber) {
       console.warn('[صفحه تایید] شماره تلفن یافت نشد، هدایت به صفحه ورود');
-      error('شماره تلفن یافت نشد');
+      error("Número de telefone não encontrado");
       router.push('/login');
       return;
     }
@@ -152,7 +152,7 @@ export default function VerifyPage() {
     // اعتبارسنجی: بررسی طول کد
     if (!code || code.length !== VERIFICATION_CODE_LENGTH) {
       console.warn('[صفحه تایید] طول کد نامعتبر:', code.length);
-      error(`کد تایید باید ${VERIFICATION_CODE_LENGTH} رقم باشد`);
+      error(`O código deve ter ${VERIFICATION_CODE_LENGTH} dígitos`);
       return;
     }
 
@@ -196,7 +196,7 @@ export default function VerifyPage() {
       console.log('[صفحه تایید] حافظه موقت پاک شد');
 
       // نمایش پیام موفقیت
-      success('ورود با موفقیت انجام شد');
+      success("Login realizado com sucesso");
 
       // هدایت به داشبورد با کمی تاخیر
       redirectTimeoutRef.current = setTimeout(() => {
@@ -205,7 +205,7 @@ export default function VerifyPage() {
 
     } catch (err) {
       // مدیریت خطا
-      const errorMessage = err instanceof Error ? err.message : 'خطا در تایید کد';
+      const errorMessage = err instanceof Error ? err.message : "Não foi possível confirmar o código";
       console.error('[صفحه تایید] خطا در تایید:', err);
       error(errorMessage);
     } finally {
@@ -230,11 +230,11 @@ export default function VerifyPage() {
       console.log('[صفحه تایید] کد مجدداً ارسال شد');
 
       // نمایش پیام موفقیت
-      success('کد تایید مجدداً به شماره شما ارسال شد');
+      success("Enviamos um novo código para seu celular");
 
     } catch (err) {
       // مدیریت خطا
-      const errorMessage = err instanceof Error ? err.message : 'خطا در ارسال مجدد کد';
+      const errorMessage = err instanceof Error ? err.message : "Não foi possível reenviar o código";
       console.error('[صفحه تایید] خطا در ارسال مجدد:', err);
       error(errorMessage);
     } finally {
@@ -258,7 +258,7 @@ export default function VerifyPage() {
     <main 
       className="min-h-screen flex items-center justify-center bg-bg-primary p-4"
       role="main"
-      aria-label="صفحه تایید کد"
+      aria-label="Confirmar código"
     >
       <div className="w-full max-w-md">
         <VerifyForm

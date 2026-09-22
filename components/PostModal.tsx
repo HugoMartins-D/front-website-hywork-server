@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserContext } from '@/contexts/UserContext';
 import PostSlider from './PostSlider';
-import { toPersianNumber, formatPrice } from '@/utils/numberUtils';
+import { formatNumber, formatPrice } from '@/utils/numberUtils';
 import type { Post, Comment, User } from '@/types';
 
 // ==================== هوک‌های کمکی ====================
@@ -74,7 +74,7 @@ const UserAvatar = ({
   return (
     <img
       src={user?.avatar || '/images/avatars/default.png'}
-      alt={user?.username || 'کاربر'}
+      alt={user?.username || "Usuário"}
       onClick={onClick}
       className={`w-${size} h-${size} rounded-full object-cover border-2 flex-shrink-0 cursor-pointer`}
       style={{
@@ -159,7 +159,7 @@ const StarIcon = ({ filled }: { filled: boolean }) => (
 
 // ==================== تابع کمکی برای نرمال‌سازی مسیر تصاویر ====================
 const normalizeImagePath = (path?: string): string => {
-  if (!path) return '/images/posts/placeholder.jpg';
+  if (!path) return '/images/posts/placeholder.svg';
   if (path.startsWith('http')) return path;
   if (path.startsWith('/')) return path;
   return `/images/posts/${path}`;
@@ -203,13 +203,17 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
   const handleAuthorClick = useCallback(
     (event?: React.MouseEvent) => {
       if (event?.stopPropagation) event.stopPropagation();
+      handleClose();
       if (onSellerClick) {
         onSellerClick();
       } else {
         const username = post?.authorUsername;
         if (username && username !== 'unknown') {
-          router.push(`/${username}`);
-          handleClose();
+          router.push(`/profile?user=${username}`);
+        } else if (post?.userId) {
+          router.push(`/profile?user=${post.userId}`);
+        } else {
+          router.push('/profile');
         }
       }
     },
@@ -220,9 +224,9 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
     return (
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center" onClick={handleOverlayClick}>
         <div className="bg-[var(--color-bg-card)] p-10 text-center text-[var(--color-text-primary)]">
-          اطلاعات پست در دسترس نیست
+          Dados da publicação indisponíveis
           <button onClick={handleClose} className="mt-5 px-5 py-2.5 bg-[var(--color-accent-color)] text-white border-none cursor-pointer">
-            بستن
+            Fechar
           </button>
         </div>
       </div>
@@ -234,7 +238,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
 
     const commentUser: User = currentUser || {
       id: 999,
-      username: 'مهمان',
+      username: "Visitante",
       avatar: '/images/avatars/default.png',
     };
 
@@ -257,12 +261,12 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
   } else if (post.image) {
     rawImages = [post.image];
   } else {
-    rawImages = ['/images/posts/placeholder.jpg'];
+    rawImages = ['/images/posts/placeholder.svg'];
   }
   const postImages = rawImages.map((img) => normalizeImagePath(img));
 
   const truncatedDescription = (text?: string, maxLength = isMobile ? 120 : 180) => {
-    if (!text) return 'توضیحاتی برای این پست موجود نیست.';
+    if (!text) return "Esta publicação não tem descrição.";
     return text.length <= maxLength ? text : text.substring(0, maxLength).trim() + '...';
   };
 
@@ -323,7 +327,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                 />
                 <div className="flex flex-col gap-0.5">
                   <span className="font-semibold text-sm text-[var(--color-text-primary)]">
-                    {post.authorUsername || 'نویسنده'}
+                    {post.authorUsername || "Autor"}
                   </span>
                   <span className="text-xs text-[var(--color-text-muted)]">
                     {post.authorName || ''}
@@ -339,19 +343,19 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                 <div className="flex gap-0.5 items-center flex-wrap">
                   <button onClick={handleAddToCartClick} className="border-none flex items-center gap-1 cursor-pointer text-xs font-medium p-1.5 text-[var(--color-text-primary)]">
                     <CartIcon />
-                    <span>{toPersianNumber(cartItemCount)}</span>
+                    <span>{formatNumber(cartItemCount)}</span>
                   </button>
                   <button onClick={() => setLiked(!liked)} className="border-none flex items-center gap-1 cursor-pointer text-xs font-medium p-1.5 text-[var(--color-text-primary)]">
                     <HeartIcon filled={liked} />
-                    <span>{toPersianNumber((post.likesCount || 0) + (liked ? 1 : 0))}</span>
+                    <span>{formatNumber((post.likesCount || 0) + (liked ? 1 : 0))}</span>
                   </button>
                   <button className="border-none flex items-center gap-1 cursor-pointer text-xs font-medium p-1.5 text-[var(--color-text-primary)]">
                     <CommentIcon />
-                    <span>{toPersianNumber(comments.length)}</span>
+                    <span>{formatNumber(comments.length)}</span>
                   </button>
                   <button className="border-none flex items-center gap-1 cursor-pointer text-xs font-medium p-1.5 text-[var(--color-text-primary)]">
                     <ShareIcon />
-                    <span>{toPersianNumber(post.sharesCount || 0)}</span>
+                    <span>{formatNumber(post.sharesCount || 0)}</span>
                   </button>
                   <button onClick={() => setSaved(!saved)} className="border-none flex items-center gap-1 cursor-pointer text-xs font-medium p-1.5 text-[var(--color-text-primary)]">
                     <SaveIcon filled={saved} />
@@ -372,7 +376,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                 >
                   {formatPrice(post.price)}
                 </span>
-                <span className="text-xs text-[var(--color-text-muted)]">تومان</span>
+                <span className="text-xs text-[var(--color-text-muted)]">tomans</span>
               </div>
             </div>
 
@@ -397,43 +401,43 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                 }}
               >
                 <div className="flex justify-between items-center gap-3 flex-wrap">
-                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">برند:</span>
-                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.brand || 'نامشخص'}</span>
+                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">Marca:</span>
+                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.brand || "Não informado"}</span>
                 </div>
                 <div className="flex justify-between items-center gap-3 flex-wrap">
-                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">مدل:</span>
-                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.model || 'نامشخص'}</span>
+                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">Modelo:</span>
+                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.model || "Não informado"}</span>
                 </div>
                 <div className="flex justify-between items-center gap-3 flex-wrap">
-                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">رنگ:</span>
-                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.color || 'نامشخص'}</span>
+                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">Cor:</span>
+                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.color || "Não informado"}</span>
                 </div>
                 <div className="flex justify-between items-center gap-3 flex-wrap">
-                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">وزن:</span>
-                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.weight || 'نامشخص'}</span>
+                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">Peso:</span>
+                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.weight || "Não informado"}</span>
                 </div>
               </div>
 
               <div className="flex gap-2.5 items-center px-3 py-2.5 bg-[var(--color-bg-surface)]">
-                <span className="font-semibold text-xs text-[var(--color-text-muted)]">دسته‌بندی:</span>
-                <span className="text-xs">{post.category || 'عمومی'}</span>
+                <span className="font-semibold text-xs text-[var(--color-text-muted)]">Categoria:</span>
+                <span className="text-xs">{post.category || "Geral"}</span>
               </div>
 
               <div className="flex gap-2.5 items-center px-3 py-2.5 bg-[var(--color-bg-surface)]">
-                <span className="font-semibold text-xs text-[var(--color-text-muted)]">موجودی:</span>
+                <span className="font-semibold text-xs text-[var(--color-text-muted)]">Estoque:</span>
                 <span className={`text-xs ${(post.stock || 0) > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {(post.stock || 0) > 0 ? `${toPersianNumber(post.stock || 0)} عدد` : 'ناموجود'}
+                  {(post.stock || 0) > 0 ? `${formatNumber(post.stock || 0)} unidades` : "Indisponível"}
                 </span>
               </div>
 
               <div className="border-t border-[var(--color-border-color)] pt-4">
                 <h4 className="text-sm font-semibold mb-3 text-[var(--color-text-primary)]">
-                  نظرات کاربران ({toPersianNumber(comments.length)})
+                  Comentários ({formatNumber(comments.length)})
                 </h4>
                 <div className="flex gap-2 mb-4 flex-wrap">
                   <input
                     type="text"
-                    placeholder="نظر خود را بنویسید..."
+                    placeholder="Escreva seu comentário..."
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSendComment()}
@@ -447,7 +451,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                         : 'bg-[var(--color-bg-surface)] text-[var(--color-text-muted)] border border-[var(--color-border-color)] cursor-not-allowed'
                     }`}
                   >
-                    ارسال
+                    Enviar
                   </button>
                 </div>
                 <div className="flex flex-col gap-3 max-h-[280px] overflow-y-auto pr-1.5">
@@ -462,13 +466,13 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                       />
                       <div className="flex-1 min-w-0">
                         <div className="font-semibold text-xs text-[var(--color-text-primary)] mb-1">
-                          {comment.user?.username || 'کاربر'}
+                          {comment.user?.username || "Usuário"}
                         </div>
                         <div className="text-xs leading-relaxed text-[var(--color-text-secondary)] break-words">
                           {comment.text}
                         </div>
                         <div className="text-[10px] text-[var(--color-text-muted)] mt-1">
-                          {comment.createdAt ? new Date(comment.createdAt).toLocaleDateString('fa-IR') : ''}
+                          {comment.createdAt ? new Date(comment.createdAt).toLocaleDateString('pt-BR') : ''}
                         </div>
                       </div>
                     </div>

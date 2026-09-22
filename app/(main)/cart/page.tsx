@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Sidebar from '@/components/Sidebar';
 import MobileBottomNav from '@/components/MobileBottomNav';
-import { toPersianNumber } from '@/utils/numberUtils';
+import { formatNumber } from '@/utils/numberUtils';
 import { useToast } from '@/components/NotificationToast';
 
 // ============================================
@@ -15,10 +15,10 @@ import { useToast } from '@/components/NotificationToast';
 
 /** وضعیت‌های سفارش */
 const ORDER_STATUS = {
-  DELIVERED: 'تحویل شده',
-  PROCESSING: 'در حال ارسال',
-  PAID: 'پرداخت شده',
-  SHIPPED: 'ارسال شده',
+  DELIVERED: "Entregue",
+  PROCESSING: "Em transporte",
+  PAID: "Pago",
+  SHIPPED: "Enviado",
 } as const;
 
 /** تب‌های موجود */
@@ -173,7 +173,7 @@ const CartItemComponent = ({
       <div className="flex-1 min-w-40">
         <h4 className="text-sm font-medium text-text-primary m-0">{item.name}</h4>
         <div className="text-xs text-text-muted mt-1">
-          {toPersianNumber(item.price)} تومان
+          {formatNumber(item.price)} tomans
         </div>
         
         {/* کنترل‌های تعداد */}
@@ -181,19 +181,19 @@ const CartItemComponent = ({
           <button
             onClick={() => onUpdateQuantity(item.id, -1)}
             className="w-7 h-7 rounded border border-border-color bg-bg-secondary cursor-pointer flex items-center justify-center text-text-primary hover:bg-bg-surface transition-colors"
-            aria-label="کاهش تعداد"
+            aria-label="Diminuir quantidade"
           >
             <RemoveMinusIcon className="w-4 h-4" />
           </button>
           
           <span className="min-w-7.5 text-center text-sm text-text-primary">
-            {toPersianNumber(item.quantity)}
+            {formatNumber(item.quantity)}
           </span>
           
           <button
             onClick={() => onUpdateQuantity(item.id, 1)}
             className="w-7 h-7 rounded border border-border-color bg-bg-secondary cursor-pointer flex items-center justify-center text-text-primary hover:bg-bg-surface transition-colors"
-            aria-label="افزایش تعداد"
+            aria-label="Aumentar quantidade"
           >
             <AddPlusIcon className="w-4 h-4" />
           </button>
@@ -201,7 +201,7 @@ const CartItemComponent = ({
           <button
             onClick={() => onRemove(item.id)}
             className="bg-transparent border-none cursor-pointer text-red-500 ml-3 flex items-center justify-center hover:opacity-70 transition-opacity"
-            aria-label="حذف از سبد خرید"
+            aria-label="Remover do carrinho"
           >
             <TrashFullIcon className="w-4.5 h-4.5" />
           </button>
@@ -209,8 +209,8 @@ const CartItemComponent = ({
       </div>
 
       {/* قیمت کل */}
-      <div className="min-w-30 text-left font-bold text-sm text-text-primary sm:w-full sm:text-right sm:pr-17.5">
-        {toPersianNumber(item.price * item.quantity)} تومان
+      <div className="min-w-30 text-left font-bold text-sm text-text-primary sm:w-full sm:text-start sm:pr-17.5">
+        {formatNumber(item.price * item.quantity)} tomans
       </div>
     </div>
   );
@@ -243,7 +243,7 @@ const TabButton = ({
       aria-selected={isActive}
     >
       {label}
-      {count !== undefined && ` (${toPersianNumber(count)})`}
+      {count !== undefined && ` (${formatNumber(count)})`}
     </button>
   );
 };
@@ -285,16 +285,16 @@ export default function CartPage() {
   const orderHistory: OrderHistory[] = useMemo(() => [
     {
       id: 101,
-      date: '۱۴۰۲/۱۱/۰۵',
+      date: "25/01/2024",
       total: 1870000,
-      items: ['هدفون', 'کیف'],
+      items: ["Fone de ouvido", "Bolsa"],
       status: ORDER_STATUS.DELIVERED,
     },
     {
       id: 102,
-      date: '۱۴۰۲/۱۰/۲۰',
+      date: "10/01/2024",
       total: 450000,
-      items: ['کتاب ری اکت'],
+      items: ["Livro de React"],
       status: ORDER_STATUS.PROCESSING,
     },
   ], []);
@@ -302,20 +302,20 @@ export default function CartPage() {
   const salesItems: SalesItem[] = useMemo(() => [
     {
       id: 201,
-      product: 'ساعت هوشمند',
+      product: "Relógio inteligente",
       price: 3450000,
       quantity: 1,
-      buyer: 'احمد رضایی',
-      date: '۱۴۰۲/۱۲/۰۱',
+      buyer: "Ahmad Rezaei",
+      date: "20/02/2024",
       status: ORDER_STATUS.PAID,
     },
     {
       id: 202,
-      product: 'اسپیکر بلوتوثی',
+      product: "Caixa de som Bluetooth",
       price: 780000,
       quantity: 2,
-      buyer: 'سارا کریمی',
-      date: '۱۴۰۲/۱۱/۲۸',
+      buyer: "Sara Karimi",
+      date: "17/02/2024",
       status: ORDER_STATUS.SHIPPED,
     },
   ], []);
@@ -337,7 +337,12 @@ export default function CartPage() {
           console.log('✅ داده‌های سبد خرید از localStorage بارگذاری شد:', {
             count: parsedData.length,
           });
-          return parsedData;
+          const demoNames: Record<string, string> = {
+            'هدفون بیسیم حرفه‌ای X200': 'Fone de ouvido sem fio profissional X200',
+            'کیف چرمی اصل': 'Bolsa de couro legítimo',
+            'کتاب آموزش ری اکت': 'Livro de introdução ao React',
+          };
+          return parsedData.map(item => ({ ...item, name: demoNames[item.name] ?? item.name }));
         }
       }
     } catch (parseError) {
@@ -348,21 +353,21 @@ export default function CartPage() {
     const defaultItems: CartItem[] = [
       {
         id: 1,
-        name: 'هدفون بیسیم حرفه‌ای X200',
+        name: "Fone de ouvido sem fio profissional X200",
         price: 1250000,
         quantity: 1,
         image: '/images/posts/1.jpg',
       },
       {
         id: 2,
-        name: 'کیف چرمی اصل',
+        name: "Bolsa de couro legítimo",
         price: 890000,
         quantity: 2,
         image: '/images/posts/2.png',
       },
       {
         id: 3,
-        name: 'کتاب آموزش ری اکت',
+        name: "Livro de introdução ao React",
         price: 250000,
         quantity: 1,
         image: '/images/posts/3.png',
@@ -424,7 +429,7 @@ export default function CartPage() {
       }
 
       // نمایش پیام موفقیت
-      success('آیتم با موفقیت حذف شد');
+      success("Item removido");
 
       return newItems;
     });
@@ -445,14 +450,14 @@ export default function CartPage() {
 
     if (cartItems.length === 0) {
       console.warn('⚠️ سبد خرید خالی است');
-      error('سبد خرید شما خالی است');
+      error("Seu carrinho está vazio");
       return;
     }
 
     const total = getTotalPrice();
     console.log('📊 مجموع سبد خرید:', { total });
 
-    success('در حال انتقال به صفحه پرداخت...');
+    success("Redirecionando para o pagamento...");
     router.push('/checkout');
   }, [cartItems, getTotalPrice, router, success, error]);
 
@@ -495,7 +500,7 @@ export default function CartPage() {
     if (isLoading) {
       return (
         <div className="py-10 text-center text-text-muted">
-          در حال بارگذاری...
+          Carregando...
         </div>
       );
     }
@@ -503,7 +508,7 @@ export default function CartPage() {
     if (cartItems.length === 0) {
       return (
         <div className="py-10 text-center text-text-muted">
-          سبد خرید شما خالی است
+          Seu carrinho está vazio
         </div>
       );
     }
@@ -527,15 +532,15 @@ export default function CartPage() {
         {/* جمع کل */}
         <div className="mt-5 text-left p-4 bg-bg-secondary rounded-lg border border-border-color sm:text-center">
           <div className="text-lg font-bold mb-3 text-text-primary">
-            مجموع: {toPersianNumber(total)} تومان
+            Total: {formatNumber(total)} tomans
           </div>
           
           <button
             onClick={handleCheckout}
             className="bg-accent-color text-white border-none px-6 py-2.5 rounded-[40px] cursor-pointer text-base font-semibold transition-all hover:bg-accent-hover hover:-translate-y-0.5 sm:w-full sm:py-3"
-            aria-label="پرداخت و ثبت سفارش"
+            aria-label="Finalizar pedido"
           >
-            پرداخت و ثبت سفارش
+            Finalizar pedido
           </button>
         </div>
       </div>
@@ -551,7 +556,7 @@ export default function CartPage() {
     if (orderHistory.length === 0) {
       return (
         <div className="py-10 text-center text-text-muted">
-          هیچ سفارشی وجود ندارد
+          Nenhum pedido encontrado
         </div>
       );
     }
@@ -567,14 +572,14 @@ export default function CartPage() {
               className="bg-bg-secondary p-4 rounded-lg mb-4 border border-border-color text-text-primary"
             >
               <div className="flex justify-between font-bold mb-2 flex-wrap gap-2 text-text-primary">
-                <span>سفارش #{toPersianNumber(order.id)}</span>
+                <span>Pedido #{formatNumber(order.id)}</span>
                 <span>{order.date}</span>
                 <span style={{ color: isDelivered ? '#4caf50' : '#ff9800' }}>
                   {order.status}
                 </span>
               </div>
-              <div>محصولات: {order.items.join(' - ')}</div>
-              <div>مبلغ کل: {toPersianNumber(order.total)} تومان</div>
+              <div>Produtos: {order.items.join(' - ')}</div>
+              <div>Valor total: {formatNumber(order.total)} tomans</div>
             </div>
           );
         })}
@@ -591,7 +596,7 @@ export default function CartPage() {
     if (salesItems.length === 0) {
       return (
         <div className="py-10 text-center text-text-muted">
-          هیچ فروشی ثبت نشده است
+          Nenhuma venda registrada
         </div>
       );
     }
@@ -608,10 +613,10 @@ export default function CartPage() {
               <span>{sale.date}</span>
             </div>
             <div>
-              تعداد: {toPersianNumber(sale.quantity)} | قیمت واحد: {toPersianNumber(sale.price)} تومان
+              Quantidade: {formatNumber(sale.quantity)} | Preço unitário: {formatNumber(sale.price)} tomans
             </div>
             <div>
-              خریدار: {sale.buyer} | وضعیت: {sale.status}
+              Comprador: {sale.buyer} | Status: {sale.status}
             </div>
           </div>
         ))}
@@ -638,10 +643,10 @@ export default function CartPage() {
       {isMobile && <MobileBottomNav />}
 
       {/* محتوای اصلی */}
-      <div className={`min-h-screen overflow-y-auto p-5 box-border bg-bg-primary ${isMobile ? 'mr-0 p-4 mb-0' : ''}`}>
+      <div className={`min-h-screen overflow-y-auto p-5 box-border bg-bg-primary ${isMobile ? 'ms-0 p-4 mb-0' : ''}`}>
         <div className="max-w-250 mx-auto">
           {/* عنوان صفحه */}
-          <h1 className="text-2xl font-bold text-text-primary mb-6">سبد خرید</h1>
+          <h1 className="text-2xl font-bold text-text-primary mb-6">Carrinho</h1>
 
           {/* تب‌ها */}
           <div 
@@ -649,7 +654,7 @@ export default function CartPage() {
             role="tablist"
           >
             <TabButton
-              label="سبد خرید"
+              label="Carrinho"
               isActive={activeTab === TABS.CART}
               onClick={() => {
                 console.log('🔄 تغییر تب به سبد خرید');
@@ -659,7 +664,7 @@ export default function CartPage() {
             />
             
             <TabButton
-              label="تاریخچه سفارشات"
+              label="Histórico de pedidos"
               isActive={activeTab === TABS.HISTORY}
               onClick={() => {
                 console.log('🔄 تغییر تب به تاریخچه سفارشات');
@@ -668,7 +673,7 @@ export default function CartPage() {
             />
             
             <TabButton
-              label="فروش‌ها"
+              label="Vendas"
               isActive={activeTab === TABS.SALES}
               onClick={() => {
                 console.log('🔄 تغییر تب به فروش‌ها');

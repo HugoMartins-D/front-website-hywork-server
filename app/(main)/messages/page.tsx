@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { toPersianNumber } from '@/utils/numberUtils';
+import { formatNumber } from '@/utils/numberUtils';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { useToast } from '@/components/NotificationToast';
 import styles from './page.module.css';
@@ -208,48 +208,48 @@ interface UserForAvatar {
 const INITIAL_CHATS: Chat[] = [
   {
     id: 1,
-    name: 'زهرا محمدی',
+    name: "Zahra Mohammadi",
     username: 'zahra_m',
     avatar: '/images/avatar/me.png',
     status: 'ready',
-    lastMessage: 'دوست داشتم! بعداً صحبت می‌کنیم',
+    lastMessage: "Adorei! A gente se fala depois",
     time: '12:45',
     unread: 0,
     isOnline: true,
     messages: [
-      { id: 101, text: 'سلام! چطوری؟', sender: 'other', time: '12:30', type: 'text', status: 'read' },
-      { id: 102, text: 'خوبم، تو چطوری؟', sender: 'me', time: '12:35', type: 'text', status: 'read' },
-      { id: 103, text: 'دوست داشتم! بعداً صحبت می‌کنیم', sender: 'other', time: '12:45', type: 'text', status: 'read' },
+      { id: 101, text: "Oi! Tudo bem?", sender: 'other', time: '12:30', type: 'text', status: 'read' },
+      { id: 102, text: "Tudo bem, e você?", sender: 'me', time: '12:35', type: 'text', status: 'read' },
+      { id: 103, text: "Adorei! A gente se fala depois", sender: 'other', time: '12:45', type: 'text', status: 'read' },
     ],
   },
   {
     id: 2,
-    name: 'محمد رضایی',
+    name: "Mohammad Rezaei",
     username: 'mohammad_r',
     avatar: '/images/avatar/me.png',
     status: 'busy',
-    lastMessage: 'قرار ساعت ۴ یادت نره',
-    time: 'دیروز',
+    lastMessage: "Não esqueça do encontro às 16h",
+    time: "Ontem",
     unread: 2,
     isOnline: false,
     messages: [
-      { id: 201, text: 'قرار ساعت ۴ یادت نره', sender: 'other', time: 'دیروز', type: 'text', status: 'read' },
-      { id: 202, text: 'باشه, حتماً میام', sender: 'me', time: 'دیروز', type: 'text', status: 'read' },
+      { id: 201, text: "Não esqueça do encontro às 16h", sender: 'other', time: "Ontem", type: 'text', status: 'read' },
+      { id: 202, text: "Tudo bem, vou sim", sender: 'me', time: "Ontem", type: 'text', status: 'read' },
     ],
   },
   {
     id: 3,
-    name: 'سارا کریمی',
+    name: "Sara Karimi",
     username: 'sara_k',
     avatar: '/images/avatar/me.png',
     status: 'inactive',
-    lastMessage: 'مرسی عزیزم 😍',
-    time: 'دیروز',
+    lastMessage: "Muito obrigada 😍",
+    time: "Ontem",
     unread: 0,
     isOnline: true,
     messages: [
-      { id: 301, text: 'عکس جدیدت رو دیدم عالی بود', sender: 'me', time: 'دیروز', type: 'text', status: 'read' },
-      { id: 302, text: 'مرسی عزیزم 😍', sender: 'other', time: 'دیروز', type: 'text', status: 'read' },
+      { id: 301, text: "Vi sua foto nova, ficou ótima", sender: 'me', time: "Ontem", type: 'text', status: 'read' },
+      { id: 302, text: "Muito obrigada 😍", sender: 'other', time: "Ontem", type: 'text', status: 'read' },
     ],
   },
 ];
@@ -296,7 +296,7 @@ const UserAvatar = ({
     <div className="relative flex-shrink-0">
       <img
         src={user?.avatar || '/images/avatar/me.png'}
-        alt={user?.username || 'کاربر'}
+        alt={user?.username || "Usuário"}
         className="rounded-full object-cover border-2"
         style={{
           width: size,
@@ -376,25 +376,25 @@ const MessageMenu = ({
   return (
     <div className={styles.messageMenu}>
       <button onClick={onReply} className={styles.menuItem}>
-        <ReplyIcon className="w-[18px] h-[18px]" /> <span>پاسخ</span>
+        <ReplyIcon className="w-[18px] h-[18px]" /> <span>Responder</span>
       </button>
       <button onClick={onForward} className={styles.menuItem}>
-        <ForwardIcon className="w-[18px] h-[18px]" /> <span>فوروارد</span>
+        <ForwardIcon className="w-[18px] h-[18px]" /> <span>Encaminhar</span>
       </button>
       <button onClick={onCopy} className={styles.menuItem}>
-        <CopyIcon className="w-[18px] h-[18px]" /> <span>کپی</span>
+        <CopyIcon className="w-[18px] h-[18px]" /> <span>Copiar</span>
       </button>
       <button onClick={onSave} className={styles.menuItem}>
-        <SaveIcon className="w-[18px] h-[18px]" /> <span>ذخیره</span>
+        <SaveIcon className="w-[18px] h-[18px]" /> <span>Salvar</span>
       </button>
       <button onClick={onPin} className={styles.menuItem}>
-        <PinIcon className="w-[18px] h-[18px]" /> <span>سنجاق</span>
+        <PinIcon className="w-[18px] h-[18px]" /> <span>Fixar</span>
       </button>
       <div className={styles.menuDivider} />
       <button onClick={onDelete} className={`${styles.menuItem} ${styles.menuItemDelete}`}>
-        <DeleteIcon className="w-[18px] h-[18px]" /> <span>حذف</span>
+        <DeleteIcon className="w-[18px] h-[18px]" /> <span>Excluir</span>
       </button>
-      <button onClick={onClose} className={styles.menuItem}>لغو</button>
+      <button onClick={onClose} className={styles.menuItem}>Cancelar</button>
     </div>
   );
 };
@@ -418,7 +418,7 @@ const ReplyBox = ({
   return (
     <div className={styles.replyBox}>
       <div className={styles.replyContent} onClick={onGoToMessage}>
-        <span className={styles.replyLabel}>پاسخ به:</span>
+        <span className={styles.replyLabel}>Respondendo a:</span>
         <span className={styles.replyText}>{replyTo.text?.substring(0, 50)}...</span>
       </div>
       <button onClick={onCancelReply} className={styles.cancelReplyBtn}>
@@ -502,9 +502,9 @@ export default function MessagesPage() {
   /**
    * تبدیل زمان به فارسی
    */
-  const toPersianTime = useCallback((timeStr: string) => {
+  const formatTime = useCallback((timeStr: string) => {
     if (!timeStr) return '';
-    return timeStr.replace(/\d/g, (d) => toPersianNumber(parseInt(d)));
+    return timeStr.replace(/\d/g, (d) => formatNumber(parseInt(d)));
   }, []);
 
   /**
@@ -619,7 +619,7 @@ export default function MessagesPage() {
             ...chat,
             messages: [...chat.messages, newMsg],
             lastMessage: newMessage,
-            time: 'اکنون',
+            time: "Atualmente",
             unread: 0,
           }
         : chat
@@ -631,7 +631,7 @@ export default function MessagesPage() {
     setReplyTo(null);
     
     console.log('✅ پیام ارسال شد:', { id: newMsg.id });
-    success('پیام ارسال شد');
+    success("Mensagem enviada");
   }, [newMessage, selectedChat, replyTo, chats, success]);
 
   /**
@@ -648,7 +648,7 @@ export default function MessagesPage() {
     const url = URL.createObjectURL(file);
     const newMsg: Message = {
       id: Date.now(),
-      text: type === 'image' ? '📷 تصویر' : type === 'video' ? '🎥 ویدیو' : type === 'voice' ? '🎤 پیام صوتی' : `📎 ${file.name}`,
+      text: type === 'image' ? "📷 Imagem" : type === 'video' ? "🎥 Vídeo" : type === 'voice' ? "🎤 Mensagem de voz" : `📎 ${file.name}`,
       sender: 'me',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       type: type,
@@ -663,7 +663,7 @@ export default function MessagesPage() {
             ...chat,
             messages: [...chat.messages, newMsg],
             lastMessage: newMsg.text,
-            time: 'اکنون',
+            time: "Atualmente",
           }
         : chat
     );
@@ -673,7 +673,7 @@ export default function MessagesPage() {
     setIsModalOpen(false);
     
     console.log('✅ رسانه ارسال شد:', { id: newMsg.id });
-    success('رسانه ارسال شد');
+    success("Mídia enviada");
   }, [selectedChat, chats, success]);
 
   // ============================================================
@@ -705,7 +705,7 @@ export default function MessagesPage() {
         return {
           ...chat,
           messages: filtered,
-          lastMessage: filtered[filtered.length - 1]?.text || 'پیامی وجود ندارد',
+          lastMessage: filtered[filtered.length - 1]?.text || "Nenhuma mensagem",
         };
       }
       return chat;
@@ -715,7 +715,7 @@ export default function MessagesPage() {
     setSelectedChat(updatedChats.find((c) => c.id === selectedChat.id)!);
     setMenuMessage(null);
     
-    success('پیام حذف شد');
+    success("Mensagem excluída");
   }, [selectedChat, chats, success]);
 
   /**
@@ -724,7 +724,7 @@ export default function MessagesPage() {
   const handleCopyMessage = useCallback((text: string) => {
     console.log('📋 کپی پیام:', { text });
     navigator.clipboard.writeText(text);
-    info('پیام کپی شد');
+    info("Mensagem copiada");
     setMenuMessage(null);
   }, [info]);
 
@@ -737,7 +737,7 @@ export default function MessagesPage() {
     link.href = url;
     link.download = fileName;
     link.click();
-    success('دانلود شروع شد');
+    success("Download iniciado");
   }, [success]);
 
   /**
@@ -746,7 +746,7 @@ export default function MessagesPage() {
   const handleSaveMessage = useCallback((msg: Message) => {
     console.log('💾 ذخیره پیام:', { id: msg.id });
     localStorage.setItem(`saved_${msg.id}`, JSON.stringify(msg));
-    success('پیام ذخیره شد');
+    success("Mensagem salva");
     setMenuMessage(null);
   }, [success]);
 
@@ -755,7 +755,7 @@ export default function MessagesPage() {
    */
   const handlePinMessage = useCallback(() => {
     console.log('📌 سنجاق پیام');
-    success('پیام سنجاق شد');
+    success("Mensagem fixada");
     setMenuMessage(null);
   }, [success]);
 
@@ -764,7 +764,7 @@ export default function MessagesPage() {
    */
   const handleForwardMessage = useCallback((msg: Message) => {
     console.log('↪️ فوروارد پیام:', { id: msg.id });
-    success(`پیام فوروارد شد: ${msg.text}`);
+    success(`Mensagem encaminhada: ${msg.text}`);
     setMenuMessage(null);
   }, [success]);
 
@@ -800,19 +800,19 @@ export default function MessagesPage() {
 
   const handleEvent = useCallback(() => {
     console.log('📅 ایجاد رویداد');
-    info('ایجاد رویداد');
+    info("Criar evento");
     setIsModalOpen(false);
   }, [info]);
 
   const handleContact = useCallback(() => {
     console.log('👤 انتخاب مخاطب');
-    info('انتخاب مخاطب');
+    info("Selecionar contato");
     setIsModalOpen(false);
   }, [info]);
 
   const handleLocation = useCallback(() => {
     console.log('📍 ارسال موقعیت');
-    info('ارسال موقعیت');
+    info("Enviar localização");
     setIsModalOpen(false);
   }, [info]);
 
@@ -865,7 +865,7 @@ export default function MessagesPage() {
               }}
             >
               <span className={styles.replyBubbleText}>
-                پاسخ به: {msg.replyTo.text?.substring(0, 40)}...
+                Respondendo a: {msg.replyTo.text?.substring(0, 40)}...
               </span>
             </div>
           )}
@@ -874,7 +874,7 @@ export default function MessagesPage() {
           {msg.type === 'image' && (
             <img
               src={msg.mediaUrl}
-              alt="تصویر اشتراک‌گذاری شده"
+              alt="Imagem compartilhada"
               className={styles.mediaImage}
               onClick={() => window.open(msg.mediaUrl)}
             />
@@ -909,7 +909,7 @@ export default function MessagesPage() {
           
           {/* فوتر پیام */}
           <div className={styles.messageFooter}>
-            <span className={styles.messageTime}>{toPersianTime(msg.time)}</span>
+            <span className={styles.messageTime}>{formatTime(msg.time)}</span>
             {isMe && (
               <span className={styles.messageStatus}>
                 {msg.status === 'sent' && <CheckIcon className="w-3 h-3" />}
@@ -921,7 +921,7 @@ export default function MessagesPage() {
         </div>
       </div>
     );
-  }, [highlightedMsgId, handleOpenMenu, scrollToMessage, toPersianTime, handleDownload]);
+  }, [highlightedMsgId, handleOpenMenu, scrollToMessage, formatTime, handleDownload]);
 
   // ============================================================
   // 8.14 رندر اصلی
@@ -941,14 +941,14 @@ export default function MessagesPage() {
             <SearchIcon className="w-5 h-5 text-[var(--color-text-muted)]" />
             <input
               type="text"
-              placeholder="جستجو..."
+              placeholder="Buscar..."
               value={searchTerm}
               onChange={(e) => {
                 console.log('🔍 جستجو:', e.target.value);
                 setSearchTerm(e.target.value);
               }}
               className={styles.searchInput}
-              aria-label="جستجوی چت‌ها"
+              aria-label="Buscar conversas"
             />
           </div>
           <button 
@@ -957,7 +957,7 @@ export default function MessagesPage() {
               console.log('🏠 بازگشت به صفحه اصلی');
               router.push('/');
             }}
-            aria-label="بازگشت به صفحه اصلی"
+            aria-label="Voltar ao início"
           >
             <BackIcon className="w-6 h-6" />
           </button>
@@ -979,9 +979,9 @@ export default function MessagesPage() {
                 <div className={styles.chatMessage}>{chat.lastMessage}</div>
               </div>
               <div className={styles.chatMeta}>
-                <div className={styles.chatTime}>{toPersianTime(chat.time)}</div>
+                <div className={styles.chatTime}>{formatTime(chat.time)}</div>
                 {chat.unread > 0 && (
-                  <div className={styles.chatUnread}>{toPersianNumber(chat.unread)}</div>
+                  <div className={styles.chatUnread}>{formatNumber(chat.unread)}</div>
                 )}
               </div>
               {chat.isOnline && <div className={styles.onlineIndicator} />}
@@ -1004,14 +1004,14 @@ export default function MessagesPage() {
               <div className={styles.chatHeaderInfo}>
                 <div className={styles.chatHeaderName}>{selectedChat.name}</div>
                 <div className={styles.chatHeaderStatus}>
-                  {selectedChat.isOnline ? 'آنلاین' : 'آفلاین'}
+                  {selectedChat.isOnline ? "Online" : "Offline"}
                 </div>
               </div>
               {isMobile && (
                 <button 
                   className={styles.backBtn} 
                   onClick={handleBackToList}
-                  aria-label="بازگشت به لیست چت‌ها"
+                  aria-label="Voltar para as conversas"
                 >
                   <BackIcon className="w-6 h-6" />
                 </button>
@@ -1041,7 +1041,7 @@ export default function MessagesPage() {
               <button 
                 className={styles.attachBtn} 
                 onClick={handleAttachClick}
-                aria-label="پیوست فایل"
+                aria-label="Anexar arquivo"
               >
                 <AttachIcon className="w-6 h-6" />
               </button>
@@ -1055,14 +1055,14 @@ export default function MessagesPage() {
                     handleSendMessage();
                   }
                 }}
-                placeholder="پیام..."
+                placeholder="Digite uma mensagem..."
                 className={styles.messageInput}
-                aria-label="ورودی پیام"
+                aria-label="Mensagem"
               />
               <button 
                 onClick={handleSendMessage} 
                 className={styles.sendBtn}
-                aria-label="ارسال پیام"
+                aria-label="Enviar mensagem"
               >
                 <SendIcon className="w-5 h-5" />
               </button>
@@ -1079,7 +1079,7 @@ export default function MessagesPage() {
                   sendMedia(e.target.files[0], 'image');
                 }
               }}
-              aria-label="انتخاب تصویر"
+              aria-label="Selecionar imagem"
             />
             <input
               type="file"
@@ -1090,7 +1090,7 @@ export default function MessagesPage() {
                   sendMedia(e.target.files[0], 'file');
                 }
               }}
-              aria-label="انتخاب فایل"
+              aria-label="Selecionar arquivo"
             />
             <input
               type="file"
@@ -1102,7 +1102,7 @@ export default function MessagesPage() {
                   sendMedia(e.target.files[0], 'video');
                 }
               }}
-              aria-label="انتخاب ویدیو"
+              aria-label="Selecionar vídeo"
             />
             <input
               type="file"
@@ -1114,13 +1114,13 @@ export default function MessagesPage() {
                   sendMedia(e.target.files[0], 'voice');
                 }
               }}
-              aria-label="انتخاب صوت"
+              aria-label="Selecionar áudio"
             />
           </>
         ) : (
           <div className={styles.emptyState}>
             <span className={styles.emptyIcon}>💬</span>
-            <p>هیچ گفتگویی وجود ندارد</p>
+            <p>Nenhuma conversa</p>
           </div>
         )}
       </div>
@@ -1168,30 +1168,30 @@ export default function MessagesPage() {
         {/* گزینه‌های پیوست */}
         <div className={styles.modalGrid}>
           <button className={styles.modalItem} onClick={() => imageInputRef.current?.click()}>
-            <ImageIcon className="w-8 h-8" /> <span>تصویر</span>
+            <ImageIcon className="w-8 h-8" /> <span>Imagem</span>
           </button>
           <button className={styles.modalItem} onClick={() => videoInputRef.current?.click()}>
-            <VideoIcon className="w-8 h-8" /> <span>ویدیو</span>
+            <VideoIcon className="w-8 h-8" /> <span>Vídeo</span>
           </button>
           <button className={styles.modalItem} onClick={() => fileInputRef.current?.click()}>
-            <FileIcon className="w-8 h-8" /> <span>فایل</span>
+            <FileIcon className="w-8 h-8" /> <span>Arquivo</span>
           </button>
           <button className={styles.modalItem} onClick={handleEvent}>
-            <EventIcon className="w-8 h-8" /> <span>ایونت</span>
+            <EventIcon className="w-8 h-8" /> <span>Evento</span>
           </button>
           <button className={styles.modalItem} onClick={handleContact}>
-            <ContactIcon className="w-8 h-8" /> <span>کانتکت</span>
+            <ContactIcon className="w-8 h-8" /> <span>Contato</span>
           </button>
           <button className={styles.modalItem} onClick={handleLocation}>
-            <LocationIcon className="w-8 h-8" /> <span>موقعیت</span>
+            <LocationIcon className="w-8 h-8" /> <span>Localização</span>
           </button>
           <button className={styles.modalItem} onClick={() => voiceInputRef.current?.click()}>
-            <VoiceIcon className="w-8 h-8" /> <span>صوتی</span>
+            <VoiceIcon className="w-8 h-8" /> <span>Áudio</span>
           </button>
         </div>
         
         <button className={styles.modalCloseBtn} onClick={() => setIsModalOpen(false)}>
-          بستن
+          Fechar
         </button>
       </BottomModal>
     </div>

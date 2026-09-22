@@ -17,7 +17,7 @@ const MapComponent = nextDynamic(() => import('@/components/MapComponent'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full flex items-center justify-center bg-bg-surface rounded-lg">
-      <span className="text-sm text-text-muted">در حال بارگذاری نقشه...</span>
+      <span className="text-sm text-text-muted">Carregando mapa...</span>
     </div>
   ),
 });
@@ -294,7 +294,7 @@ const CustomSelect = ({
 const Loader = () => (
   <div className="fixed inset-0 bg-black/50 z-3000 flex flex-col items-center justify-center">
     <div className="w-12 h-12 border-4 border-white/30 border-t-accent-color rounded-full animate-spin"></div>
-    <p className="mt-4 text-white text-base font-medium">در حال آپلود تصاویر...</p>
+    <p className="mt-4 text-white text-base font-medium">Enviando imagens...</p>
   </div>
 );
 
@@ -368,31 +368,31 @@ export default function CreatePostPage() {
   );
 
   const categoryOptions: SelectOption[] = useMemo(() => [
-    { value: '', label: 'انتخاب کنید' },
-    { value: 'الکترونیک', label: 'الکترونیک' },
-    { value: 'مد و پوشاک', label: 'مد و پوشاک' },
-    { value: 'کتاب', label: 'کتاب' },
-    { value: 'خانه و آشپزخانه', label: 'خانه و آشپزخانه' },
-    { value: 'ورزشی', label: 'ورزشی' },
-    { value: 'خدمات', label: 'خدمات' },
+    { value: '', label: "Selecione" },
+    { value: "Eletrônicos", label: "Eletrônicos" },
+    { value: "Moda e vestuário", label: "Moda e vestuário" },
+    { value: "Livros", label: "Livros" },
+    { value: "Casa e cozinha", label: "Casa e cozinha" },
+    { value: "Esportes", label: "Esportes" },
+    { value: "Serviços", label: "Serviços" },
   ], []);
 
   const postTypeOptions: SelectOption[] = useMemo(() => [
-    { value: POST_TYPES.PRODUCT, label: 'محصول' },
-    { value: POST_TYPES.SERVICE, label: 'خدمت' },
+    { value: POST_TYPES.PRODUCT, label: "Produto" },
+    { value: POST_TYPES.SERVICE, label: "Serviço" },
   ], []);
 
   const unitOptions: SelectOption[] = useMemo(() => [
-    { value: '', label: 'انتخاب کنید' },
-    { value: 'عدد', label: 'عدد' },
-    { value: 'کیلوگرم', label: 'کیلوگرم' },
-    { value: 'گرم', label: 'گرم' },
-    { value: 'لیتر', label: 'لیتر' },
-    { value: 'متر', label: 'متر' },
-    { value: 'سانتی‌متر', label: 'سانتی‌متر' },
-    { value: 'ساعت', label: 'ساعت' },
-    { value: 'روز', label: 'روز' },
-    { value: 'ماه', label: 'ماه' },
+    { value: '', label: "Selecione" },
+    { value: "unidades", label: "unidades" },
+    { value: "Quilograma", label: "Quilograma" },
+    { value: "Grama", label: "Grama" },
+    { value: "Litro", label: "Litro" },
+    { value: "Metro", label: "Metro" },
+    { value: "Centímetro", label: "Centímetro" },
+    { value: "Hora", label: "Hora" },
+    { value: "Dia", label: "Dia" },
+    { value: "Mês", label: "Mês" },
   ], []);
 
   // ============================================
@@ -402,7 +402,7 @@ export default function CreatePostPage() {
   /**
    * فرمت بازه زمانی به فارسی
    */
-  const formatPersianDateRange = useCallback((range: DateRange | null) => {
+  const formatDateRange = useCallback((range: DateRange | null) => {
     if (!range) return '';
     const start = new Date(range.start);
     const end = new Date(range.end);
@@ -413,7 +413,7 @@ export default function CreatePostPage() {
       hour: '2-digit',
       minute: '2-digit',
     };
-    return `${start.toLocaleDateString('fa-IR', options)} تا ${end.toLocaleDateString('fa-IR', options)}`;
+    return `${start.toLocaleDateString('pt-BR', options)} até ${end.toLocaleDateString('pt-BR', options)}`;
   }, []);
 
   /**
@@ -422,7 +422,7 @@ export default function CreatePostPage() {
   const validateImages = useCallback((files: File[]): boolean => {
     const oversizedFiles = files.filter((file) => file.size > MAX_IMAGE_SIZE);
     if (oversizedFiles.length > 0) {
-      warning('حجم هر تصویر باید کمتر از ۵ مگابایت باشد');
+      warning("Cada imagem deve ter menos de 5 MB");
       return false;
     }
     return true;
@@ -443,7 +443,7 @@ export default function CreatePostPage() {
 
     // بررسی تعداد
     if (images.length + files.length > MAX_IMAGES) {
-      warning(`حداکثر می‌توانید ${MAX_IMAGES} تصویر آپلود کنید`);
+      warning(`Você pode enviar no máximo ${MAX_IMAGES} imagens`);
       return;
     }
 
@@ -475,13 +475,13 @@ export default function CreatePostPage() {
             }
             
             console.log('✅ تصاویر آپلود شدند:', { count: files.length });
-            success(`${files.length} تصویر با موفقیت آپلود شد`);
+            success(`${files.length} Imagem enviada`);
           }
         };
         reader.onerror = () => {
           setUploading(false);
           console.error('❌ خطا در آپلود تصویر:', file.name);
-          error('خطا در آپلود تصاویر');
+          error("Não foi possível enviar as imagens");
         };
         reader.readAsDataURL(file);
       });
@@ -506,7 +506,7 @@ export default function CreatePostPage() {
       setCurrentIndex(newPreviews.length - 1);
     }
     
-    info('تصویر حذف شد');
+    info("Imagem removida");
   }, [previews, images, currentIndex, info]);
 
   /**
@@ -528,14 +528,14 @@ export default function CreatePostPage() {
     console.log('📅 انتخاب بازه زمانی:', range);
     setSelectedDateRange(range);
     setShowDateRangePicker(false);
-    success('بازه زمانی با موفقیت ثبت شد');
+    success("Período definido");
   }, [success]);
 
   const handleDiscountDateRangeSelect = useCallback((range: DateRange) => {
     console.log('📅 انتخاب بازه تخفیف:', range);
     setDiscountDateRange(range);
     setShowDiscountDateRangePicker(false);
-    success('بازه زمانی تخفیف با موفقیت ثبت شد');
+    success("Período do desconto definido");
   }, [success]);
 
   // ============================================
@@ -544,7 +544,7 @@ export default function CreatePostPage() {
 
   const handleAddAddress = useCallback(() => {
     if (tempAddress.trim() === '') {
-      warning('لطفاً آدرس را وارد کنید');
+      warning("Informe o endereço");
       return;
     }
 
@@ -566,7 +566,7 @@ export default function CreatePostPage() {
     }
     
     setTempAddress('');
-    success('آدرس با موفقیت اضافه شد');
+    success("Endereço adicionado");
   }, [tempAddress, userAddresses, currentUser, setUser, success, warning]);
 
   const handleRemoveAddress = useCallback((index: number) => {
@@ -586,20 +586,20 @@ export default function CreatePostPage() {
       setUser(updatedUser);
     }
     
-    success('آدرس با موفقیت حذف شد');
+    success("Endereço removido");
   }, [userAddresses, currentUser, setUser, success]);
 
   const handleSelectAddress = useCallback((selectedAddress: string) => {
     console.log('📍 انتخاب آدرس:', selectedAddress);
     setUserLocation(selectedAddress);
     setShowLocationModal(false);
-    success('لوکیشن با موفقیت انتخاب شد');
+    success("Localização selecionada");
   }, [success]);
 
   const handleLocationSelect = useCallback((latlng: Coordinates) => {
     console.log('📍 انتخاب مختصات:', latlng);
     setSelectedLocationCoords(latlng);
-    success('مختصات مکانی با موفقیت ثبت شد');
+    success("Coordenadas registradas");
   }, [success]);
 
   // ============================================
@@ -613,42 +613,42 @@ export default function CreatePostPage() {
     console.log('🔍 شروع اعتبارسنجی فرم');
 
     if (images.length === 0) {
-      warning('حداقل یک تصویر انتخاب کنید');
+      warning("Selecione pelo menos uma imagem");
       return false;
     }
 
     if (!selectedDateRange) {
-      warning('لطفاً بازه تاریخ و زمان ارائه خدمت را انتخاب کنید');
+      warning("Selecione as datas e os horários do serviço");
       return false;
     }
 
     if (!title.trim()) {
-      warning('لطفاً عنوان محصول/خدمت را وارد کنید');
+      warning("Informe o título do produto ou serviço");
       return false;
     }
 
     if (!category) {
-      warning('لطفاً دسته‌بندی را انتخاب کنید');
+      warning("Selecione uma categoria");
       return false;
     }
 
     if (!price || parseFloat(price) <= 0) {
-      warning('لطفاً قیمت معتبر وارد کنید');
+      warning("Informe um preço válido");
       return false;
     }
 
     if (discountPrice && parseFloat(discountPrice) >= parseFloat(price)) {
-      warning('قیمت تخفیف دار باید کمتر از قیمت اصلی باشد');
+      warning("O preço com desconto deve ser menor que o preço original");
       return false;
     }
 
     if (!stock || parseInt(stock) <= 0) {
-      warning('لطفاً موجودی/ظرفیت معتبر وارد کنید');
+      warning("Informe um estoque ou uma capacidade válida");
       return false;
     }
 
     if (!description.trim()) {
-      warning('لطفاً توضیحات کامل را وارد کنید');
+      warning("Preencha a descrição completa");
       return false;
     }
 
@@ -683,7 +683,7 @@ export default function CreatePostPage() {
     };
 
     console.log('✅ داده‌های پست:', postData);
-    success('پست با موفقیت ایجاد شد!');
+    success("Publicação criada com sucesso!");
 
     // ریست فرم بعد از تاخیر
     setTimeout(() => {
@@ -719,7 +719,7 @@ export default function CreatePostPage() {
     const hasData = title || description || price || previews.length > 0;
     
     if (hasData) {
-      if (window.confirm('آیا از پاک کردن فرم مطمئن هستید؟ تمام اطلاعات حذف خواهد شد.')) {
+      if (window.confirm("Deseja limpar o formulário? Todos os dados preenchidos serão removidos.")) {
         console.log('🗑️ پاک کردن فرم');
         setTitle('');
         setDescription('');
@@ -737,10 +737,10 @@ export default function CreatePostPage() {
         setSelectedDateRange(null);
         setDiscountDateRange(null);
         setSelectedLocationCoords(null);
-        info('فرم با موفقیت پاک شد');
+        info("Formulário limpo");
       }
     } else {
-      info('فرم خالی است');
+      info("O formulário está vazio");
     }
   }, [title, description, price, previews.length, info]);
 
@@ -781,7 +781,7 @@ export default function CreatePostPage() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={previews[currentIndex]}
-                    alt={`تصویر ${currentIndex + 1}`}
+                    alt={`Imagem ${currentIndex + 1}`}
                     className="w-full h-full object-contain"
                   />
                   
@@ -790,7 +790,7 @@ export default function CreatePostPage() {
                     type="button"
                     className="absolute top-3 right-3 bg-black/60 text-white border-none rounded-full w-8 h-8 text-lg cursor-pointer z-10 flex items-center justify-center hover:bg-black/80 transition-colors"
                     onClick={() => removeImage(currentIndex)}
-                    aria-label="حذف تصویر"
+                    aria-label="Remover imagem"
                   >
                     ✕
                   </button>
@@ -802,7 +802,7 @@ export default function CreatePostPage() {
                         type="button"
                         className="absolute top-1/2 -translate-y-1/2 left-2 bg-black/50 text-white border-none rounded-full w-9 h-9 text-2xl cursor-pointer z-10 flex items-center justify-center hover:bg-black/70 transition-colors"
                         onClick={prevSlide}
-                        aria-label="تصویر قبلی"
+                        aria-label="Imagem anterior"
                       >
                         ‹
                       </button>
@@ -810,7 +810,7 @@ export default function CreatePostPage() {
                         type="button"
                         className="absolute top-1/2 -translate-y-1/2 right-2 bg-black/50 text-white border-none rounded-full w-9 h-9 text-2xl cursor-pointer z-10 flex items-center justify-center hover:bg-black/70 transition-colors"
                         onClick={nextSlide}
-                        aria-label="تصویر بعدی"
+                        aria-label="Próxima imagem"
                       >
                         ›
                       </button>
@@ -827,7 +827,7 @@ export default function CreatePostPage() {
                     type="button"
                     className="absolute bottom-3 right-3 bg-black/50 text-white border-none rounded-full w-9 h-9 text-2xl font-light cursor-pointer z-10 flex items-center justify-center transition-colors hover:bg-black/70"
                     onClick={() => document.getElementById('imageInput')?.click()}
-                    aria-label="افزودن تصویر"
+                    aria-label="Adicionar imagem"
                   >
                     +
                   </button>
@@ -839,10 +839,10 @@ export default function CreatePostPage() {
                 >
                   <UploadIcon className="w-12 h-12 text-text-muted" />
                   <p className="mt-3 text-sm font-medium text-text-primary">
-                    برای بارگذاری تصاویر کلیک کنید (چند عکس)
+                    Clique para enviar uma ou mais imagens
                   </p>
                   <p className="text-xs text-text-muted mt-1">
-                    حداکثر ۱۰ عکس - هر عکس حداکثر ۵ مگابایت
+                    Até 10 imagens, com no máximo 5 MB cada
                   </p>
                 </div>
               )}
@@ -859,14 +859,14 @@ export default function CreatePostPage() {
             {/* متن جایگزین */}
             <div className="mt-4">
               <label className="block mb-2 font-semibold text-sm text-text-primary">
-                متن جایگزین (Alt) برای تصاویر
+                Texto alternativo das imagens
               </label>
               <input
                 type="text"
                 value={altText}
                 onChange={(e) => setAltText(e.target.value)}
                 className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all focus:border-accent-color focus:shadow-[0_0_0_2px_rgba(187,134,252,0.2)] bg-bg-primary text-text-primary"
-                placeholder="توضیح مختصر برای تصاویر (بهبود سئو)"
+                placeholder="Descreva brevemente as imagens"
               />
             </div>
           </div>
@@ -876,37 +876,37 @@ export default function CreatePostPage() {
             {/* عنوان */}
             <div className="mb-5">
               <label className="block mb-2 font-semibold text-sm text-text-primary">
-                عنوان محصول / خدمت
+                Título do produto ou serviço
               </label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all focus:border-accent-color focus:shadow-[0_0_0_2px_rgba(187,134,252,0.2)] bg-bg-primary text-text-primary"
-                placeholder="مثلاً: خدمات طراحی سایت"
+                placeholder="Exemplo: criação de sites"
                 required
               />
             </div>
 
             {/* دسته‌بندی */}
             <div className="mb-5">
-              <label className="block mb-2 font-semibold text-sm text-text-primary">دسته‌بندی</label>
+              <label className="block mb-2 font-semibold text-sm text-text-primary">Categoria</label>
               <CustomSelect
                 options={categoryOptions}
                 value={category}
                 onChange={setCategory}
-                placeholder="انتخاب کنید"
+                placeholder="Selecione"
               />
             </div>
 
             {/* نوع پست */}
             <div className="mb-5">
-              <label className="block mb-2 font-semibold text-sm text-text-primary">نوع پست</label>
+              <label className="block mb-2 font-semibold text-sm text-text-primary">Tipo de publicação</label>
               <CustomSelect
                 options={postTypeOptions}
                 value={postType}
                 onChange={setPostType}
-                placeholder="انتخاب کنید"
+                placeholder="Selecione"
               />
             </div>
 
@@ -914,20 +914,20 @@ export default function CreatePostPage() {
             <div className="flex flex-col md:flex-row gap-4 mb-5">
               <div className="flex-1">
                 <label className="block mb-2 font-semibold text-sm text-text-primary">
-                  قیمت (تومان)
+                  Preço (tomans)
                 </label>
                 <input
                   type="number"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all focus:border-accent-color focus:shadow-[0_0_0_2px_rgba(187,134,252,0.2)] bg-bg-primary text-text-primary"
-                  placeholder="مثلا 1250000"
+                  placeholder="Exemplo: 1250000"
                   required
                 />
               </div>
               <div className="flex-1">
                 <label className="block mb-2 font-semibold text-sm text-text-primary">
-                  قیمت تخفیف دار (تومان)
+                  Preço com desconto (tomans)
                 </label>
                 <div className="flex gap-2 items-center">
                   <input
@@ -935,14 +935,14 @@ export default function CreatePostPage() {
                     value={discountPrice}
                     onChange={(e) => setDiscountPrice(e.target.value)}
                     className="flex-1 px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all focus:border-accent-color focus:shadow-[0_0_0_2px_rgba(187,134,252,0.2)] bg-bg-primary text-text-primary"
-                    placeholder="قیمت با تخفیف"
+                    placeholder="Preço com desconto"
                   />
                   <button
                     type="button"
                     className="px-4 py-3 bg-bg-surface border border-border-color rounded-2xl cursor-pointer transition-colors hover:bg-border-color text-text-primary"
                     onClick={() => setShowDiscountDateRangePicker(true)}
-                    title="انتخاب بازه زمانی تخفیف"
-                    aria-label="انتخاب بازه تخفیف"
+                    title="Selecionar período do desconto"
+                    aria-label="Selecionar período do desconto"
                   >
                     <CalendarDaysIcon className="w-5 h-5" />
                   </button>
@@ -950,13 +950,13 @@ export default function CreatePostPage() {
                 {discountDateRange && (
                   <div className="flex items-center justify-between gap-2 mt-2 bg-green-500/15 rounded-xl border border-green-500/30 px-3 py-2">
                     <span className="text-xs text-green-500 truncate">
-                      {formatPersianDateRange(discountDateRange)}
+                      {formatDateRange(discountDateRange)}
                     </span>
                     <button
                       type="button"
                       className="bg-transparent border-none cursor-pointer px-2 py-1 rounded-lg transition-colors hover:bg-green-500/20 text-green-500"
                       onClick={() => setDiscountDateRange(null)}
-                      aria-label="حذف بازه تخفیف"
+                      aria-label="Remover período do desconto"
                     >
                       ✕
                     </button>
@@ -967,39 +967,39 @@ export default function CreatePostPage() {
 
             {/* واحد */}
             <div className="mb-5">
-              <label className="block mb-2 font-semibold text-sm text-text-primary">واحد</label>
+              <label className="block mb-2 font-semibold text-sm text-text-primary">Unidade</label>
               <CustomSelect
                 options={unitOptions}
                 value={unit}
                 onChange={setUnit}
-                placeholder="انتخاب کنید"
+                placeholder="Selecione"
               />
             </div>
 
             {/* موجودی */}
             <div className="mb-5">
               <label className="block mb-2 font-semibold text-sm text-text-primary">
-                موجودی / ظرفیت
+                Estoque / capacidade
               </label>
               <input
                 type="number"
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
                 className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all focus:border-accent-color focus:shadow-[0_0_0_2px_rgba(187,134,252,0.2)] bg-bg-primary text-text-primary"
-                placeholder="تعداد در انبار یا ظرفیت باقیمانده"
+                placeholder="Quantidade disponível ou vagas restantes"
                 required
               />
             </div>
 
             {/* لوکیشن */}
             <div className="mb-5">
-              <label className="block mb-2 font-semibold text-sm text-text-primary">لوکیشن</label>
+              <label className="block mb-2 font-semibold text-sm text-text-primary">Localização</label>
               <div
                 className="flex items-center gap-3 px-4 py-3 bg-bg-surface border border-border-color rounded-2xl cursor-pointer transition-colors hover:bg-border-color text-text-primary"
                 onClick={() => setShowLocationModal(true)}
                 role="button"
                 tabIndex={0}
-                aria-label="انتخاب لوکیشن"
+                aria-label="Selecionar localização"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -1008,30 +1008,30 @@ export default function CreatePostPage() {
                 }}
               >
                 <MapIcon className="w-5 h-5" />
-                <span>{userLocation || 'انتخاب لوکیشن از آدرس‌ها'}</span>
+                <span>{userLocation || "Selecionar um endereço salvo"}</span>
               </div>
             </div>
 
             {/* بازه زمانی */}
             <div className="mb-5">
               <label className="block mb-2 font-semibold text-sm text-text-primary">
-                بازه ارائه خدمت
+                Período do serviço
               </label>
               <div className="flex gap-2 items-center">
                 <input
                   type="text"
-                  value={formatPersianDateRange(selectedDateRange)}
-                  placeholder="انتخاب بازه تاریخ و زمان"
+                  value={formatDateRange(selectedDateRange)}
+                  placeholder="Selecionar datas e horários"
                   readOnly
                   className="flex-1 px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all focus:border-accent-color focus:shadow-[0_0_0_2px_rgba(187,134,252,0.2)] bg-bg-primary text-text-primary cursor-pointer"
                   onClick={() => setShowDateRangePicker(true)}
-                  aria-label="انتخاب بازه زمانی"
+                  aria-label="Selecionar período"
                 />
                 <button
                   type="button"
                   className="px-4 py-3 bg-bg-surface border border-border-color rounded-2xl cursor-pointer transition-colors hover:bg-border-color text-text-primary"
                   onClick={() => setShowDateRangePicker(true)}
-                  aria-label="باز کردن تقویم"
+                  aria-label="Abrir calendário"
                 >
                   <CalendarIcon className="w-5 h-5" />
                 </button>
@@ -1042,7 +1042,7 @@ export default function CreatePostPage() {
                   className="mt-2 px-3 py-1 bg-red-500/15 text-red-500 border-none rounded-lg text-xs cursor-pointer transition-colors hover:bg-red-500/30"
                   onClick={() => setSelectedDateRange(null)}
                 >
-                  حذف بازه
+                  Remover período
                 </button>
               )}
             </div>
@@ -1050,14 +1050,14 @@ export default function CreatePostPage() {
             {/* توضیحات */}
             <div className="mb-5">
               <label className="block mb-2 font-semibold text-sm text-text-primary">
-                توضیحات کامل
+                Descrição completa
               </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="w-full px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all focus:border-accent-color focus:shadow-[0_0_0_2px_rgba(187,134,252,0.2)] bg-bg-primary text-text-primary resize-vertical"
                 rows={5}
-                placeholder="توضیحات کامل محصول یا خدمت را وارد کنید..."
+                placeholder="Descreva o produto ou serviço..."
                 required
               />
             </div>
@@ -1069,14 +1069,14 @@ export default function CreatePostPage() {
                 className="flex-1 px-4 py-3 bg-accent-color text-white border-none rounded-4xl text-base font-semibold cursor-pointer transition-all text-center hover:bg-accent-hover hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                 disabled={uploading}
               >
-                {uploading ? 'در حال آپلود...' : 'ثبت پست'}
+                {uploading ? "Enviando..." : "Publicar"}
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
                 className="flex-1 px-4 py-3 bg-bg-secondary text-text-primary border border-border-color rounded-4xl text-base font-semibold cursor-pointer transition-all text-center hover:bg-bg-surface"
               >
-                انصراف
+                Cancelar
               </button>
             </div>
           </div>
@@ -1125,7 +1125,7 @@ export default function CreatePostPage() {
       >
         <div className="p-5">
           <h3 className="text-lg font-semibold mb-4 text-center text-text-primary">
-            انتخاب لوکیشن
+            Selecionar localização
           </h3>
           
           {/* نقشه */}
@@ -1147,7 +1147,7 @@ export default function CreatePostPage() {
               type="text"
               value={tempAddress}
               onChange={(e) => setTempAddress(e.target.value)}
-              placeholder="آدرس جدید را وارد کنید..."
+              placeholder="Digite o novo endereço..."
               className="flex-1 px-4 py-3 border border-border-color rounded-2xl text-sm outline-none transition-all focus:border-accent-color focus:shadow-[0_0_0_2px_rgba(187,134,252,0.2)] bg-bg-primary text-text-primary"
               onKeyDown={(e) => e.key === 'Enter' && handleAddAddress()}
             />
@@ -1155,7 +1155,7 @@ export default function CreatePostPage() {
               type="button"
               onClick={handleAddAddress}
               className="w-11.5 h-11.5 bg-accent-color text-white border-none rounded-2xl cursor-pointer transition-colors flex items-center justify-center hover:bg-accent-hover"
-              aria-label="افزودن آدرس"
+              aria-label="Adicionar endereço"
             >
               <PlusIcon className="w-5 h-5" />
             </button>
@@ -1164,10 +1164,10 @@ export default function CreatePostPage() {
           {/* لیست آدرس‌ها */}
           <div className="max-h-62.5 overflow-y-auto mb-4">
             <label className="block text-sm font-semibold mb-3 text-text-primary">
-              آدرس‌های ذخیره شده شما:
+              Seus endereços salvos:
             </label>
             {userAddresses.length === 0 ? (
-              <p className="text-center text-text-muted py-5">هیچ آدرسی ثبت نشده است</p>
+              <p className="text-center text-text-muted py-5">Nenhum endereço cadastrado</p>
             ) : (
               userAddresses.map((addr: string, idx: number) => (
                 <div
@@ -1179,7 +1179,7 @@ export default function CreatePostPage() {
                     onClick={() => handleSelectAddress(addr)}
                     role="button"
                     tabIndex={0}
-                    aria-label={`انتخاب آدرس ${addr}`}
+                    aria-label={`Selecionar endereço ${addr}`}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         handleSelectAddress(addr);
@@ -1191,7 +1191,7 @@ export default function CreatePostPage() {
                   <button
                     onClick={() => handleRemoveAddress(idx)}
                     className="bg-transparent border-none cursor-pointer text-red-500 flex items-center p-1 rounded-lg transition-colors hover:bg-red-500/20"
-                    aria-label={`حذف آدرس ${addr}`}
+                    aria-label={`Remover endereço ${addr}`}
                   >
                     <TrashIcon className="w-4.5 h-4.5" />
                   </button>
@@ -1206,7 +1206,7 @@ export default function CreatePostPage() {
               onClick={() => setShowLocationModal(false)}
               className="px-6 py-2.5 bg-bg-surface border-none rounded-4xl text-sm cursor-pointer transition-colors text-text-primary hover:bg-border-color"
             >
-              بستن
+              Fechar
             </button>
           </div>
         </div>

@@ -43,7 +43,7 @@ interface JsonComment {
 
 // ==================== توابع کمکی ====================
 const getImagePath = (imageName?: string | null): string => {
-  if (!imageName) return '/images/posts/placeholder.jpg';
+  if (!imageName) return '/images/posts/placeholder.svg';
   if (imageName.startsWith('http')) return imageName;
   if (imageName.startsWith('/')) return imageName;
   if (imageName.startsWith('images/')) return `/${imageName}`;
@@ -71,7 +71,7 @@ const processPostImages = (post: JsonPost): string[] => {
   if (post.image) {
     return generateMultipleImages(post.id);
   }
-  return ['/images/posts/placeholder.jpg', '/images/posts/placeholder.jpg', '/images/posts/placeholder.jpg'];
+  return ['/images/posts/placeholder.svg', '/images/posts/placeholder.svg', '/images/posts/placeholder.svg'];
 };
 
 const enrichUser = (user: JsonUser | null): User | null => {
@@ -80,7 +80,7 @@ const enrichUser = (user: JsonUser | null): User | null => {
   return {
     id: user.id,
     username: user.username || (user.name ? user.name.replace(/\s/g, '_').toLowerCase() : `user_${user.id}`),
-    name: user.name || user.username || 'کاربر ناشناس',
+    name: user.name || user.username || "Usuário desconhecido",
     email: user.email,
     avatar: user.avatar || '/images/avatars/default.png',
     status: validStatus || 'inactive',
@@ -140,7 +140,7 @@ const enrichPost = (post: JsonPost, comments: Comment[] = []): Post => {
     author: enrichedAuthor,
     authorId: post.userId,
     authorUsername: enrichedAuthor?.username || 'unknown',
-    authorName: enrichedAuthor?.name || 'کاربر ناشناس',
+    authorName: enrichedAuthor?.name || "Usuário desconhecido",
     authorAvatar: enrichedAuthor?.avatar || '/images/avatars/default.png',
     comments: postComments,
   };
@@ -308,11 +308,11 @@ export const createPost = async (postData: Partial<Post>): Promise<ApiResponse<P
       id: newId,
       userId: postData.userId || 1,
       image: postData.image || null,
-      title: postData.title || 'بدون عنوان',
+      title: postData.title || "Sem título",
       caption: postData.caption || '',
       price: postData.price || 0,
       stock: postData.stock ?? 0,
-      category: postData.category || 'عمومی',
+      category: postData.category || "Geral",
       rating: postData.rating || 0,
       likesCount: 0,
       commentsCount: 0,
@@ -323,7 +323,7 @@ export const createPost = async (postData: Partial<Post>): Promise<ApiResponse<P
     const enriched = enrichPost(newPost);
     return { success: true, data: enriched };
   } catch {
-    return { success: false, error: 'خطا در ایجاد پست' };
+    return { success: false, error: "Não foi possível criar a publicação" };
   }
 };
 
@@ -331,14 +331,14 @@ export const updatePost = async (id: number | string, postData: Partial<Post>): 
   try {
     const index = localPosts.findIndex((p: JsonPost) => p.id === Number(id));
     if (index === -1) {
-      return { success: false, error: 'پست یافت نشد' };
+      return { success: false, error: "Publicação não encontrada" };
     }
     localPosts[index] = { ...localPosts[index], ...postData };
     saveLocalPosts();
     const enriched = enrichPost(localPosts[index]);
     return { success: true, data: enriched };
   } catch {
-    return { success: false, error: 'خطا در بروزرسانی پست' };
+    return { success: false, error: "Não foi possível atualizar a publicação" };
   }
 };
 
@@ -346,13 +346,13 @@ export const deletePost = async (id: number | string): Promise<ApiResponse> => {
   try {
     const index = localPosts.findIndex((p: JsonPost) => p.id === Number(id));
     if (index === -1) {
-      return { success: false, error: 'پست یافت نشد' };
+      return { success: false, error: "Publicação não encontrada" };
     }
     localPosts.splice(index, 1);
     saveLocalPosts();
-    return { success: true, message: 'پست با موفقیت حذف شد' };
+    return { success: true, message: "Publicação excluída" };
   } catch {
-    return { success: false, error: 'خطا در حذف پست' };
+    return { success: false, error: "Não foi possível excluir a publicação" };
   }
 };
 
@@ -360,13 +360,13 @@ export const likePost = async (id: number | string): Promise<ApiResponse<{ likes
   try {
     const post = localPosts.find((p: JsonPost) => p.id === Number(id));
     if (!post) {
-      return { success: false, error: 'پست یافت نشد' };
+      return { success: false, error: "Publicação não encontrada" };
     }
     post.likesCount = (post.likesCount || 0) + 1;
     saveLocalPosts();
     return { success: true, data: { likesCount: post.likesCount } };
   } catch {
-    return { success: false, error: 'خطا در لایک پست' };
+    return { success: false, error: "Não foi possível curtir a publicação" };
   }
 };
 
@@ -388,7 +388,7 @@ export const addComment = async (
     };
     return { success: true, data: newComment };
   } catch {
-    return { success: false, error: 'خطا در ارسال نظر' };
+    return { success: false, error: "Não foi possível enviar o comentário" };
   }
 };
 

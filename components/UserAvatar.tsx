@@ -45,9 +45,9 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   
   const getStatusText = (status: string): string => {
     switch (status) {
-      case 'busy': return 'مشغول';
-      case 'ready': return 'آماده به کار';
-      default: return 'غیرفعال';
+      case 'busy': return "Ocupado";
+      case 'ready': return "Disponível";
+      default: return "Inativo";
     }
   };
   
@@ -72,8 +72,8 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   const borderColor = getStatusColor(displayStatus);
   const statusText = getStatusText(displayStatus);
   const title = isSelf 
-    ? `وضعیت: ${statusText} - دوبار کلیک برای تغییر` 
-    : `وضعیت: ${statusText}`;
+    ? `Status: ${statusText} - Clique duas vezes para alterar`
+    : `Status: ${statusText}`;
   
   const avatarSrc = userProp?.avatar || '/images/avatars/default.png';
   const hasClick = onClick || (isSelf && allowStatusChange);
@@ -89,11 +89,11 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
       onDoubleClick={handleDoubleClick}
       title={title}
       role="img"
-      aria-label={userProp?.username || 'کاربر'}
+      aria-label={userProp?.username || "Usuário"}
     >
       <Image
         src={avatarSrc}
-        alt={userProp?.username || 'کاربر'}
+        alt={userProp?.username || "Usuário"}
         width={size}
         height={size}
         className="rounded-full object-cover"

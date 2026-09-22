@@ -21,7 +21,7 @@ export default function PostSlider({ images, postTitle }: PostSliderProps) {
   if (!images || images.length === 0) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
-        تصویری وجود ندارد
+        Nenhuma imagem disponível
       </div>
     );
   }
@@ -30,7 +30,7 @@ export default function PostSlider({ images, postTitle }: PostSliderProps) {
     <div className="relative w-full h-full">
       <img
         src={images[currentIndex]}
-        alt={`${postTitle} - تصویر ${currentIndex + 1}`}
+        alt={`${postTitle} - Imagem ${currentIndex + 1}`}
         className="w-full h-full object-cover"
       />
       {images.length > 1 && (

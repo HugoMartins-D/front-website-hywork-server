@@ -3,7 +3,7 @@
 
 import React, { useState, useMemo, useRef, useEffect, useLayoutEffect, useCallback } from 'react';
 import Modal from '@/components/Modal';
-import { toPersianNumber, formatPrice } from '@/utils/numberUtils';
+import { formatNumber, formatPrice } from '@/utils/numberUtils';
 import { useToast } from '@/components/NotificationToast';
 
 // ==================== آیکون‌های SVG ====================
@@ -299,40 +299,40 @@ const OrderMoreMenu = ({
             className="fixed bg-(--color-bg-card) rounded-xl shadow-lg min-w-[190px] z-[9999] overflow-hidden border border-(--color-border-color)"
             style={{ top: menuPosition.top, left: menuPosition.left }}
           >
-            <button onClick={(e) => handleAction(() => onViewDetails(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
-              <ShowIcon /> <span>جزئیات سفارش</span>
+            <button onClick={(e) => handleAction(() => onViewDetails(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+              <ShowIcon /> <span>Detalhes do pedido</span>
             </button>
-            <button onClick={(e) => handleAction(() => onEditOrder(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
-              <EditPencilIcon /> <span>ویرایش سفارش</span>
+            <button onClick={(e) => handleAction(() => onEditOrder(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+              <EditPencilIcon /> <span>Editar pedido</span>
             </button>
             
             {status === 'pending_payment' && (
-              <button onClick={(e) => handleAction(() => onCancelOrder(order.id), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-red-500 hover:bg-red-500/10">
-                <CloseSmIcon /> <span>لغو سفارش</span>
+              <button onClick={(e) => handleAction(() => onCancelOrder(order.id), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-red-500 hover:bg-red-500/10">
+                <CloseSmIcon /> <span>Cancelar pedido</span>
               </button>
             )}
             
             {status === 'paid' && (
-              <button onClick={(e) => handleAction(() => onUpdateStatus(order.id, 'shipped'), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-purple-500 hover:bg-purple-500/10">
-                <TruckIcon /> <span>ارسال سفارش</span>
+              <button onClick={(e) => handleAction(() => onUpdateStatus(order.id, 'shipped'), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-purple-500 hover:bg-purple-500/10">
+                <TruckIcon /> <span>Enviar pedido</span>
               </button>
             )}
             
             {status === 'shipped' && (
-              <button onClick={(e) => handleAction(() => onAddTracking(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-blue-500 hover:bg-blue-500/10">
-                <PackageIcon /> <span>افزودن کد رهگیری</span>
+              <button onClick={(e) => handleAction(() => onAddTracking(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-blue-500 hover:bg-blue-500/10">
+                <PackageIcon /> <span>Adicionar código de rastreio</span>
               </button>
             )}
             
             {status === 'in_dispute' && (
-              <button onClick={(e) => handleAction(() => onViewDispute(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-pink-500 hover:bg-pink-500/10">
-                <SmileySadIcon /> <span>مدیریت اختلاف</span>
+              <button onClick={(e) => handleAction(() => onViewDispute(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-pink-500 hover:bg-pink-500/10">
+                <SmileySadIcon /> <span>Gerenciar disputa</span>
               </button>
             )}
             
             {(status === 'delivered' || status === 'cancelled') && (
-              <button onClick={(e) => handleAction(() => onDeleteOrder(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-red-500 hover:bg-red-500/10">
-                <TrashFullIcon /> <span>حذف سفارش</span>
+              <button onClick={(e) => handleAction(() => onDeleteOrder(order), e)} className="flex items-center gap-3 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-red-500 hover:bg-red-500/10">
+                <TrashFullIcon /> <span>Excluir pedido</span>
               </button>
             )}
           </div>
@@ -376,12 +376,12 @@ const EditOrderModal = ({ isOpen, onClose, order, onUpdate }: EditOrderModalProp
   const [loading, setLoading] = useState(false);
 
   const statusOptions = [
-    { value: 'pending_payment', label: 'در انتظار پرداخت' },
-    { value: 'paid', label: 'پرداخت شده' },
-    { value: 'shipped', label: 'در حال ارسال' },
-    { value: 'delivered', label: 'تحویل شده' },
-    { value: 'cancelled', label: 'لغو شده' },
-    { value: 'in_dispute', label: 'در حال پیگیری' },
+    { value: 'pending_payment', label: "Aguardando pagamento" },
+    { value: 'paid', label: "Pago" },
+    { value: 'shipped', label: "Em transporte" },
+    { value: 'delivered', label: "Entregue" },
+    { value: 'cancelled', label: "Cancelado" },
+    { value: 'in_dispute', label: "Em análise" },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -393,35 +393,35 @@ const EditOrderModal = ({ isOpen, onClose, order, onUpdate }: EditOrderModalProp
         status,
         trackingCode,
         shippingCost: Number(shippingCost),
-        updatedAt: new Date().toLocaleString('fa-IR')
+        updatedAt: new Date().toLocaleString('pt-BR')
       });
       setLoading(false);
       onClose();
-      success('سفارش با موفقیت ویرایش شد');
+      success("Pedido atualizado");
     }, 500);
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="md">
       <div className="p-6 bg-(--color-bg-card) rounded-2xl">
-        <h2 className="text-xl font-bold mb-5 text-(--color-text-primary)">ویرایش سفارش #{order?.orderNumber}</h2>
+        <h2 className="text-xl font-bold mb-5 text-(--color-text-primary)">Editar pedido #{order?.orderNumber}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">وضعیت سفارش</label>
-            <CustomSelect options={statusOptions} value={status} onChange={setStatus} placeholder="انتخاب وضعیت" />
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Status do pedido</label>
+            <CustomSelect options={statusOptions} value={status} onChange={setStatus} placeholder="Selecionar status" />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">کد رهگیری</label>
-            <input type="text" value={trackingCode} onChange={(e) => setTrackingCode(e.target.value)} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm outline-none bg-(--color-bg-primary) text-(--color-text-primary)" placeholder="مثال: TRK-12345" />
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Código de rastreio</label>
+            <input type="text" value={trackingCode} onChange={(e) => setTrackingCode(e.target.value)} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm outline-none bg-(--color-bg-primary) text-(--color-text-primary)" placeholder="Exemplo: TRK-12345" />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">هزینه ارسال (تومان)</label>
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Frete (tomans)</label>
             <input type="number" value={shippingCost} onChange={(e) => setShippingCost(Number(e.target.value))} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm outline-none bg-(--color-bg-primary) text-(--color-text-primary)" />
           </div>
           <div className="flex gap-3 mt-6 justify-end">
-            <button type="button" onClick={onClose} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">انصراف</button>
+            <button type="button" onClick={onClose} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">Cancelar</button>
             <button type="submit" disabled={loading} className="px-5 py-2.5 bg-(--color-text-primary) text-(--color-bg-primary) border-none rounded-xl cursor-pointer text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-70 disabled:cursor-not-allowed">
-              {loading ? 'در حال ذخیره...' : 'ذخیره تغییرات'}
+              {loading ? "Salvando..." : "Salvar alterações"}
             </button>
           </div>
         </form>
@@ -454,127 +454,127 @@ export default function OrdersManagement() {
     {
       id: 1001,
       orderNumber: 'ORD-1001',
-      buyer: { id: 1, name: 'علی محمدی', phone: '09123456789', email: 'ali@example.com' },
-      seller: { id: 2, name: 'زهرا کریمی', phone: '09123456788', email: 'zahra@example.com' },
-      products: [{ id: 1, title: 'هدفون بیسیم حرفه‌ای X200', price: 1250000, quantity: 1, image: '/images/products/1.jpg' }],
+      buyer: { id: 1, name: "Ali Mohammadi", phone: '09123456789', email: 'ali@example.com' },
+      seller: { id: 2, name: "Zahra Karimi", phone: '09123456788', email: 'zahra@example.com' },
+      products: [{ id: 1, title: "Fone de ouvido sem fio profissional X200", price: 1250000, quantity: 1, image: '/images/products/1.jpg' }],
       totalAmount: 1250000,
       shippingCost: 50000,
       finalAmount: 1300000,
       status: 'pending_payment',
       paymentMethod: 'online',
       shippingMethod: 'post',
-      address: 'تهران، خیابان ولیعصر، پلاک ۱۲۳',
-      createdAt: '۱۴۰۳/۰۲/۱۵ ۱۴:۳۰',
-      updatedAt: '۱۴۰۳/۰۲/۱۵ ۱۴:۳۰',
+      address: "Teerã, rua Valiasr, 123",
+      createdAt: "04/05/2024 14:30",
+      updatedAt: "04/05/2024 14:30",
       trackingCode: null,
       dispute: null
     },
     {
       id: 1002,
       orderNumber: 'ORD-1002',
-      buyer: { id: 3, name: 'محمد رضایی', phone: '09123456787', email: 'mohammad@example.com' },
-      seller: { id: 1, name: 'علی محمدی', phone: '09123456789', email: 'ali@example.com' },
-      products: [{ id: 2, title: 'کیف چرمی اصل', price: 890000, quantity: 2, image: '/images/products/2.png' }],
+      buyer: { id: 3, name: "Mohammad Rezaei", phone: '09123456787', email: 'mohammad@example.com' },
+      seller: { id: 1, name: "Ali Mohammadi", phone: '09123456789', email: 'ali@example.com' },
+      products: [{ id: 2, title: "Bolsa de couro legítimo", price: 890000, quantity: 2, image: '/images/products/2.png' }],
       totalAmount: 1780000,
       shippingCost: 80000,
       finalAmount: 1860000,
       status: 'paid',
       paymentMethod: 'online',
       shippingMethod: 'courier',
-      address: 'اصفهان، خیابان چهارباغ، پلاک ۴۵',
-      createdAt: '۱۴۰۳/۰۲/۱۴ ۱۰:۱۵',
-      updatedAt: '۱۴۰۳/۰۲/۱۴ ۱۰:۲۰',
+      address: "Isfahan, rua Chaharbagh, 45",
+      createdAt: "03/05/2024 10:15",
+      updatedAt: "03/05/2024 10:20",
       trackingCode: 'TRK-001',
       dispute: null
     },
     {
       id: 1003,
       orderNumber: 'ORD-1003',
-      buyer: { id: 4, name: 'سارا حسینی', phone: '09123456786', email: 'sara@example.com' },
-      seller: { id: 2, name: 'زهرا کریمی', phone: '09123456788', email: 'zahra@example.com' },
-      products: [{ id: 3, title: 'ساعت هوشمند اپل', price: 12500000, quantity: 1, image: '/images/products/4.jpg' }],
+      buyer: { id: 4, name: "Sara Hosseini", phone: '09123456786', email: 'sara@example.com' },
+      seller: { id: 2, name: "Zahra Karimi", phone: '09123456788', email: 'zahra@example.com' },
+      products: [{ id: 3, title: "Apple Watch", price: 12500000, quantity: 1, image: '/images/products/4.jpg' }],
       totalAmount: 12500000,
       shippingCost: 0,
       finalAmount: 12500000,
       status: 'shipped',
       paymentMethod: 'online',
       shippingMethod: 'pickup',
-      address: 'شیراز، خیابان زند، پلاک ۷۸',
-      createdAt: '۱۴۰۳/۰۲/۱۳ ۱۶:۴۵',
-      updatedAt: '۱۴۰۳/۰۲/۱۴ ۰۹:۰۰',
+      address: "Shiraz, rua Zand, 78",
+      createdAt: "02/05/2024 16:45",
+      updatedAt: "03/05/2024 09:00",
       trackingCode: 'TRK-002',
       dispute: null
     },
     {
       id: 1004,
       orderNumber: 'ORD-1004',
-      buyer: { id: 5, name: 'رضا احمدی', phone: '09123456785', email: 'reza@example.com' },
-      seller: { id: 3, name: 'محمد رضایی', phone: '09123456787', email: 'mohammad@example.com' },
-      products: [{ id: 4, title: 'کتاب آموزش ری اکت', price: 250000, quantity: 3, image: '/images/products/3.png' }],
+      buyer: { id: 5, name: "Reza Ahmadi", phone: '09123456785', email: 'reza@example.com' },
+      seller: { id: 3, name: "Mohammad Rezaei", phone: '09123456787', email: 'mohammad@example.com' },
+      products: [{ id: 4, title: "Livro de introdução ao React", price: 250000, quantity: 3, image: '/images/products/3.png' }],
       totalAmount: 750000,
       shippingCost: 50000,
       finalAmount: 800000,
       status: 'delivered',
       paymentMethod: 'cash',
       shippingMethod: 'post',
-      address: 'مشهد، خیابان امام رضا، پلاک ۳۲',
-      createdAt: '۱۴۰۳/۰۲/۱۲ ۱۱:۲۰',
-      updatedAt: '۱۴۰۳/۰۲/۱۴ ۱۸:۳۰',
+      address: "Mashhad, rua Imam Reza, 32",
+      createdAt: "01/05/2024 11:20",
+      updatedAt: "03/05/2024 18:30",
       trackingCode: 'TRK-003',
       dispute: null
     },
     {
       id: 1005,
       orderNumber: 'ORD-1005',
-      buyer: { id: 1, name: 'علی محمدی', phone: '09123456789', email: 'ali@example.com' },
-      seller: { id: 4, name: 'سارا حسینی', phone: '09123456786', email: 'sara@example.com' },
-      products: [{ id: 5, title: 'ماوس گیمینگ ریزر', price: 1450000, quantity: 1, image: '/images/products/6.jpg' }],
+      buyer: { id: 1, name: "Ali Mohammadi", phone: '09123456789', email: 'ali@example.com' },
+      seller: { id: 4, name: "Sara Hosseini", phone: '09123456786', email: 'sara@example.com' },
+      products: [{ id: 5, title: "Mouse gamer Razer", price: 1450000, quantity: 1, image: '/images/products/6.jpg' }],
       totalAmount: 1450000,
       shippingCost: 50000,
       finalAmount: 1500000,
       status: 'cancelled',
       paymentMethod: 'online',
       shippingMethod: 'post',
-      address: 'تهران، خیابان آزادی، پلاک ۵۶',
-      createdAt: '۱۴۰۳/۰۲/۱۱ ۰۹:۰۰',
-      updatedAt: '۱۴۰۳/۰۲/۱۲ ۱۴:۲۰',
+      address: "Teerã, rua Azadi, 56",
+      createdAt: "30/04/2024 09:00",
+      updatedAt: "01/05/2024 14:20",
       trackingCode: null,
       dispute: null
     },
     {
       id: 1006,
       orderNumber: 'ORD-1006',
-      buyer: { id: 2, name: 'زهرا کریمی', phone: '09123456788', email: 'zahra@example.com' },
-      seller: { id: 1, name: 'علی محمدی', phone: '09123456789', email: 'ali@example.com' },
-      products: [{ id: 6, title: 'اسپیکر بلوتوثی جی‌بی‌ال', price: 3980000, quantity: 1, image: '/images/products/7.jpg' }],
+      buyer: { id: 2, name: "Zahra Karimi", phone: '09123456788', email: 'zahra@example.com' },
+      seller: { id: 1, name: "Ali Mohammadi", phone: '09123456789', email: 'ali@example.com' },
+      products: [{ id: 6, title: "Caixa de som Bluetooth JBL", price: 3980000, quantity: 1, image: '/images/products/7.jpg' }],
       totalAmount: 3980000,
       shippingCost: 80000,
       finalAmount: 4060000,
       status: 'in_dispute',
       paymentMethod: 'online',
       shippingMethod: 'courier',
-      address: 'کرج، خیابان فردیس، پلاک ۱۲',
-      createdAt: '۱۴۰۳/۰۲/۱۰ ۱۵:۳۰',
-      updatedAt: '۱۴۰۳/۰۲/۱۳ ۱۰:۰۰',
+      address: "Karaj, rua Fardis, 12",
+      createdAt: "29/04/2024 15:30",
+      updatedAt: "02/05/2024 10:00",
       trackingCode: 'TRK-004',
-      dispute: { reason: 'محصول خراب رسیده است', status: 'pending', createdAt: '۱۴۰۳/۰۲/۱۳' }
+      dispute: { reason: "O produto chegou danificado", status: 'pending', createdAt: "02/05/2024" }
     },
   ]);
 
   const statusOptions = [
-    { value: 'pending_payment', label: 'در انتظار پرداخت', color: '#f59e0b', icon: '⏳' },
-    { value: 'paid', label: 'پرداخت شده', color: '#3b82f6', icon: '💰' },
-    { value: 'shipped', label: 'در حال ارسال', color: '#8b5cf6', icon: '🚚' },
-    { value: 'delivered', label: 'تحویل شده', color: '#10b981', icon: '✅' },
-    { value: 'cancelled', label: 'لغو شده', color: '#ef4444', icon: '❌' },
-    { value: 'in_dispute', label: 'در حال پیگیری', color: '#ec489a', icon: '⚠️' },
+    { value: 'pending_payment', label: "Aguardando pagamento", color: '#f59e0b', icon: '⏳' },
+    { value: 'paid', label: "Pago", color: '#3b82f6', icon: '💰' },
+    { value: 'shipped', label: "Em transporte", color: '#8b5cf6', icon: '🚚' },
+    { value: 'delivered', label: "Entregue", color: '#10b981', icon: '✅' },
+    { value: 'cancelled', label: "Cancelado", color: '#ef4444', icon: '❌' },
+    { value: 'in_dispute', label: "Em análise", color: '#ec489a', icon: '⚠️' },
   ];
 
   const dateOptions = [
-    { value: 'all', label: 'همه' },
-    { value: 'today', label: 'امروز' },
-    { value: 'week', label: 'هفته جاری' },
-    { value: 'month', label: 'ماه جاری' },
+    { value: 'all', label: "Todos" },
+    { value: 'today', label: "Hoje" },
+    { value: 'week', label: "Esta semana" },
+    { value: 'month', label: "Este mês" },
   ];
 
   const filteredOrders = useMemo(() => {
@@ -610,19 +610,19 @@ export default function OrdersManagement() {
   const handleSort = (field: string) => {
     if (sortField === field) setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     else { setSortField(field); setSortDirection('asc'); }
-    info(`مرتب‌سازی بر اساس ${field}`, 1000);
+    info(`Ordenar por ${field}`, 1000);
   };
 
   const getStatusBadge = (status: string) => {
     const statusMap = statusOptions.find(opt => opt.value === status);
-    return statusMap || { color: '#6b7280', label: 'نامشخص', icon: '❓' };
+    return statusMap || { color: '#6b7280', label: "Não informado", icon: '❓' };
   };
 
   // عملیات‌ها
   const handleViewDetails = (order: any) => {
     setSelectedOrderDetail(order);
     setIsModalOpen(true);
-    info(`مشاهده جزئیات سفارش ${order.orderNumber}`, 2000);
+    info(`Ver detalhes do pedido ${order.orderNumber}`, 2000);
   };
 
   const handleEditOrder = (order: any) => {
@@ -635,8 +635,8 @@ export default function OrdersManagement() {
   };
 
   const handleCancelOrder = (orderId: number) => {
-    setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'cancelled', updatedAt: new Date().toLocaleString('fa-IR') } : o));
-    success('سفارش با موفقیت لغو شد');
+    setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'cancelled', updatedAt: new Date().toLocaleString('pt-BR') } : o));
+    success("Pedido cancelado");
   };
 
   const handleDeleteOrder = (orderId: number, reason?: string) => {
@@ -645,8 +645,8 @@ export default function OrdersManagement() {
 
   const handleUpdateStatus = (orderId: number, newStatus: string) => {
     const statusLabel = statusOptions.find(s => s.value === newStatus)?.label;
-    setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus, updatedAt: new Date().toLocaleString('fa-IR') } : o));
-    success(`وضعیت سفارش با موفقیت به ${statusLabel} تغییر یافت`);
+    setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus, updatedAt: new Date().toLocaleString('pt-BR') } : o));
+    success(`Status do pedido alterado para ${statusLabel} com sucesso`);
   };
 
   const handleAddTracking = (order: any) => {
@@ -655,7 +655,7 @@ export default function OrdersManagement() {
   };
 
   const handleSaveTracking = (orderId: number, trackingCode: string) => {
-    setOrders(orders.map(o => o.id === orderId ? { ...o, trackingCode, updatedAt: new Date().toLocaleString('fa-IR') } : o));
+    setOrders(orders.map(o => o.id === orderId ? { ...o, trackingCode, updatedAt: new Date().toLocaleString('pt-BR') } : o));
   };
 
   const handleViewDispute = (order: any) => {
@@ -665,13 +665,13 @@ export default function OrdersManagement() {
 
   const handleResolveDispute = (orderId: number, resolution: string, note: string) => {
     const newStatus = resolution === 'buyer' ? 'cancelled' : 'delivered';
-    const statusLabel = newStatus === 'cancelled' ? 'لغو شده' : 'تحویل شده';
+    const statusLabel = newStatus === 'cancelled' ? "Cancelado" : "Entregue";
     setOrders(orders.map(o => o.id === orderId ? { 
       ...o, 
       status: newStatus,
-      dispute: { ...o.dispute, resolvedAt: new Date().toLocaleString('fa-IR'), resolution, note }
+      dispute: { ...o.dispute, resolvedAt: new Date().toLocaleString('pt-BR'), resolution, note }
     } : o));
-    success(`اختلاف با موفقیت حل شد. سفارش ${statusLabel} شد`);
+    success(`Disputa resolvida. O pedido ${statusLabel} foi atualizado`);
   };
 
   const handleToggleMenu = (menuId: number) => {
@@ -687,21 +687,21 @@ export default function OrdersManagement() {
       {/* Header */}
       <div className="flex justify-between items-center mb-5 flex-wrap gap-3">
         <div>
-          <h1 className="text-[22px] font-bold text-(--color-text-primary) m-0">مدیریت سفارشات</h1>
-          <p className="text-[13px] text-(--color-text-secondary) mt-0.5">مدیریت و پیگیری سفارشات سایت</p>
+          <h1 className="text-[22px] font-bold text-(--color-text-primary) m-0">Gerenciar pedidos</h1>
+          <p className="text-[13px] text-(--color-text-secondary) mt-0.5">Gerencie e acompanhe os pedidos</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-(--color-bg-card) rounded-full border border-(--color-border-color) text-[12px] text-(--color-text-primary)">
-            <span>📦</span><strong>{toPersianNumber(orders.length)}</strong><small className="text-(--color-text-muted)">کل سفارشات</small>
+            <span>📦</span><strong>{formatNumber(orders.length)}</strong><small className="text-(--color-text-muted)">Total de pedidos</small>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-(--color-bg-card) rounded-full border border-(--color-border-color) text-[12px] text-(--color-text-primary)">
-            <span>⏳</span><strong>{toPersianNumber(orders.filter(o => o.status === 'pending_payment').length)}</strong><small className="text-(--color-text-muted)">در انتظار</small>
+            <span>⏳</span><strong>{formatNumber(orders.filter(o => o.status === 'pending_payment').length)}</strong><small className="text-(--color-text-muted)">Pendente</small>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-(--color-bg-card) rounded-full border border-(--color-border-color) text-[12px] text-(--color-text-primary)">
-            <span>🚚</span><strong>{toPersianNumber(orders.filter(o => o.status === 'shipped').length)}</strong><small className="text-(--color-text-muted)">در حال ارسال</small>
+            <span>🚚</span><strong>{formatNumber(orders.filter(o => o.status === 'shipped').length)}</strong><small className="text-(--color-text-muted)">Em transporte</small>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-(--color-bg-card) rounded-full border border-(--color-border-color) text-[12px] text-(--color-text-primary)">
-            <span>⚠️</span><strong>{toPersianNumber(orders.filter(o => o.status === 'in_dispute').length)}</strong><small className="text-(--color-text-muted)">اختلافات</small>
+            <span>⚠️</span><strong>{formatNumber(orders.filter(o => o.status === 'in_dispute').length)}</strong><small className="text-(--color-text-muted)">Disputas</small>
           </div>
         </div>
       </div>
@@ -712,7 +712,7 @@ export default function OrdersManagement() {
           <SearchIcon />
           <input
             type="text"
-            placeholder="جستجو بر اساس شماره سفارش، خریدار یا فروشنده..."
+            placeholder="Buscar por número do pedido, comprador ou vendedor..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1 border-none outline-none text-[13px] font-inherit bg-transparent text-(--color-text-primary)"
@@ -720,22 +720,22 @@ export default function OrdersManagement() {
         </div>
         <div className="flex gap-3 flex-wrap">
           <CustomSelect
-            options={[{ value: 'all', label: 'همه وضعیت‌ها' }, ...statusOptions.map(opt => ({ value: opt.value, label: opt.label }))]}
+            options={[{ value: 'all', label: "Todos os status" }, ...statusOptions.map(opt => ({ value: opt.value, label: opt.label }))]}
             value={statusFilter}
             onChange={(val) => { setStatusFilter(val); setCurrentPage(1); }}
-            placeholder="وضعیت"
+            placeholder="Status"
           />
           <CustomSelect
             options={dateOptions}
             value={dateFilter}
             onChange={(val) => { setDateFilter(val); setCurrentPage(1); }}
-            placeholder="تاریخ"
+            placeholder="Data"
           />
           <CustomSelect
-            options={[10, 25, 50].map(n => ({ value: n, label: `${toPersianNumber(n)} در صفحه` }))}
+            options={[10, 25, 50].map(n => ({ value: n, label: `${formatNumber(n)} por página` }))}
             value={itemsPerPage}
             onChange={(val) => { setItemsPerPage(val); setCurrentPage(1); }}
-            placeholder="تعداد در صفحه"
+            placeholder="Itens por página"
           />
         </div>
       </div>
@@ -745,25 +745,25 @@ export default function OrdersManagement() {
         <table className="w-full border-collapse min-w-[900px]">
           <thead>
             <tr>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('orderNumber')}>
-                شماره سفارش <SortIcon field="orderNumber" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('orderNumber')}>
+                Número do pedido <SortIcon field="orderNumber" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('buyer')}>
-                خریدار <SortIcon field="buyer" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('buyer')}>
+                Comprador <SortIcon field="buyer" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('seller')}>
-                فروشنده <SortIcon field="seller" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('seller')}>
+                Vendedor <SortIcon field="seller" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('finalAmount')}>
-                مبلغ کل <SortIcon field="finalAmount" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('finalAmount')}>
+                Valor total <SortIcon field="finalAmount" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('status')}>
-                وضعیت <SortIcon field="status" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('status')}>
+                Status <SortIcon field="status" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('createdAt')}>
-                تاریخ ثبت <SortIcon field="createdAt" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('createdAt')}>
+                Data do pedido <SortIcon field="createdAt" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">عملیات</th>
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -788,7 +788,7 @@ export default function OrdersManagement() {
                   </td>
                   <td className="p-3 text-[12px] text-(--color-text-primary) border-b border-(--color-border-light)">
                     <div className="font-semibold text-orange-500">{formatPrice(order.finalAmount)}</div>
-                    <div className="text-[10px] text-(--color-text-muted)">+ {formatPrice(order.shippingCost)} پست</div>
+                    <div className="text-[10px] text-(--color-text-muted)">+ {formatPrice(order.shippingCost)} Publicação</div>
                   </td>
                   <td className="p-3 text-[12px] text-(--color-text-primary) border-b border-(--color-border-light)">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium`} style={{ backgroundColor: statusBadge.color + '15', color: statusBadge.color }}>
@@ -827,7 +827,7 @@ export default function OrdersManagement() {
             let pageNum = totalPages <= 5 ? i + 1 : (currentPage <= 3 ? i + 1 : (currentPage >= totalPages - 2 ? totalPages - 4 + i : currentPage - 2 + i));
             return (
               <button key={pageNum} onClick={() => setCurrentPage(pageNum)} className={`px-2.5 py-1.5 rounded-md border border-(--color-border-color) bg-(--color-bg-card) cursor-pointer text-[12px] text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors ${currentPage === pageNum ? 'bg-(--color-text-primary) text-(--color-bg-primary) border-(--color-text-primary)' : ''}`}>
-                {toPersianNumber(pageNum)}
+                {formatNumber(pageNum)}
               </button>
             );
           })}
@@ -841,7 +841,7 @@ export default function OrdersManagement() {
         {selectedOrderDetail && (
           <div className="flex flex-col max-h-[85vh] overflow-hidden bg-(--color-bg-card)">
             <div className="flex justify-between items-center p-4 px-5 border-b border-(--color-border-color) bg-(--color-bg-card)">
-              <h2 className="text-lg font-semibold text-(--color-text-primary)">جزئیات سفارش #{selectedOrderDetail.orderNumber}</h2>
+              <h2 className="text-lg font-semibold text-(--color-text-primary)">Detalhes do pedido #{selectedOrderDetail.orderNumber}</h2>
               <span className={`px-3 py-1 rounded-full text-[12px] font-medium`} style={{ backgroundColor: getStatusBadge(selectedOrderDetail.status).color + '15', color: getStatusBadge(selectedOrderDetail.status).color }}>
                 {getStatusBadge(selectedOrderDetail.status).icon} {getStatusBadge(selectedOrderDetail.status).label}
               </span>
@@ -849,35 +849,35 @@ export default function OrdersManagement() {
             <div className="p-5 overflow-y-auto">
               {/* اطلاعات خریدار */}
               <div className="mb-5 p-4 bg-(--color-bg-surface) rounded-xl">
-                <h4 className="font-semibold text-(--color-text-primary) mb-2">اطلاعات خریدار</h4>
+                <h4 className="font-semibold text-(--color-text-primary) mb-2">Dados do comprador</h4>
                 <div className="grid grid-cols-2 gap-3 text-[13px]">
-                  <div><strong>نام:</strong> {selectedOrderDetail.buyer.name}</div>
-                  <div><strong>تلفن:</strong> {selectedOrderDetail.buyer.phone}</div>
-                  <div><strong>ایمیل:</strong> {selectedOrderDetail.buyer.email}</div>
-                  <div><strong>آدرس:</strong> {selectedOrderDetail.address}</div>
+                  <div><strong>Nome:</strong> {selectedOrderDetail.buyer.name}</div>
+                  <div><strong>Telefone:</strong> {selectedOrderDetail.buyer.phone}</div>
+                  <div><strong>E-mail:</strong> {selectedOrderDetail.buyer.email}</div>
+                  <div><strong>Endereço:</strong> {selectedOrderDetail.address}</div>
                 </div>
               </div>
 
               {/* اطلاعات فروشنده */}
               <div className="mb-5 p-4 bg-(--color-bg-surface) rounded-xl">
-                <h4 className="font-semibold text-(--color-text-primary) mb-2">اطلاعات فروشنده</h4>
+                <h4 className="font-semibold text-(--color-text-primary) mb-2">Dados do vendedor</h4>
                 <div className="grid grid-cols-2 gap-3 text-[13px]">
-                  <div><strong>نام:</strong> {selectedOrderDetail.seller.name}</div>
-                  <div><strong>تلفن:</strong> {selectedOrderDetail.seller.phone}</div>
-                  <div><strong>ایمیل:</strong> {selectedOrderDetail.seller.email}</div>
+                  <div><strong>Nome:</strong> {selectedOrderDetail.seller.name}</div>
+                  <div><strong>Telefone:</strong> {selectedOrderDetail.seller.phone}</div>
+                  <div><strong>E-mail:</strong> {selectedOrderDetail.seller.email}</div>
                 </div>
               </div>
 
               {/* محصولات */}
               <div className="mb-5">
-                <h4 className="font-semibold text-(--color-text-primary) mb-3">محصولات سفارش</h4>
+                <h4 className="font-semibold text-(--color-text-primary) mb-3">Produtos do pedido</h4>
                 <div className="flex flex-col gap-3">
                   {selectedOrderDetail.products.map((product: any) => (
                     <div key={product.id} className="flex items-center gap-3 p-3 bg-(--color-bg-surface) rounded-xl">
                       <img src={product.image} alt={product.title} className="w-[50px] h-[50px] object-cover rounded-lg" />
                       <div className="flex-1">
                         <div className="font-medium text-[13px] text-(--color-text-primary)">{product.title}</div>
-                        <div className="text-[12px] text-(--color-text-muted)">تعداد: {toPersianNumber(product.quantity)} عدد</div>
+                        <div className="text-[12px] text-(--color-text-muted)">Quantidade: {formatNumber(product.quantity)} unidades</div>
                       </div>
                       <div className="font-semibold text-orange-500 text-[13px]">{formatPrice(product.price * product.quantity)}</div>
                     </div>
@@ -887,26 +887,26 @@ export default function OrdersManagement() {
 
               {/* اطلاعات مالی */}
               <div className="p-4 bg-(--color-bg-surface) rounded-xl mb-5">
-                <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>جمع کل:</span><span>{formatPrice(selectedOrderDetail.totalAmount)}</span></div>
-                <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>هزینه ارسال:</span><span>{formatPrice(selectedOrderDetail.shippingCost)}</span></div>
-                <div className="flex justify-between py-2.5 text-[16px] font-bold border-t border-(--color-border-color) mt-1.5 text-(--color-text-primary)"><span>مبلغ قابل پرداخت:</span><span>{formatPrice(selectedOrderDetail.finalAmount)}</span></div>
-                <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>روش پرداخت:</span><span>{selectedOrderDetail.paymentMethod === 'online' ? 'پرداخت آنلاین' : 'پرداخت در محل'}</span></div>
-                <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>روش ارسال:</span><span>{selectedOrderDetail.shippingMethod === 'post' ? 'پست پیشتاز' : selectedOrderDetail.shippingMethod === 'courier' ? 'پیک موتوری' : 'تحویل حضوری'}</span></div>
+                <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>Total:</span><span>{formatPrice(selectedOrderDetail.totalAmount)}</span></div>
+                <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>Frete:</span><span>{formatPrice(selectedOrderDetail.shippingCost)}</span></div>
+                <div className="flex justify-between py-2.5 text-[16px] font-bold border-t border-(--color-border-color) mt-1.5 text-(--color-text-primary)"><span>Total a pagar:</span><span>{formatPrice(selectedOrderDetail.finalAmount)}</span></div>
+                <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>Forma de pagamento:</span><span>{selectedOrderDetail.paymentMethod === 'online' ? "Pagamento online" : "Pagamento na entrega"}</span></div>
+                <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>Forma de entrega:</span><span>{selectedOrderDetail.shippingMethod === 'post' ? "Entrega expressa" : selectedOrderDetail.shippingMethod === 'courier' ? "Entrega por motoboy" : "Retirada no local"}</span></div>
                 {selectedOrderDetail.trackingCode && (
-                  <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>کد رهگیری:</span><span className="font-mono font-semibold text-blue-500">{selectedOrderDetail.trackingCode}</span></div>
+                  <div className="flex justify-between py-1.5 text-[13px] text-(--color-text-primary)"><span>Código de rastreio:</span><span className="font-mono font-semibold text-blue-500">{selectedOrderDetail.trackingCode}</span></div>
                 )}
               </div>
 
               {/* اختلاف */}
               {selectedOrderDetail.dispute && (
                 <div className="p-4 bg-amber-500/15 border border-amber-500 rounded-xl text-(--color-text-primary)">
-                  <h4 className="font-semibold mb-2">اختلاف ثبت شده</h4>
-                  <div><strong>دلیل:</strong> {selectedOrderDetail.dispute.reason}</div>
-                  <div><strong>تاریخ ثبت:</strong> {selectedOrderDetail.dispute.createdAt}</div>
+                  <h4 className="font-semibold mb-2">Disputa registrada</h4>
+                  <div><strong>Motivo:</strong> {selectedOrderDetail.dispute.reason}</div>
+                  <div><strong>Data do registro:</strong> {selectedOrderDetail.dispute.createdAt}</div>
                   {selectedOrderDetail.dispute.resolution && (
                     <>
-                      <div><strong>نتیجه:</strong> {selectedOrderDetail.dispute.resolution === 'buyer' ? 'به نفع خریدار' : 'به نفع فروشنده'}</div>
-                      <div><strong>توضیحات:</strong> {selectedOrderDetail.dispute.note}</div>
+                      <div><strong>Resultado:</strong> {selectedOrderDetail.dispute.resolution === 'buyer' ? "A favor do comprador" : "A favor do vendedor"}</div>
+                      <div><strong>Descrição:</strong> {selectedOrderDetail.dispute.note}</div>
                     </>
                   )}
                 </div>
@@ -922,15 +922,15 @@ export default function OrdersManagement() {
       {/* Delete Order Modal */}
       <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} size="sm">
         <div className="p-6 bg-(--color-bg-card) rounded-2xl">
-          <h2 className="text-xl font-bold mb-4 text-red-500">حذف سفارش</h2>
-          <p className="text-(--color-text-primary)">آیا از حذف سفارش <strong>{selectedOrder?.orderNumber}</strong> مطمئن هستید؟</p>
+          <h2 className="text-xl font-bold mb-4 text-red-500">Excluir pedido</h2>
+          <p className="text-(--color-text-primary)">Deseja excluir o pedido <strong>{selectedOrder?.orderNumber}</strong> ?</p>
           <div className="mb-4 mt-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">دلیل حذف (اختیاری)</label>
-            <textarea onChange={(e) => setSelectedOrder({ ...selectedOrder, deleteReason: e.target.value })} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm resize-y font-inherit bg-(--color-bg-primary) text-(--color-text-primary)" rows={3} placeholder="دلیل حذف سفارش را وارد کنید..." />
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Motivo da exclusão (opcional)</label>
+            <textarea onChange={(e) => setSelectedOrder({ ...selectedOrder, deleteReason: e.target.value })} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm resize-y font-inherit bg-(--color-bg-primary) text-(--color-text-primary)" rows={3} placeholder="Informe o motivo da exclusão..." />
           </div>
           <div className="flex gap-3 mt-6 justify-end">
-            <button onClick={() => setIsDeleteModalOpen(false)} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">انصراف</button>
-            <button onClick={() => { handleDeleteOrder(selectedOrder?.id, selectedOrder?.deleteReason); setIsDeleteModalOpen(false); }} className="px-5 py-2.5 bg-red-500 border-none rounded-xl cursor-pointer text-sm font-medium text-white hover:bg-red-600 transition-colors">تایید حذف</button>
+            <button onClick={() => setIsDeleteModalOpen(false)} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">Cancelar</button>
+            <button onClick={() => { handleDeleteOrder(selectedOrder?.id, selectedOrder?.deleteReason); setIsDeleteModalOpen(false); }} className="px-5 py-2.5 bg-red-500 border-none rounded-xl cursor-pointer text-sm font-medium text-white hover:bg-red-600 transition-colors">Confirmar exclusão</button>
           </div>
         </div>
       </Modal>
@@ -938,15 +938,15 @@ export default function OrdersManagement() {
       {/* Tracking Modal */}
       <Modal isOpen={isTrackingModalOpen} onClose={() => setIsTrackingModalOpen(false)} size="sm">
         <div className="p-6 bg-(--color-bg-card) rounded-2xl">
-          <h2 className="text-xl font-bold mb-4 text-(--color-text-primary)">کد رهگیری سفارش</h2>
-          <p className="text-(--color-text-primary) mb-4">سفارش: <strong>{selectedOrder?.orderNumber}</strong></p>
+          <h2 className="text-xl font-bold mb-4 text-(--color-text-primary)">Rastreio do pedido</h2>
+          <p className="text-(--color-text-primary) mb-4">Pedido: <strong>{selectedOrder?.orderNumber}</strong></p>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">کد رهگیری پستی</label>
-            <input type="text" defaultValue={selectedOrder?.trackingCode || ''} onChange={(e) => setSelectedOrder({ ...selectedOrder, trackingCode: e.target.value })} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm outline-none bg-(--color-bg-primary) text-(--color-text-primary)" placeholder="مثال: IR-1234567890" />
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Código de rastreio da entrega</label>
+            <input type="text" defaultValue={selectedOrder?.trackingCode || ''} onChange={(e) => setSelectedOrder({ ...selectedOrder, trackingCode: e.target.value })} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm outline-none bg-(--color-bg-primary) text-(--color-text-primary)" placeholder="Exemplo: IR-1234567890" />
           </div>
           <div className="flex gap-3 mt-6 justify-end">
-            <button onClick={() => setIsTrackingModalOpen(false)} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">انصراف</button>
-            <button onClick={() => { handleSaveTracking(selectedOrder?.id, selectedOrder?.trackingCode); setIsTrackingModalOpen(false); }} className="px-5 py-2.5 bg-(--color-text-primary) text-(--color-bg-primary) border-none rounded-xl cursor-pointer text-sm font-medium hover:opacity-90 transition-opacity">ذخیره کد</button>
+            <button onClick={() => setIsTrackingModalOpen(false)} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">Cancelar</button>
+            <button onClick={() => { handleSaveTracking(selectedOrder?.id, selectedOrder?.trackingCode); setIsTrackingModalOpen(false); }} className="px-5 py-2.5 bg-(--color-text-primary) text-(--color-bg-primary) border-none rounded-xl cursor-pointer text-sm font-medium hover:opacity-90 transition-opacity">Salvar código</button>
           </div>
         </div>
       </Modal>
@@ -954,27 +954,27 @@ export default function OrdersManagement() {
       {/* Dispute Modal */}
       <Modal isOpen={isDisputeModalOpen} onClose={() => setIsDisputeModalOpen(false)} size="md">
         <div className="p-6 bg-(--color-bg-card) rounded-2xl">
-          <h2 className="text-xl font-bold mb-4 text-pink-500">حل اختلاف سفارش</h2>
-          <p className="text-(--color-text-primary)">سفارش: <strong>{selectedOrder?.orderNumber}</strong></p>
-          <p className="text-(--color-text-primary)"><strong>دلیل اختلاف:</strong> {selectedOrder?.dispute?.reason}</p>
-          <p className="text-(--color-text-primary) mb-4"><strong>تاریخ ثبت:</strong> {selectedOrder?.dispute?.createdAt}</p>
+          <h2 className="text-xl font-bold mb-4 text-pink-500">Resolver disputa do pedido</h2>
+          <p className="text-(--color-text-primary)">Pedido: <strong>{selectedOrder?.orderNumber}</strong></p>
+          <p className="text-(--color-text-primary)"><strong>Motivo da disputa:</strong> {selectedOrder?.dispute?.reason}</p>
+          <p className="text-(--color-text-primary) mb-4"><strong>Data do registro:</strong> {selectedOrder?.dispute?.createdAt}</p>
           
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">نتیجه اختلاف</label>
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Resultado da disputa</label>
             <div className="flex flex-col gap-2.5 mt-2">
-              <label className="flex items-center gap-2 cursor-pointer text-[13px] text-(--color-text-primary)"><input type="radio" name="resolution" value="buyer" onChange={(e) => setSelectedOrder({ ...selectedOrder, resolution: e.target.value })} /> به نفع خریدار (لغو سفارش و برگشت وجه)</label>
-              <label className="flex items-center gap-2 cursor-pointer text-[13px] text-(--color-text-primary)"><input type="radio" name="resolution" value="seller" onChange={(e) => setSelectedOrder({ ...selectedOrder, resolution: e.target.value })} /> به نفع فروشنده (تکمیل سفارش)</label>
+              <label className="flex items-center gap-2 cursor-pointer text-[13px] text-(--color-text-primary)"><input type="radio" name="resolution" value="buyer" onChange={(e) => setSelectedOrder({ ...selectedOrder, resolution: e.target.value })} /> A favor do comprador (cancelar e reembolsar)</label>
+              <label className="flex items-center gap-2 cursor-pointer text-[13px] text-(--color-text-primary)"><input type="radio" name="resolution" value="seller" onChange={(e) => setSelectedOrder({ ...selectedOrder, resolution: e.target.value })} /> A favor do vendedor (concluir pedido)</label>
             </div>
           </div>
           
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">توضیحات (اختیاری)</label>
-            <textarea onChange={(e) => setSelectedOrder({ ...selectedOrder, disputeNote: e.target.value })} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm resize-y font-inherit bg-(--color-bg-primary) text-(--color-text-primary)" rows={3} placeholder="توضیحات بیشتر..." />
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Descrição (opcional)</label>
+            <textarea onChange={(e) => setSelectedOrder({ ...selectedOrder, disputeNote: e.target.value })} className="w-full p-2.5 border border-(--color-border-color) rounded-xl text-sm resize-y font-inherit bg-(--color-bg-primary) text-(--color-text-primary)" rows={3} placeholder="Mais detalhes..." />
           </div>
           
           <div className="flex gap-3 mt-6 justify-end">
-            <button onClick={() => setIsDisputeModalOpen(false)} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">انصراف</button>
-            <button onClick={() => { handleResolveDispute(selectedOrder?.id, selectedOrder?.resolution, selectedOrder?.disputeNote); setIsDisputeModalOpen(false); }} className="px-5 py-2.5 bg-pink-500 border-none rounded-xl cursor-pointer text-sm font-medium text-white hover:bg-pink-600 transition-colors">تایید و حل اختلاف</button>
+            <button onClick={() => setIsDisputeModalOpen(false)} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">Cancelar</button>
+            <button onClick={() => { handleResolveDispute(selectedOrder?.id, selectedOrder?.resolution, selectedOrder?.disputeNote); setIsDisputeModalOpen(false); }} className="px-5 py-2.5 bg-pink-500 border-none rounded-xl cursor-pointer text-sm font-medium text-white hover:bg-pink-600 transition-colors">Confirmar e resolver disputa</button>
           </div>
         </div>
       </Modal>

@@ -26,7 +26,7 @@ export default function AdminGuard({ children }: AdminGuardProps) {
       <div className="flex items-center justify-center min-h-screen bg-(--color-bg-primary)">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-(--color-text-secondary)">در حال بررسی احراز هویت...</span>
+          <span className="text-(--color-text-secondary)">Verificando acesso...</span>
         </div>
       </div>
     );

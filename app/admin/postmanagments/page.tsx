@@ -3,7 +3,7 @@
 
 import React, { useState, useMemo, useRef, useEffect, useContext } from 'react';
 import Modal from '@/components/Modal';
-import { toPersianNumber, formatPrice } from '@/utils/numberUtils';
+import { formatNumber, formatPrice } from '@/utils/numberUtils';
 import DateRangePicker from '@/components/DateRangePicker';
 import { useToast } from '@/components/NotificationToast';
 
@@ -311,37 +311,37 @@ const MoreMenu = ({
       </button>
       {isOpen && (
         <div ref={menuRef} className="fixed bg-(--color-bg-card) rounded-xl shadow-lg min-w-40 z-1000 overflow-hidden border border-(--color-border-color)" style={{ top: menuPosition.top, left: menuPosition.left }}>
-          <button onClick={(e) => handleAction(() => onEdit(post), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
-            <EditPencilIcon /> <span>ویرایش پست</span>
+          <button onClick={(e) => handleAction(() => onEdit(post), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+            <EditPencilIcon /> <span>Editar publicação</span>
           </button>
           {post.status === 'pending' && (
             <>
-              <button onClick={(e) => handleAction(() => onApprove(post.id), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-emerald-500 hover:bg-emerald-500/10">
-                <CheckIcon /> <span>تایید پست</span>
+              <button onClick={(e) => handleAction(() => onApprove(post.id), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-emerald-500 hover:bg-emerald-500/10">
+                <CheckIcon /> <span>Aprovar publicação</span>
               </button>
-              <button onClick={(e) => handleAction(() => onReject(post.id), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-red-500 hover:bg-red-500/10">
-                <CloseSmIcon /> <span>رد پست</span>
+              <button onClick={(e) => handleAction(() => onReject(post.id), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-red-500 hover:bg-red-500/10">
+                <CloseSmIcon /> <span>Rejeitar publicação</span>
               </button>
             </>
           )}
           {!isSuspended && post.status !== 'suspended' && (
-            <button onClick={(e) => handleAction(() => onSuspend(post), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
-              <StopSignIcon /> <span>تعلیق موقت</span>
+            <button onClick={(e) => handleAction(() => onSuspend(post), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-(--color-text-primary) hover:bg-(--color-bg-surface)">
+              <StopSignIcon /> <span>Suspender temporariamente</span>
             </button>
           )}
           {isSuspended && (
             <>
-              <button onClick={(e) => handleAction(() => onEditSuspend(post), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-amber-500 hover:bg-amber-500/10">
-                <EditPencilIcon /> <span>ویرایش تعلیق</span>
+              <button onClick={(e) => handleAction(() => onEditSuspend(post), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-amber-500 hover:bg-amber-500/10">
+                <EditPencilIcon /> <span>Editar suspensão</span>
               </button>
-              <button onClick={(e) => handleAction(() => onRemoveSuspend(post.id), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-emerald-500 hover:bg-emerald-500/10">
-                <CircleCheckIcon /> <span>لغو تعلیق</span>
+              <button onClick={(e) => handleAction(() => onRemoveSuspend(post.id), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-emerald-500 hover:bg-emerald-500/10">
+                <CircleCheckIcon /> <span>Remover suspensão</span>
               </button>
             </>
           )}
           <div className="h-px bg-(--color-border-color) my-1" />
-          <button onClick={(e) => handleAction(() => onDelete(post.id), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-right transition-colors duration-200 text-red-500 hover:bg-red-500/10">
-            <TrashFullIcon /> <span>حذف پست</span>
+          <button onClick={(e) => handleAction(() => onDelete(post.id), e)} className="flex items-center gap-2.5 w-full px-4 py-2.5 border-none bg-transparent cursor-pointer text-[13px] text-start transition-colors duration-200 text-red-500 hover:bg-red-500/10">
+            <TrashFullIcon /> <span>Excluir publicação</span>
           </button>
         </div>
       )}
@@ -379,13 +379,13 @@ const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm, postTitle }: ConfirmDe
   <Modal isOpen={isOpen} onClose={onClose} size="sm">
     <div className="p-6 text-center">
       <div className="text-5xl mb-4">🗑️</div>
-      <h3 className="text-lg font-bold text-(--color-text-primary) mb-3">حذف پست</h3>
+      <h3 className="text-lg font-bold text-(--color-text-primary) mb-3">Excluir publicação</h3>
       <p className="text-sm text-(--color-text-secondary) mb-6 leading-relaxed">
-        آیا از حذف پست &quot;{postTitle}&quot; مطمئن هستید؟ این عمل غیرقابل بازگشت است.
+        Deseja excluir a publicação &quot;{postTitle}&quot;? Esta ação não pode ser desfeita.
       </p>
       <div className="flex gap-3 justify-center">
-        <button onClick={onClose} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-lg cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">انصراف</button>
-        <button onClick={onConfirm} className="px-5 py-2.5 bg-red-500 border-none rounded-lg cursor-pointer text-sm font-medium text-white hover:bg-red-600 transition-colors">حذف</button>
+        <button onClick={onClose} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-lg cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">Cancelar</button>
+        <button onClick={onConfirm} className="px-5 py-2.5 bg-red-500 border-none rounded-lg cursor-pointer text-sm font-medium text-white hover:bg-red-600 transition-colors">Excluir</button>
       </div>
     </div>
   </Modal>
@@ -401,7 +401,7 @@ interface ConfirmBulkModalProps {
 }
 
 const ConfirmBulkModal = ({ isOpen, onClose, onConfirm, action, count }: ConfirmBulkModalProps) => {
-  const actionText = action === 'delete' ? 'حذف' : action === 'approve' ? 'تایید' : 'رد';
+  const actionText = action === 'delete' ? "Excluir" : action === 'approve' ? "Confirmar" : "Rejeitar";
   const actionIcon = action === 'delete' ? '🗑️' : action === 'approve' ? '✓' : '✗';
   const actionColor = action === 'delete' ? '#ef4444' : action === 'approve' ? '#10b981' : '#f59e0b';
   
@@ -409,12 +409,12 @@ const ConfirmBulkModal = ({ isOpen, onClose, onConfirm, action, count }: Confirm
     <Modal isOpen={isOpen} onClose={onClose} size="sm">
       <div className="p-6 text-center">
         <div className="text-5xl mb-4">{actionIcon}</div>
-        <h3 className="text-lg font-bold text-(--color-text-primary) mb-3">{actionText} پست‌ها</h3>
+        <h3 className="text-lg font-bold text-(--color-text-primary) mb-3">{actionText} Publicações</h3>
         <p className="text-sm text-(--color-text-secondary) mb-6 leading-relaxed">
-          آیا از {actionText} {toPersianNumber(count)} پست انتخاب شده مطمئن هستید؟
+          Deseja {actionText} {formatNumber(count)} publicações selecionadas?
         </p>
         <div className="flex gap-3 justify-center">
-          <button onClick={onClose} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-lg cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">انصراف</button>
+          <button onClick={onClose} className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-lg cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors">Cancelar</button>
           <button onClick={onConfirm} className="px-5 py-2.5 border-none rounded-lg cursor-pointer text-sm font-medium text-white hover:opacity-90 transition-opacity" style={{ backgroundColor: actionColor }}>{actionText}</button>
         </div>
       </div>
@@ -441,7 +441,7 @@ const EditPostModal = ({ isOpen, onClose, post, onUpdate, categories }: EditPost
   const [loading, setLoading] = useState(false);
 
   const categoryOptions: SelectOption[] = [
-    { value: '', label: 'انتخاب کنید' },
+    { value: '', label: "Selecione" },
     ...categories.map(cat => ({ value: cat, label: cat }))
   ];
 
@@ -457,23 +457,23 @@ const EditPostModal = ({ isOpen, onClose, post, onUpdate, categories }: EditPost
 
   const validateForm = (): boolean => {
     if (!title.trim()) {
-      warning('لطفاً عنوان را وارد کنید');
+      warning("Informe um título");
       return false;
     }
     if (!category) {
-      warning('لطفاً دسته‌بندی را انتخاب کنید');
+      warning("Selecione uma categoria");
       return false;
     }
     if (!price || Number(price) <= 0) {
-      warning('لطفاً قیمت معتبر وارد کنید');
+      warning("Informe um preço válido");
       return false;
     }
     if (!stock || Number(stock) <= 0) {
-      warning('لطفاً موجودی معتبر وارد کنید');
+      warning("Informe um estoque válido");
       return false;
     }
     if (!description.trim()) {
-      warning('لطفاً توضیحات را وارد کنید');
+      warning("Informe a descrição");
       return false;
     }
     return true;
@@ -494,7 +494,7 @@ const EditPostModal = ({ isOpen, onClose, post, onUpdate, categories }: EditPost
         stock: Number(stock),
       });
       setLoading(false);
-      success('پست با موفقیت به‌روزرسانی شد');
+      success("Publicação atualizada");
       onClose();
     }, 500);
   };
@@ -502,10 +502,10 @@ const EditPostModal = ({ isOpen, onClose, post, onUpdate, categories }: EditPost
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="md">
       <div className="p-6 bg-(--color-bg-card) rounded-2xl">
-        <h2 className="text-xl font-bold text-(--color-text-primary) mb-5">ویرایش پست</h2>
+        <h2 className="text-xl font-bold text-(--color-text-primary) mb-5">Editar publicação</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">عنوان</label>
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Título</label>
             <input 
               type="text" 
               value={title} 
@@ -515,16 +515,16 @@ const EditPostModal = ({ isOpen, onClose, post, onUpdate, categories }: EditPost
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">دسته‌بندی</label>
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Categoria</label>
             <CustomSelect 
               options={categoryOptions} 
               value={category} 
               onChange={setCategory} 
-              placeholder="انتخاب کنید" 
+              placeholder="Selecione"
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">قیمت (تومان)</label>
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Preço (tomans)</label>
             <input 
               type="number" 
               value={price} 
@@ -534,7 +534,7 @@ const EditPostModal = ({ isOpen, onClose, post, onUpdate, categories }: EditPost
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">موجودی</label>
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Estoque</label>
             <input 
               type="number" 
               value={stock} 
@@ -544,7 +544,7 @@ const EditPostModal = ({ isOpen, onClose, post, onUpdate, categories }: EditPost
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">توضیحات</label>
+            <label className="block mb-2 font-medium text-[13px] text-(--color-text-secondary)">Descrição</label>
             <textarea 
               value={description} 
               onChange={(e) => setDescription(e.target.value)} 
@@ -559,14 +559,14 @@ const EditPostModal = ({ isOpen, onClose, post, onUpdate, categories }: EditPost
               onClick={onClose} 
               className="px-5 py-2.5 bg-(--color-bg-surface) border-none rounded-xl cursor-pointer text-sm font-medium text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors"
             >
-              انصراف
+              Cancelar
             </button>
             <button 
               type="submit" 
               disabled={loading} 
               className="px-5 py-2.5 bg-(--color-text-primary) text-(--color-bg-primary) border-none rounded-xl cursor-pointer text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              {loading ? 'در حال ذخیره...' : 'ذخیره تغییرات'}
+              {loading ? "Salvando..." : "Salvar alterações"}
             </button>
           </div>
         </form>
@@ -599,44 +599,44 @@ export default function PostsManagementPage() {
   // داده‌های نمونه
   const [posts, setPosts] = useState<Post[]>([
     {
-      id: 1, title: 'هدفون بیسیم حرفه‌ای X200', price: 1250000, discountPrice: null,
-      author: { id: 1, name: 'علی محمدی', phone: '09123456789', email: 'ali@example.com', avatar: '/images/avatar/me.png' },
-      category: 'الکترونیک', status: 'published', createdAt: '۱۴۰۳/۰۲/۱۵',
+      id: 1, title: "Fone de ouvido sem fio profissional X200", price: 1250000, discountPrice: null,
+      author: { id: 1, name: "Ali Mohammadi", phone: '09123456789', email: 'ali@example.com', avatar: '/images/avatar/me.png' },
+      category: "Eletrônicos", status: 'published', createdAt: "04/05/2024",
       image: '/images/posts/1.jpg', images: ['/images/posts/1.jpg', '/images/posts/2.jpg'],
-      description: 'توضیحات کامل پست هدفون بیسیم با کیفیت عالی و طراحی مدرن.',
+      description: "Fone sem fio com excelente qualidade de som e design moderno.",
       stock: 15, views: 230, sales: 12, rating: 4.5,
       reports: [], comments: [],
       postType: 'product',
-      location: 'تهران، خیابان ولیعصر',
-      unit: 'عدد',
-      altText: 'هدفون بیسیم حرفه‌ای',
+      location: "Teerã, rua Valiasr",
+      unit: "unidades",
+      altText: "Fone de ouvido sem fio profissional",
       dateRange: null,
       discountDateRange: null,
       suspendRange: null,
     },
     {
-      id: 2, title: 'کیف چرمی اصل', price: 890000, discountPrice: 690000,
-      author: { id: 2, name: 'زهرا کریمی', phone: '09123456788', email: 'zahra@example.com', avatar: '/images/avatar/me.png' },
-      category: 'مد و پوشاک', status: 'pending', createdAt: '۱۴۰۳/۰۲/۱۰',
+      id: 2, title: "Bolsa de couro legítimo", price: 890000, discountPrice: 690000,
+      author: { id: 2, name: "Zahra Karimi", phone: '09123456788', email: 'zahra@example.com', avatar: '/images/avatar/me.png' },
+      category: "Moda e vestuário", status: 'pending', createdAt: "29/04/2024",
       image: '/images/posts/2.png', images: ['/images/posts/2.png'],
-      description: 'کیف چرمی با کیفیت عالی و طراحی شیک.',
+      description: "Bolsa de couro de alta qualidade e design elegante.",
       stock: 8, views: 450, sales: 23, rating: 4.8,
       reports: [], comments: [],
       postType: 'product',
-      location: 'اصفهان، نقش جهان',
-      unit: 'عدد',
-      altText: 'کیف چرمی اصل',
+      location: "Isfahan, praça Naqsh-e Jahan",
+      unit: "unidades",
+      altText: "Bolsa de couro legítimo",
       dateRange: null,
       discountDateRange: null,
       suspendRange: null,
     },
   ]);
 
-  const categories = ['الکترونیک', 'مد و پوشاک', 'کتاب', 'خانه و آشپزخانه', 'ورزشی', 'خدمات'];
+  const categories = ["Eletrônicos", "Moda e vestuário", "Livros", "Casa e cozinha", "Esportes", "Serviços"];
   const statusOptions: StatusOption[] = [
-    { value: 'published', label: 'منتشر شده', color: '#10b981', icon: '🟢' },
-    { value: 'pending', label: 'در انتظار تایید', color: '#f59e0b', icon: '🟡' },
-    { value: 'suspended', label: 'تعلیق شده', color: '#ef4444', icon: '🔴' },
+    { value: 'published', label: "Publicado", color: '#10b981', icon: '🟢' },
+    { value: 'pending', label: "Aguardando aprovação", color: '#f59e0b', icon: '🟡' },
+    { value: 'suspended', label: "Suspenso", color: '#ef4444', icon: '🔴' },
   ];
 
   const filteredPosts = useMemo(() => {
@@ -669,39 +669,39 @@ export default function PostsManagementPage() {
   const handleSort = (field: string) => {
     if (sortField === field) setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     else { setSortField(field); setSortDirection('asc'); }
-    info(`مرتب‌سازی بر اساس ${field}`, 1000);
+    info(`Ordenar por ${field}`, 1000);
   };
 
   const handleSelectAll = () => {
     if (selectedPosts.length === paginatedPosts.length && paginatedPosts.length > 0) {
       setSelectedPosts([]);
-      info('همه پست‌ها از انتخاب خارج شدند', 1500);
+      info("Todas as publicações foram desmarcadas", 1500);
     } else {
       setSelectedPosts(paginatedPosts.map(p => p.id));
-      success(`${toPersianNumber(paginatedPosts.length)} پست انتخاب شد`, 2000);
+      success(`${formatNumber(paginatedPosts.length)} publicações selecionadas`, 2000);
     }
   };
 
   const handleSelectPost = (postId: number) => {
     if (selectedPosts.includes(postId)) {
       setSelectedPosts(selectedPosts.filter(id => id !== postId));
-      info('پست از انتخاب خارج شد', 1500);
+      info("publicações desmarcadas", 1500);
     } else {
       setSelectedPosts([...selectedPosts, postId]);
-      success('پست انتخاب شد', 1500);
+      success("publicações selecionadas", 1500);
     }
   };
 
   const handleApprove = (postId: number) => {
     setPosts(posts.map(p => p.id === postId ? { ...p, status: 'published' } : p));
     setSelectedPosts(selectedPosts.filter(id => id !== postId));
-    success('پست با موفقیت تایید و منتشر شد', 3000);
+    success("Publicação aprovada e publicada", 3000);
   };
 
   const handleReject = (postId: number) => {
     setPosts(posts.map(p => p.id === postId ? { ...p, status: 'pending' } : p));
     setSelectedPosts(selectedPosts.filter(id => id !== postId));
-    warning('پست رد شد', 2000);
+    warning("Publicação rejeitada", 2000);
   };
 
   const handleDeleteClick = (postId: number) => {
@@ -715,7 +715,7 @@ export default function PostsManagementPage() {
     if (postToDelete) {
       setPosts(posts.filter(p => p.id !== postToDelete.id));
       setSelectedPosts(selectedPosts.filter(id => id !== postToDelete.id));
-      success(`پست "${postToDelete.title}" با موفقیت حذف شد`, 3000);
+      success(`Publicação "${postToDelete.title}" excluída com sucesso`, 3000);
       setShowDeleteConfirm(false);
       setPostToDelete(null);
     }
@@ -729,13 +729,13 @@ export default function PostsManagementPage() {
   const confirmBulkAction = () => {
     if (bulkAction === 'delete') {
       setPosts(posts.filter(p => !selectedPosts.includes(p.id)));
-      success(`${toPersianNumber(selectedPosts.length)} پست با موفقیت حذف شد`, 3000);
+      success(`${formatNumber(selectedPosts.length)} Publicação excluída`, 3000);
     } else if (bulkAction === 'approve') {
       setPosts(posts.map(p => selectedPosts.includes(p.id) ? { ...p, status: 'published' } : p));
-      success(`${toPersianNumber(selectedPosts.length)} پست تایید و منتشر شد`, 3000);
+      success(`${formatNumber(selectedPosts.length)} publicações aprovadas e publicadas`, 3000);
     } else if (bulkAction === 'reject') {
       setPosts(posts.map(p => selectedPosts.includes(p.id) ? { ...p, status: 'pending' } : p));
-      warning(`${toPersianNumber(selectedPosts.length)} پست رد شد`, 2000);
+      warning(`${formatNumber(selectedPosts.length)} Publicação rejeitada`, 2000);
     }
     setSelectedPosts([]);
     setShowBulkConfirm(false);
@@ -766,7 +766,7 @@ export default function PostsManagementPage() {
 
   const handleRemoveSuspend = (postId: number) => {
     setPosts(posts.map(p => p.id === postId ? { ...p, status: 'published', suspendRange: null } : p));
-    success('تعلیق پست لغو شد', 3000);
+    success("Suspensão removida", 3000);
   };
 
   const handleSuspendRange = (range: any) => {
@@ -777,9 +777,9 @@ export default function PostsManagementPage() {
         status: 'suspended',
         suspendRange: range
       } : p));
-      const startDate = new Date(range.start).toLocaleDateString('fa-IR');
-      const endDate = new Date(range.end).toLocaleDateString('fa-IR');
-      success(`پست از تاریخ ${startDate} تا ${endDate} تعلیق شد`, 3000);
+      const startDate = new Date(range.start).toLocaleDateString('pt-BR');
+      const endDate = new Date(range.end).toLocaleDateString('pt-BR');
+      success(`Publicação suspensa de ${startDate} até ${endDate} com sucesso`, 3000);
     }
     setSuspendPostData(null);
   };
@@ -794,9 +794,9 @@ export default function PostsManagementPage() {
 
   const getStatusBadge = (status: string) => {
     const map: Record<string, { backgroundColor: string; color: string; text: string; icon: string }> = {
-      published: { backgroundColor: '#10b98115', color: '#10b981', text: 'منتشر شده', icon: '🟢' },
-      pending: { backgroundColor: '#f59e0b15', color: '#f59e0b', text: 'در انتظار تایید', icon: '🟡' },
-      suspended: { backgroundColor: '#ef444415', color: '#ef4444', text: 'تعلیق شده', icon: '🔴' },
+      published: { backgroundColor: '#10b98115', color: '#10b981', text: "Publicado", icon: '🟢' },
+      pending: { backgroundColor: '#f59e0b15', color: '#f59e0b', text: "Aguardando aprovação", icon: '🟡' },
+      suspended: { backgroundColor: '#ef444415', color: '#ef4444', text: "Suspenso", icon: '🔴' },
     };
     return map[status] || map.pending;
   };
@@ -806,21 +806,21 @@ export default function PostsManagementPage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-5 flex-wrap gap-3">
         <div>
-          <h1 className="text-[22px] font-bold text-(--color-text-primary) m-0">مدیریت پست‌ها</h1>
-          <p className="text-[13px] text-(--color-text-secondary) mt-0.5">مدیریت، تایید و کنترل پست‌های سایت</p>
+          <h1 className="text-[22px] font-bold text-(--color-text-primary) m-0">Gerenciar publicações</h1>
+          <p className="text-[13px] text-(--color-text-secondary) mt-0.5">Gerencie, aprove e modere as publicações</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-(--color-bg-card) rounded-full border border-(--color-border-color) text-[12px] text-(--color-text-primary)">
-            <ImageIcon /> <strong>{toPersianNumber(posts.length)}</strong> <small className="text-(--color-text-muted)">کل پست‌ها</small>
+            <ImageIcon /> <strong>{formatNumber(posts.length)}</strong> <small className="text-(--color-text-muted)">Total de publicações</small>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-(--color-bg-card) rounded-full border border-(--color-border-color) text-[12px] text-(--color-text-primary)">
-            <span>🟢</span> <strong>{toPersianNumber(posts.filter(p => p.status === 'published').length)}</strong> <small className="text-(--color-text-muted)">منتشر شده</small>
+            <span>🟢</span> <strong>{formatNumber(posts.filter(p => p.status === 'published').length)}</strong> <small className="text-(--color-text-muted)">Publicado</small>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-(--color-bg-card) rounded-full border border-(--color-border-color) text-[12px] text-(--color-text-primary)">
-            <span>🟡</span> <strong>{toPersianNumber(posts.filter(p => p.status === 'pending').length)}</strong> <small className="text-(--color-text-muted)">در انتظار</small>
+            <span>🟡</span> <strong>{formatNumber(posts.filter(p => p.status === 'pending').length)}</strong> <small className="text-(--color-text-muted)">Pendente</small>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-(--color-bg-card) rounded-full border border-(--color-border-color) text-[12px] text-(--color-text-primary)">
-            <span>🔴</span> <strong>{toPersianNumber(posts.filter(p => p.status === 'suspended').length)}</strong> <small className="text-(--color-text-muted)">تعلیق شده</small>
+            <span>🔴</span> <strong>{formatNumber(posts.filter(p => p.status === 'suspended').length)}</strong> <small className="text-(--color-text-muted)">Suspenso</small>
           </div>
         </div>
       </div>
@@ -831,7 +831,7 @@ export default function PostsManagementPage() {
           <SearchIcon />
           <input
             type="text"
-            placeholder="جستجو..."
+            placeholder="Buscar..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1 border-none outline-none text-[13px] font-inherit bg-transparent text-(--color-text-primary)"
@@ -839,22 +839,22 @@ export default function PostsManagementPage() {
         </div>
         <div className="flex gap-2 flex-wrap">
           <CustomSelect
-            options={[{ value: 'all', label: 'همه دسته‌ها' }, ...categories.map(cat => ({ value: cat, label: cat }))]}
+            options={[{ value: 'all', label: "Todas as categorias" }, ...categories.map(cat => ({ value: cat, label: cat }))]}
             value={categoryFilter}
             onChange={(val) => { setCategoryFilter(val); setCurrentPage(1); }}
-            placeholder="دسته‌بندی"
+            placeholder="Categoria"
           />
           <CustomSelect
-            options={[{ value: 'all', label: 'همه وضعیت‌ها' }, ...statusOptions.map(opt => ({ value: opt.value, label: opt.label }))]}
+            options={[{ value: 'all', label: "Todos os status" }, ...statusOptions.map(opt => ({ value: opt.value, label: opt.label }))]}
             value={statusFilter}
             onChange={(val) => { setStatusFilter(val); setCurrentPage(1); }}
-            placeholder="وضعیت"
+            placeholder="Status"
           />
           <CustomSelect
-            options={[10, 25, 50].map(n => ({ value: n, label: `${toPersianNumber(n)}` }))}
+            options={[10, 25, 50].map(n => ({ value: n, label: `${formatNumber(n)}` }))}
             value={itemsPerPage}
             onChange={(val) => { setItemsPerPage(val); setCurrentPage(1); }}
-            placeholder="تعداد"
+            placeholder="Quantidade"
           />
         </div>
       </div>
@@ -862,11 +862,11 @@ export default function PostsManagementPage() {
       {/* Bulk Actions */}
       {selectedPosts.length > 0 && (
         <div className="flex justify-between items-center bg-(--color-bg-surface) p-2.5 px-3.5 rounded-xl mb-4 text-(--color-text-primary)">
-          <span>{toPersianNumber(selectedPosts.length)} پست انتخاب شده</span>
+          <span>{formatNumber(selectedPosts.length)} publicações selecionadas</span>
           <div className="flex gap-2">
-            <button onClick={() => handleBulkActionClick('approve')} className="px-2.5 py-1 rounded-md text-[11px] font-medium border-none cursor-pointer text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">✓ تایید گروهی</button>
-            <button onClick={() => handleBulkActionClick('reject')} className="px-2.5 py-1 rounded-md text-[11px] font-medium border-none cursor-pointer text-white bg-amber-500 hover:bg-amber-600 transition-colors">✗ رد گروهی</button>
-            <button onClick={() => handleBulkActionClick('delete')} className="px-2.5 py-1 rounded-md text-[11px] font-medium border-none cursor-pointer text-white bg-red-500 hover:bg-red-600 transition-colors">🗑️ حذف گروهی</button>
+            <button onClick={() => handleBulkActionClick('approve')} className="px-2.5 py-1 rounded-md text-[11px] font-medium border-none cursor-pointer text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">✓ Aprovar selecionadas</button>
+            <button onClick={() => handleBulkActionClick('reject')} className="px-2.5 py-1 rounded-md text-[11px] font-medium border-none cursor-pointer text-white bg-amber-500 hover:bg-amber-600 transition-colors">✗ Rejeitar selecionadas</button>
+            <button onClick={() => handleBulkActionClick('delete')} className="px-2.5 py-1 rounded-md text-[11px] font-medium border-none cursor-pointer text-white bg-red-500 hover:bg-red-600 transition-colors">🗑️ Excluir selecionadas</button>
           </div>
         </div>
       )}
@@ -879,23 +879,23 @@ export default function PostsManagementPage() {
               <th className="w-8.75 text-center p-3 border-b border-(--color-border-color)">
                 <input type="checkbox" checked={selectedPosts.length === paginatedPosts.length && paginatedPosts.length > 0} onChange={handleSelectAll} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">تصویر</th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('title')}>
-                عنوان پست <SortIcon field="title" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">Imagem</th>
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('title')}>
+                Título da publicação <SortIcon field="title" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">نویسنده</th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('price')}>
-                قیمت <SortIcon field="price" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">Autor</th>
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('price')}>
+                Preço <SortIcon field="price" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">دسته‌بندی</th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">وضعیت</th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('createdAt')}>
-                تاریخ ثبت <SortIcon field="createdAt" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">Categoria</th>
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">Status</th>
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('createdAt')}>
+                Data do pedido <SortIcon field="createdAt" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('stock')}>
-                موجودی <SortIcon field="stock" sortField={sortField} sortDirection={sortDirection} />
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium cursor-pointer" onClick={() => handleSort('stock')}>
+                Estoque <SortIcon field="stock" sortField={sortField} sortDirection={sortDirection} />
               </th>
-              <th className="text-right p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">عملیات</th>
+              <th className="text-start p-3 border-b border-(--color-border-color) text-(--color-text-secondary) text-[12px] font-medium">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -927,7 +927,7 @@ export default function PostsManagementPage() {
                     </span>
                   </td>
                   <td className="p-3 text-[12px] text-(--color-text-primary) border-b border-(--color-border-light)">{post.createdAt}</td>
-                  <td className="p-3 text-[12px] text-(--color-text-primary) border-b border-(--color-border-light)">{toPersianNumber(post.stock)}</td>
+                  <td className="p-3 text-[12px] text-(--color-text-primary) border-b border-(--color-border-light)">{formatNumber(post.stock)}</td>
                   <td className="p-3 text-[12px] text-(--color-text-primary) border-b border-(--color-border-light)">
                     <MoreMenu
                       post={post}
@@ -959,7 +959,7 @@ export default function PostsManagementPage() {
             let pageNum = totalPages <= 5 ? i + 1 : (currentPage <= 3 ? i + 1 : (currentPage >= totalPages - 2 ? totalPages - 4 + i : currentPage - 2 + i));
             return (
               <button key={pageNum} onClick={() => setCurrentPage(pageNum)} className={`px-2.5 py-1.5 rounded-md border border-(--color-border-color) bg-(--color-bg-card) cursor-pointer text-[12px] text-(--color-text-primary) hover:bg-(--color-border-color) transition-colors ${currentPage === pageNum ? 'bg-(--color-text-primary) text-(--color-bg-primary) border-(--color-text-primary)' : ''}`}>
-                {toPersianNumber(pageNum)}
+                {formatNumber(pageNum)}
               </button>
             );
           })}

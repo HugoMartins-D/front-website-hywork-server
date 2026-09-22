@@ -28,7 +28,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         />
         <div 
           className={`flex-1 overflow-y-auto p-6 px-8 bg-bg-primary min-h-[calc(100vh-70px)] transition-all duration-300 ${
-            isSidebarOpen ? 'mr-65' : 'mr-0'
+            isSidebarOpen ? 'ms-65' : 'ms-0'
           }`}
         >
           {children}

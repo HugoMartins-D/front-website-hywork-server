@@ -9,7 +9,7 @@ import MobileBottomNav from '@/components/MobileBottomNav';
 import UserAvatar from '@/components/UserAvatar';
 import PostSlider from '@/components/PostSlider';
 import DropdownMenu from '@/components/DropdownMenu';
-import { toPersianNumber, formatPrice } from '@/utils/numberUtils';
+import { formatNumber, formatPrice } from '@/utils/numberUtils';
 import { fetchPostById } from '@/services/postService';
 import { UserContext } from '@/contexts/UserContext';
 import commentsData from '@/data/comments.json';
@@ -183,11 +183,11 @@ const CommentModal: React.FC<{
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'لحظاتی پیش';
-    if (diffMins < 60) return `${toPersianNumber(diffMins)} دقیقه پیش`;
-    if (diffHours < 24) return `${toPersianNumber(diffHours)} ساعت پیش`;
-    if (diffDays < 7) return `${toPersianNumber(diffDays)} روز پیش`;
-    return date.toLocaleDateString('fa-IR');
+    if (diffMins < 1) return "Agora mesmo";
+    if (diffMins < 60) return `${formatNumber(diffMins)} minutos atrás`;
+    if (diffHours < 24) return `${formatNumber(diffHours)} horas atrás`;
+    if (diffDays < 7) return `${formatNumber(diffDays)} dias atrás`;
+    return date.toLocaleDateString('pt-BR');
   };
 
   return (
@@ -202,7 +202,7 @@ const CommentModal: React.FC<{
       >
         <div className="flex justify-between items-center px-5 py-4 border-b border-border-color bg-bg-secondary">
           <h3 className="text-base font-semibold text-text-primary m-0">
-            نظرات ({toPersianNumber(localComments.length)})
+            Comentários ({formatNumber(localComments.length)})
           </h3>
           <button
             onClick={onClose}
@@ -215,8 +215,8 @@ const CommentModal: React.FC<{
         <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-4">
           {localComments.length === 0 ? (
             <div className="text-center py-10 text-text-muted">
-              <p>هنوز کامنتی ثبت نشده است</p>
-              <p className="text-xs mt-2 text-text-secondary">اولین نفری باشید که نظر می‌دهید!</p>
+              <p>Nenhum comentário ainda</p>
+              <p className="text-xs mt-2 text-text-secondary">Seja a primeira pessoa a comentar!</p>
             </div>
           ) : (
             localComments.map((comment) => (
@@ -235,7 +235,7 @@ const CommentModal: React.FC<{
                   {comment.likes > 0 && (
                     <div className="flex items-center gap-1 mt-1.5 text-[11px] text-text-muted">
                       <HeartIcon size={12} filled={false} />
-                      <span>{toPersianNumber(comment.likes)}</span>
+                      <span>{formatNumber(comment.likes)}</span>
                     </div>
                   )}
                 </div>
@@ -248,11 +248,11 @@ const CommentModal: React.FC<{
           <div className="flex gap-3 px-5 py-4 border-t border-border-color bg-bg-secondary">
             <input
               type="text"
-              placeholder="نظر خود را بنویسید..."
+              placeholder="Escreva seu comentário..."
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-              className="flex-1 px-4 py-3 border border-border-color rounded-3xl outline-none text-sm bg-bg-primary text-text-primary rtl"
+              className="flex-1 px-4 py-3 border border-border-color rounded-3xl outline-none text-sm bg-bg-primary text-text-primary ltr"
               autoFocus
             />
             <button
@@ -269,12 +269,12 @@ const CommentModal: React.FC<{
           </div>
         ) : (
           <div className="p-5 text-center border-t border-border-color">
-            <p className="text-text-secondary">برای نوشتن نظر لطفاً وارد حساب کاربری خود شوید</p>
+            <p className="text-text-secondary">Entre na sua conta para comentar</p>
             <button
               className="mt-3 px-5 py-2 bg-accent-color text-white border-none rounded-2xl cursor-pointer"
               onClick={() => window.location.href = '/login'}
             >
-              ورود به حساب
+              Entrar
             </button>
           </div>
         )}
@@ -376,7 +376,7 @@ export default function PostDetailPage() {
   const handleDeletePost = useCallback(() => {
     if (!post) return;
     
-    if (window.confirm('آیا از حذف این پست مطمئن هستید؟')) {
+    if (window.confirm("Deseja excluir esta publicação?")) {
       try {
         // حذف از localStorage
         const savedPosts = localStorage.getItem('userPosts');
@@ -389,23 +389,23 @@ export default function PostDetailPage() {
         // حذف از posts.json (اگر در دیتا باشد)
         // اینجا می‌توانید API call برای حذف از سرور انجام دهید
         
-        alert('پست با موفقیت حذف شد');
+        alert("Publicação excluída");
         router.push('/profile');
       } catch (error) {
         console.error('Error deleting post:', error);
-        alert('خطا در حذف پست');
+        alert("Não foi possível excluir a publicação");
       }
     }
   }, [post, router]);
 
   const dropdownItems = [
-    { label: 'مشاهده پروفایل', icon: '👤', onClick: handleViewProfile },
-    { label: 'گزارش', icon: '🚫', onClick: handleReport },
+    { label: "Ver perfil", icon: '👤', onClick: handleViewProfile },
+    { label: "Denunciar", icon: '🚫', onClick: handleReport },
   ];
 
   // ✅ اگر کاربر صاحب پست است، گزینه حذف رو هم اضافه کن
   if (currentUser && post && currentUser.id === post.userId) {
-    dropdownItems.push({ label: 'حذف پست', icon: '🗑️', onClick: handleDeletePost });
+    dropdownItems.push({ label: "Excluir publicação", icon: '🗑️', onClick: handleDeletePost });
   }
 
   const formatCommentDate = (dateString: string) => {
@@ -416,11 +416,11 @@ export default function PostDetailPage() {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'لحظاتی پیش';
-    if (diffMins < 60) return `${toPersianNumber(diffMins)} دقیقه پیش`;
-    if (diffHours < 24) return `${toPersianNumber(diffHours)} ساعت پیش`;
-    if (diffDays < 7) return `${toPersianNumber(diffDays)} روز پیش`;
-    return date.toLocaleDateString('fa-IR');
+    if (diffMins < 1) return "Agora mesmo";
+    if (diffMins < 60) return `${formatNumber(diffMins)} minutos atrás`;
+    if (diffHours < 24) return `${formatNumber(diffHours)} horas atrás`;
+    if (diffDays < 7) return `${formatNumber(diffDays)} dias atrás`;
+    return date.toLocaleDateString('pt-BR');
   };
 
   // ==================== LOADING ====================
@@ -431,7 +431,7 @@ export default function PostDetailPage() {
         {isMobile && <MobileBottomNav />}
         <div className="text-center py-12 text-text-muted">
           <div className="w-10 h-10 border-3 border-border-color border-t-accent-color rounded-full animate-spin mx-auto" />
-          <p className="mt-4">در حال بارگذاری...</p>
+          <p className="mt-4">Carregando...</p>
         </div>
       </>
     );
@@ -443,12 +443,12 @@ export default function PostDetailPage() {
         {!isMobile && <Sidebar />}
         {isMobile && <MobileBottomNav />}
         <div className="text-center py-12">
-          <h2 className="text-text-primary">پستی یافت نشد</h2>
+          <h2 className="text-text-primary">Publicação não encontrada</h2>
           <button
             onClick={() => router.push('/')}
             className="mt-5 px-5 py-2.5 bg-accent-color text-white border-none rounded-lg cursor-pointer"
           >
-            بازگشت به صفحه اصلی
+            Voltar ao início
           </button>
         </div>
       </>
@@ -477,7 +477,7 @@ export default function PostDetailPage() {
                     size={44}
                   />
                   <div>
-                    <div className="font-semibold text-sm text-text-primary">{post.authorUsername || 'نویسنده'}</div>
+                    <div className="font-semibold text-sm text-text-primary">{post.authorUsername || "Autor"}</div>
                     <div className="text-xs text-text-muted">{post.authorName || ''}</div>
                   </div>
                 </div>
@@ -491,22 +491,22 @@ export default function PostDetailPage() {
               <div className="flex justify-between items-center flex-wrap gap-2.5">
                 <div className="flex gap-2 items-center flex-wrap">
                   <button className="bg-transparent border-none flex items-center gap-1.5 cursor-pointer text-sm font-medium text-text-primary px-3 py-2 rounded-lg transition-all hover:bg-bg-surface">
-                    <CartIcon size={22} /><span>{toPersianNumber(0)}</span>
+                    <CartIcon size={22} /><span>{formatNumber(0)}</span>
                   </button>
                   <button
                     onClick={() => setLiked(!liked)}
                     className="bg-transparent border-none flex items-center gap-1.5 cursor-pointer text-sm font-medium text-text-primary px-3 py-2 rounded-lg transition-all hover:bg-bg-surface"
                   >
-                    <HeartIcon filled={liked} size={22} /><span>{toPersianNumber(likesCount)}</span>
+                    <HeartIcon filled={liked} size={22} /><span>{formatNumber(likesCount)}</span>
                   </button>
                   <button
                     onClick={() => setIsCommentModalOpen(true)}
                     className="bg-transparent border-none flex items-center gap-1.5 cursor-pointer text-sm font-medium text-text-primary px-3 py-2 rounded-lg transition-all hover:bg-bg-surface"
                   >
-                    <CommentIcon size={22} /><span>{toPersianNumber(comments.length)}</span>
+                    <CommentIcon size={22} /><span>{formatNumber(comments.length)}</span>
                   </button>
                   <button className="bg-transparent border-none flex items-center gap-1.5 cursor-pointer text-sm font-medium text-text-primary px-3 py-2 rounded-lg transition-all hover:bg-bg-surface">
-                    <ShareIcon size={22} /><span>{toPersianNumber(post.shareCount || 0)}</span>
+                    <ShareIcon size={22} /><span>{formatNumber(post.shareCount || 0)}</span>
                   </button>
                   <button
                     onClick={() => setSaved(!saved)}
@@ -521,48 +521,48 @@ export default function PostDetailPage() {
               </div>
 
               <div className="pt-2 border-t border-border-color">
-                <span className="text-2xl font-extrabold text-accent-color">{formatPrice(post.price)} تومان</span>
+                <span className="text-2xl font-extrabold text-accent-color">{formatPrice(post.price)} tomans</span>
               </div>
             </div>
 
             {/* Left Column */}
             <div className="flex-1 min-w-0 flex flex-col gap-5">
               <h1 className="text-2xl font-bold text-text-primary m-0">{post.title || post.caption}</h1>
-              <p className="text-sm leading-relaxed text-text-secondary m-0">{post.caption || 'توضیحاتی برای این پست موجود نیست.'}</p>
+              <p className="text-sm leading-relaxed text-text-secondary m-0">{post.caption || "Esta publicação não tem descrição."}</p>
 
               <div className="bg-bg-surface p-4 rounded-xl">
-                <h3 className="text-sm font-semibold mb-3 text-text-primary">مشخصات پست</h3>
+                <h3 className="text-sm font-semibold mb-3 text-text-primary">Detalhes da publicação</h3>
                 <div className="grid gap-3">
                   <div className="flex justify-between items-center py-2 border-b border-border-color">
-                    <span className="text-sm text-text-muted">دسته بندی</span>
-                    <span className="text-sm font-medium text-text-primary">{post.category || 'عمومی'}</span>
+                    <span className="text-sm text-text-muted">Categoria</span>
+                    <span className="text-sm font-medium text-text-primary">{post.category || "Geral"}</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-border-color">
-                    <span className="text-sm text-text-muted">موجودی</span>
+                    <span className="text-sm text-text-muted">Estoque</span>
                     <span className={`text-sm font-medium ${(post.stock || 0) > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                      {(post.stock || 0) > 0 ? `${toPersianNumber(post.stock)} عدد` : 'ناموجود'}
+                      {(post.stock || 0) > 0 ? `${formatNumber(post.stock)} unidades` : "Indisponível"}
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-sm text-text-muted">تاریخ انتشار</span>
-                    <span className="text-sm font-medium text-text-primary">{new Date(post.createdAt).toLocaleDateString('fa-IR')}</span>
+                    <span className="text-sm text-text-muted">Data de publicação</span>
+                    <span className="text-sm font-medium text-text-primary">{new Date(post.createdAt).toLocaleDateString('pt-BR')}</span>
                   </div>
                 </div>
               </div>
 
               {/* Comments Section */}
               <div className="bg-bg-surface p-4 rounded-xl">
-                <h3 className="text-sm font-semibold mb-3 text-text-primary">نظرات ({toPersianNumber(comments.length)})</h3>
+                <h3 className="text-sm font-semibold mb-3 text-text-primary">Comentários ({formatNumber(comments.length)})</h3>
 
                 {currentUser && (
                   <div className="flex gap-2.5 mb-4">
                     <input
                       type="text"
-                      placeholder="نظر خود را بنویسید..."
+                      placeholder="Escreva seu comentário..."
                       value={newCommentText}
                       onChange={(e) => setNewCommentText(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleSendCommentInline()}
-                      className="flex-1 px-3.5 py-2.5 border border-border-color rounded-3xl outline-none text-sm bg-bg-primary text-text-primary rtl"
+                      className="flex-1 px-3.5 py-2.5 border border-border-color rounded-3xl outline-none text-sm bg-bg-primary text-text-primary ltr"
                     />
                     <button
                       onClick={handleSendCommentInline}
@@ -581,8 +581,8 @@ export default function PostDetailPage() {
                 <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto">
                   {comments.length === 0 ? (
                     <div className="text-center py-7 text-text-muted">
-                      <p>هنوز کامنتی ثبت نشده است</p>
-                      <p className="text-xs mt-2 text-text-secondary">اولین نفری باشید که نظر می‌دهید!</p>
+                      <p>Nenhum comentário ainda</p>
+                      <p className="text-xs mt-2 text-text-secondary">Seja a primeira pessoa a comentar!</p>
                     </div>
                   ) : (
                     comments.map((comment) => (
@@ -601,7 +601,7 @@ export default function PostDetailPage() {
                           {comment.likes > 0 && (
                             <div className="flex items-center gap-1 mt-1.5 text-[11px] text-text-muted">
                               <HeartIcon size={12} filled={false} />
-                              <span>{toPersianNumber(comment.likes)}</span>
+                              <span>{formatNumber(comment.likes)}</span>
                             </div>
                           )}
                         </div>
@@ -624,7 +624,7 @@ export default function PostDetailPage() {
                   size={40}
                 />
                 <div>
-                  <div className="font-semibold text-sm text-text-primary">{post.authorUsername || 'نویسنده'}</div>
+                  <div className="font-semibold text-sm text-text-primary">{post.authorUsername || "Autor"}</div>
                   <div className="text-[11px] text-text-muted">{post.authorName || ''}</div>
                 </div>
               </div>
@@ -638,22 +638,22 @@ export default function PostDetailPage() {
             <div className="flex justify-between items-center flex-wrap gap-2">
               <div className="flex gap-1 items-center flex-wrap">
                 <button className="bg-transparent border-none flex items-center gap-1 cursor-pointer text-xs font-medium text-text-primary px-1.5 py-1.5 rounded-lg transition-all hover:bg-bg-surface">
-                  <CartIcon size={18} /><span>{toPersianNumber(0)}</span>
+                  <CartIcon size={18} /><span>{formatNumber(0)}</span>
                 </button>
                 <button
                   onClick={() => setLiked(!liked)}
                   className="bg-transparent border-none flex items-center gap-1 cursor-pointer text-xs font-medium text-text-primary px-1.5 py-1.5 rounded-lg transition-all hover:bg-bg-surface"
                 >
-                  <HeartIcon filled={liked} size={18} /><span>{toPersianNumber(likesCount)}</span>
+                  <HeartIcon filled={liked} size={18} /><span>{formatNumber(likesCount)}</span>
                 </button>
                 <button
                   onClick={() => setIsCommentModalOpen(true)}
                   className="bg-transparent border-none flex items-center gap-1 cursor-pointer text-xs font-medium text-text-primary px-1.5 py-1.5 rounded-lg transition-all hover:bg-bg-surface"
                 >
-                  <CommentIcon size={18} /><span>{toPersianNumber(comments.length)}</span>
+                  <CommentIcon size={18} /><span>{formatNumber(comments.length)}</span>
                 </button>
                 <button className="bg-transparent border-none flex items-center gap-1 cursor-pointer text-xs font-medium text-text-primary px-1.5 py-1.5 rounded-lg transition-all hover:bg-bg-surface">
-                  <ShareIcon size={18} /><span>{toPersianNumber(post.shareCount || 0)}</span>
+                  <ShareIcon size={18} /><span>{formatNumber(post.shareCount || 0)}</span>
                 </button>
                 <button
                   onClick={() => setSaved(!saved)}
@@ -668,45 +668,45 @@ export default function PostDetailPage() {
             </div>
 
             <div className="pt-1.5 border-t border-border-color">
-              <span className="text-xl font-extrabold text-accent-color">{formatPrice(post.price)} تومان</span>
+              <span className="text-xl font-extrabold text-accent-color">{formatPrice(post.price)} tomans</span>
             </div>
 
             <h1 className="text-lg font-bold text-text-primary m-0">{post.title || post.caption}</h1>
-            <p className="text-sm leading-relaxed text-text-secondary m-0">{post.caption || 'توضیحاتی برای این پست موجود نیست.'}</p>
+            <p className="text-sm leading-relaxed text-text-secondary m-0">{post.caption || "Esta publicação não tem descrição."}</p>
 
             <div className="bg-bg-surface p-3 rounded-xl">
-              <h3 className="text-sm font-semibold mb-3 text-text-primary">مشخصات پست</h3>
+              <h3 className="text-sm font-semibold mb-3 text-text-primary">Detalhes da publicação</h3>
               <div className="grid gap-2">
                 <div className="flex justify-between items-center py-1.5 border-b border-border-color">
-                  <span className="text-sm text-text-muted">دسته بندی</span>
-                  <span className="text-sm font-medium text-text-primary">{post.category || 'عمومی'}</span>
+                  <span className="text-sm text-text-muted">Categoria</span>
+                  <span className="text-sm font-medium text-text-primary">{post.category || "Geral"}</span>
                 </div>
                 <div className="flex justify-between items-center py-1.5 border-b border-border-color">
-                  <span className="text-sm text-text-muted">موجودی</span>
+                  <span className="text-sm text-text-muted">Estoque</span>
                   <span className={`text-sm font-medium ${(post.stock || 0) > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {(post.stock || 0) > 0 ? `${toPersianNumber(post.stock)} عدد` : 'ناموجود'}
+                    {(post.stock || 0) > 0 ? `${formatNumber(post.stock)} unidades` : "Indisponível"}
                   </span>
                 </div>
                 <div className="flex justify-between items-center py-1.5">
-                  <span className="text-sm text-text-muted">تاریخ انتشار</span>
-                  <span className="text-sm font-medium text-text-primary">{new Date(post.createdAt).toLocaleDateString('fa-IR')}</span>
+                  <span className="text-sm text-text-muted">Data de publicação</span>
+                  <span className="text-sm font-medium text-text-primary">{new Date(post.createdAt).toLocaleDateString('pt-BR')}</span>
                 </div>
               </div>
             </div>
 
             {/* Mobile Comments */}
             <div className="bg-bg-surface p-3 rounded-xl mb-4">
-              <h3 className="text-sm font-semibold mb-3 text-text-primary">نظرات ({toPersianNumber(comments.length)})</h3>
+              <h3 className="text-sm font-semibold mb-3 text-text-primary">Comentários ({formatNumber(comments.length)})</h3>
 
               {currentUser && (
                 <div className="flex gap-2.5 mb-3">
                   <input
                     type="text"
-                    placeholder="نظر خود را بنویسید..."
+                    placeholder="Escreva seu comentário..."
                     value={newCommentText}
                     onChange={(e) => setNewCommentText(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendCommentInline()}
-                    className="flex-1 px-3 py-2 border border-border-color rounded-3xl outline-none text-sm bg-bg-primary text-text-primary rtl"
+                    className="flex-1 px-3 py-2 border border-border-color rounded-3xl outline-none text-sm bg-bg-primary text-text-primary ltr"
                   />
                   <button
                     onClick={handleSendCommentInline}
@@ -725,7 +725,7 @@ export default function PostDetailPage() {
               <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto">
                 {comments.length === 0 ? (
                   <div className="text-center py-5 text-text-muted">
-                    <p>هنوز کامنتی ثبت نشده است</p>
+                    <p>Nenhum comentário ainda</p>
                   </div>
                 ) : (
                   comments.map((comment) => (

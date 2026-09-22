@@ -89,7 +89,7 @@
   }
 
   html {
-    direction: rtl;
+    direction: ltr;
     scroll-behavior: smooth;
     font-size: 16px;
   }
@@ -102,7 +102,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    direction: rtl;
+    direction: ltr;
     min-height: 100vh;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
@@ -299,15 +299,7 @@
     direction: ltr;
     text-align: left;
   }
-  .rtl {
-    direction: rtl;
-    text-align: right;
-  }
 
-  .space-x-rtl > * + * {
-    margin-right: 0.5rem;
-    margin-left: 0;
-  }
   .space-x-ltr > * + * {
     margin-left: 0.5rem;
     margin-right: 0;

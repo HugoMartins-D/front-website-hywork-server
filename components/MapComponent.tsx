@@ -224,7 +224,7 @@ export default function MapComponent({
         }}
       >
         <span className="text-text-muted">
-  در حال بارگذاری نقشه...
+  Carregando mapa...
 </span>
       </div>
     );
@@ -295,11 +295,11 @@ export default function MapComponent({
           >
             <Popup>
               <div className="text-sm">
-                <strong>موقعیت انتخاب شده</strong>
+                <strong>Localização selecionada</strong>
                 <br />
-                <span>عرض: {selectedPosition.lat.toFixed(6)}</span>
+                <span>Latitude: {selectedPosition.lat.toFixed(6)}</span>
                 <br />
-                <span>طول: {selectedPosition.lng.toFixed(6)}</span>
+                <span>Longitude: {selectedPosition.lng.toFixed(6)}</span>
               </div>
             </Popup>
           </Marker>
