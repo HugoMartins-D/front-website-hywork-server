@@ -13,6 +13,8 @@ import { toPersianNumber, formatPrice, formatRating } from '@/utils/numberUtils'
 import { fetchPostById } from '@/services/postService';
 import { UserContext } from '@/contexts/UserContext';
 import commentsData from '@/data/comments.json';
+import usersData from '@/data/users.json';
+import type { Post as SharedPost } from '@/types';
 
 // ==================== ICONS ====================
 const CartIcon = ({ size = 20 }) => (
@@ -23,7 +25,7 @@ const CartIcon = ({ size = 20 }) => (
   </svg>
 );
 
-const HeartIcon = ({ filled, size = 20 }) => (
+const HeartIcon = ({ filled = false, size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? "#ff3040" : "none"} stroke={filled ? "#ff3040" : "currentColor"} strokeWidth="1.5">
     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
   </svg>
@@ -41,7 +43,7 @@ const ShareIcon = ({ size = 20 }) => (
   </svg>
 );
 
-const SaveIcon = ({ filled, size = 20 }) => (
+const SaveIcon = ({ filled = false, size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5">
     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
   </svg>
@@ -85,24 +87,7 @@ interface Comment {
   createdAt: string;
 }
 
-interface Post {
-  id: number;
-  title: string;
-  price: number;
-  stock: number;
-  category: string;
-  rating: number;
-  likesCount: number;
-  shareCount: number;
-  images: string[];
-  image: string;
-  caption: string;
-  userId: number;
-  authorName: string;
-  authorUsername: string;
-  authorAvatar: string;
-  createdAt: string;
-}
+type Post = SharedPost & { shareCount?: number };
 
 // ==================== HOOKS ====================
 const useMobileDetect = () => {
@@ -164,7 +149,7 @@ const CommentModal: React.FC<{
         id: Date.now(),
         postId: postId || 0,
         userId: currentUser.id,
-        userName: currentUser.name || currentUser.username,
+        userName: currentUser.name || currentUser.username || '',
         userAvatar: currentUser.avatar || '/default-avatar.png',
         text: commentText,
         likes: 0,
@@ -303,9 +288,18 @@ export default function PostDetailPage() {
   // ==================== LOAD COMMENTS ====================
   useEffect(() => {
     if (commentsData && commentsData.comments) {
-      const postComments = commentsData.comments.filter(
-        (comment: Comment) => comment.postId === postId
-      );
+      // کامنت‌های JSON فیلد date دارند و اطلاعات کاربر را ندارند
+      const postComments: Comment[] = commentsData.comments
+        .filter((comment) => comment.postId === postId)
+        .map((comment) => {
+          const author = usersData.users.find((u) => u.id === comment.userId);
+          return {
+            ...comment,
+            userName: author?.name || author?.username || '',
+            userAvatar: author?.avatar || '',
+            createdAt: comment.date,
+          };
+        });
       setComments(postComments);
     }
   }, [postId]);
@@ -351,7 +345,7 @@ export default function PostDetailPage() {
         id: Date.now(),
         postId: postId || 0,
         userId: currentUser.id,
-        userName: currentUser.name || currentUser.username,
+        userName: currentUser.name || currentUser.username || '',
         userAvatar: currentUser.avatar || '/default-avatar.png',
         text: newCommentText,
         likes: 0,
@@ -473,7 +467,7 @@ export default function PostDetailPage() {
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3 cursor-pointer" onClick={handleViewProfile}>
                   <UserAvatar
-                    user={{ avatar: post.authorAvatar, username: post.authorUsername, status: 'ready' }}
+                    user={{ id: post.userId, avatar: post.authorAvatar, username: post.authorUsername, status: 'ready' }}
                     size={44}
                   />
                   <div>
@@ -481,7 +475,7 @@ export default function PostDetailPage() {
                     <div className="text-xs text-text-muted">{post.authorName || ''}</div>
                   </div>
                 </div>
-                <DropdownMenu items={dropdownItems} icon={MoreVerticalIcon} iconSize={20} />
+                <DropdownMenu items={dropdownItems} triggerIcon={<MoreVerticalIcon size={20} />} iconSize={20} />
               </div>
 
               <div className="aspect-square bg-black overflow-hidden rounded-xl">
@@ -620,7 +614,7 @@ export default function PostDetailPage() {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2 cursor-pointer" onClick={handleViewProfile}>
                 <UserAvatar
-                  user={{ avatar: post.authorAvatar, username: post.authorUsername, status: 'ready' }}
+                  user={{ id: post.userId, avatar: post.authorAvatar, username: post.authorUsername, status: 'ready' }}
                   size={40}
                 />
                 <div>
@@ -628,7 +622,7 @@ export default function PostDetailPage() {
                   <div className="text-[11px] text-text-muted">{post.authorName || ''}</div>
                 </div>
               </div>
-              <DropdownMenu items={dropdownItems} icon={MoreVerticalIcon} iconSize={20} />
+              <DropdownMenu items={dropdownItems} triggerIcon={<MoreVerticalIcon size={20} />} iconSize={20} />
             </div>
 
             <div className="aspect-square bg-black overflow-hidden">

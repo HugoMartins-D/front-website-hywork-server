@@ -157,7 +157,7 @@ interface User {
 
 // ==================== MAIN COMPONENT ====================
 export default function EditProfilePage() {
-  const { user, setUser, isLoading } = useContext(UserContext);
+  const { user, setUser, loading: isLoading } = useContext(UserContext);
   const router = useRouter();
   const isMobile = useMobileDetect();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -213,7 +213,7 @@ export default function EditProfilePage() {
       });
       
       setAvatarPreview(user.avatar || '');
-      setSelectedLocation(user.location || null);
+      setSelectedLocation(typeof user.location === 'object' ? user.location : null);
       setSelectedBirthDate(user.birthDate ? new Date(user.birthDate) : null);
       setIsInitialized(true);
     }
@@ -337,8 +337,8 @@ export default function EditProfilePage() {
     e.preventDefault();
     
     if (!validateForm()) return;
-    if (isSubmitting) return;
-    
+    if (isSubmitting || !user) return;
+
     const usernameCheck = usernameValidation.validate(formData.username);
     if (!usernameCheck.valid) {
       error(usernameCheck.errors[0]);
@@ -647,7 +647,7 @@ export default function EditProfilePage() {
             <div className="flex gap-4 mt-6 sm:flex-col sm:gap-3">
               <button
                 type="submit"
-                disabled={isSubmitting || (formData.username && !isUsernameValid)}
+                disabled={isSubmitting || (!!formData.username && !isUsernameValid)}
                 className="flex-1 bg-accent-color text-white border-none px-4 py-3 rounded-[40px] text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(187,134,252,0.3)] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none sm:px-3.5 sm:py-2.5 sm:text-sm"
               >
                 {isSubmitting ? 'در حال ذخیره...' : 'ذخیره تغییرات'}

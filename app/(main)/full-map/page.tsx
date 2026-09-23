@@ -2,6 +2,7 @@
 'use client';
 
 import React, {
+  Suspense,
   useState,
   useEffect,
   useCallback,
@@ -684,7 +685,16 @@ const MobileLocationButton: React.FC<{
  * 5. قابلیت یافتن موقعیت کاربر
  * 6. کلیک روی محصول برای مشاهده جزئیات
  */
+// useSearchParams نیاز به Suspense دارد تا صفحه در build پیش‌رندر شود
 export default function FullMapPage() {
+  return (
+    <Suspense fallback={null}>
+      <FullMapPageContent />
+    </Suspense>
+  );
+}
+
+function FullMapPageContent() {
   // ============================================================
   // 11.1 هوک‌های ری‌اکت
   // ============================================================

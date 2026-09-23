@@ -3,7 +3,7 @@
 
 import React, { useContext } from 'react';
 import Image from 'next/image';
-import { UserContext } from '@/contexts/UserContext';
+import { UserContext, type UserStatus } from '@/contexts/UserContext';
 
 interface User {
   id: string | number;
@@ -55,7 +55,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
     e.stopPropagation();
     if (!isSelf || !allowStatusChange) return;
     
-    const statuses: ('inactive' | 'busy' | 'ready')[] = ['inactive', 'busy', 'ready'];
+    const statuses: UserStatus[] = ['inactive', 'busy', 'ready'];
     const currentIndex = statuses.indexOf(displayStatus);
     const nextIndex = (currentIndex + 1) % statuses.length;
     const newStatus = statuses[nextIndex];

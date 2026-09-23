@@ -90,7 +90,7 @@ export default function VerifyForm({
       <OtpInput
         ref={otpRef}
         value={otp}
-        onChange={setOtp}
+        onChange={(value) => setOtp(Array.isArray(value) ? value : value.split(''))}
         onComplete={handleComplete}
         disabled={isLoading}
         error={error}

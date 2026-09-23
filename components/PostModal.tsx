@@ -236,18 +236,26 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
   const handleSendComment = () => {
     if (commentText.trim() === '') return;
 
-    const commentUser: User = currentUser || {
-      id: 999,
-      username: 'مهمان',
-      avatar: '/images/avatars/default.png',
-    };
+    const commentUser: User = currentUser
+      ? {
+          id: currentUser.id,
+          username: currentUser.username || 'کاربر',
+          name: currentUser.name,
+          avatar: currentUser.avatar,
+        }
+      : {
+          id: 999,
+          username: 'مهمان',
+          avatar: '/images/avatars/default.png',
+        };
 
     const newComment: Comment = {
       id: comments.length + 1,
+      postId: post.id,
       userId: commentUser.id,
       user: commentUser,
       text: commentText,
-      createdAt: new Date().toISOString(),
+      date: new Date().toISOString(),
       likes: 0,
     };
     setComments([newComment, ...comments]);
@@ -473,7 +481,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                           {comment.text}
                         </div>
                         <div className="text-[10px] text-[var(--color-text-muted)] mt-1">
-                          {comment.createdAt ? new Date(comment.createdAt).toLocaleDateString('fa-IR') : ''}
+                          {comment.date ? new Date(comment.date).toLocaleDateString('fa-IR') : ''}
                         </div>
                       </div>
                     </div>
