@@ -3,18 +3,29 @@
 import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
+export type UserStatus = 'active' | 'busy' | 'ready' | 'inactive';
+
 export interface User {
   id: number;
-  phone: string;
+  phone?: string;
 
   username?: string;
 
+  name?: string;
   firstName?: string;
   lastName?: string;
+  email?: string;
 
   avatar?: string;
+  status?: UserStatus;
+  bio?: string;
+  birthDate?: string;
+  gender?: string;
+  addresses?: string[];
 
   city?: string;
+  // موقعیت انتخاب‌شده روی نقشه یا متن آدرس
+  location?: { lat: number; lng: number } | string | null;
   isVerified?: boolean;
 }
 
@@ -24,6 +35,7 @@ interface UserContextType {
   loading: boolean;
   logout: () => void;
   refreshUser: () => Promise<void>;
+  updateUserStatus: (status: UserStatus) => void;
 }
 
 export const UserContext = createContext<UserContextType>({
@@ -32,6 +44,7 @@ export const UserContext = createContext<UserContextType>({
   loading: true,
   logout: () => {},
   refreshUser: async () => {},
+  updateUserStatus: () => {},
 });
 
 export function UserProvider({ children }: { children: ReactNode }) {
@@ -96,8 +109,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
     await fetchUser();
   };
 
+  const updateUserStatus = (status: UserStatus) => {
+    setUser((prev) => {
+      if (!prev) return prev;
+      const updated = { ...prev, status };
+      localStorage.setItem('user', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, loading, logout, refreshUser }}>
+    <UserContext.Provider value={{ user, setUser, loading, logout, refreshUser, updateUserStatus }}>
       {children}
     </UserContext.Provider>
   );

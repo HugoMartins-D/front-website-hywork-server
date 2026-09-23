@@ -721,8 +721,8 @@ export default function UsersManagementPage() {
       return matchesSearch && matchesRole && matchesStatus;
     });
     filtered.sort((a, b) => {
-      let aVal = a[sortField as keyof typeof a];
-      let bVal = b[sortField as keyof typeof b];
+      let aVal = a[sortField as keyof typeof a] as unknown as string | number;
+      let bVal = b[sortField as keyof typeof b] as unknown as string | number;
       if (['totalSpent', 'postsCount', 'ordersCount'].includes(sortField)) {
         aVal = Number(aVal);
         bVal = Number(bVal);
@@ -1089,7 +1089,8 @@ export default function UsersManagementPage() {
                   {selectedUserDetail.posts.map((post: any) => (
                     <ProductCard
                       key={post.id}
-                      image={post.image}
+                      id={post.id}
+                      images={post.image ? [post.image] : []}
                       title={post.title}
                       category={post.category}
                       stock={post.stock}

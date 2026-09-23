@@ -430,6 +430,42 @@ const EditOrderModal = ({ isOpen, onClose, order, onUpdate }: EditOrderModalProp
   );
 };
 
+// ==================== تایپ‌ها ====================
+interface OrderParty {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+}
+
+interface OrderDispute {
+  reason?: string;
+  status?: string;
+  createdAt?: string;
+  resolvedAt?: string;
+  resolution?: string;
+  note?: string;
+}
+
+interface Order {
+  id: number;
+  orderNumber: string;
+  buyer: OrderParty;
+  seller: OrderParty;
+  products: { id: number; title: string; price: number; quantity: number; image: string }[];
+  totalAmount: number;
+  shippingCost: number;
+  finalAmount: number;
+  status: string;
+  paymentMethod: string;
+  shippingMethod: string;
+  address: string;
+  createdAt: string;
+  updatedAt: string;
+  trackingCode: string | null;
+  dispute: OrderDispute | null;
+}
+
 // ==================== کامپوننت اصلی ====================
 export default function OrdersManagement() {
   const { success, info, warning } = useToast();
@@ -450,7 +486,7 @@ export default function OrdersManagement() {
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
 
   // داده‌های نمونه سفارشات
-  const [orders, setOrders] = useState([
+  const [orders, setOrders] = useState<Order[]>([
     {
       id: 1001,
       orderNumber: 'ORD-1001',
@@ -591,8 +627,8 @@ export default function OrdersManagement() {
     });
     
     filtered.sort((a, b) => {
-      let aVal = a[sortField as keyof typeof a];
-      let bVal = b[sortField as keyof typeof b];
+      let aVal = a[sortField as keyof typeof a] as unknown as string | number;
+      let bVal = b[sortField as keyof typeof b] as unknown as string | number;
       if (sortField === 'finalAmount' || sortField === 'totalAmount') {
         aVal = Number(aVal);
         bVal = Number(bVal);

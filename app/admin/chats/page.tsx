@@ -58,6 +58,11 @@ interface DateRangeValue {
   end: string;
 }
 
+const toDateRangeValue = (range: { start: Date; end: Date }): DateRangeValue => ({
+  start: range.start.toISOString(),
+  end: range.end.toISOString(),
+});
+
 interface WarningHistoryItem {
   id: number;
   conversationId: number;
@@ -1234,7 +1239,7 @@ export default function ChatManagement() {
           {bulkBlockDuration === 'custom' && showBulkDateRangePicker && (
             <div className="mt-2 p-2 bg-(--color-bg-surface) rounded-lg border border-(--color-border-color)">
               <DateRangePicker
-                onSelect={(r: DateRangeValue) => { setBulkBlockDateRange(r); setShowBulkDateRangePicker(false); }}
+                onSelect={(r) => { setBulkBlockDateRange(toDateRangeValue(r)); setShowBulkDateRangePicker(false); }}
                 onClose={() => setShowBulkDateRangePicker(false)}
               />
             </div>
@@ -1323,7 +1328,7 @@ export default function ChatManagement() {
           {blockDuration === 'custom' && showDateRangePicker && (
             <div className="mt-2 p-2 bg-(--color-bg-surface) rounded-lg border border-(--color-border-color)">
               <DateRangePicker
-                onSelect={(r: DateRangeValue) => { setBlockDateRange(r); setShowDateRangePicker(false); }}
+                onSelect={(r) => { setBlockDateRange(toDateRangeValue(r)); setShowDateRangePicker(false); }}
                 onClose={() => setShowDateRangePicker(false)}
               />
             </div>

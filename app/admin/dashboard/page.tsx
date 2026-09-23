@@ -333,7 +333,7 @@ export default function AdminDashboardPage() {
                   borderRadius: '12px',
                   padding: '12px 16px',
                 }} 
-                formatter={(value: number) => formatPrice(value)} 
+                formatter={(value) => formatPrice(Number(value))}
               />
               <Legend 
                 wrapperStyle={{ color: 'var(--color-text-primary)' }} 
@@ -377,7 +377,7 @@ export default function AdminDashboardPage() {
                   cx="50%" 
                   cy="50%" 
                   outerRadius={80} 
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent = 0 }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
                   {categoryData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -391,7 +391,7 @@ export default function AdminDashboardPage() {
                     borderRadius: '12px',
                     padding: '12px 16px',
                   }} 
-                  formatter={(value: number) => `${value}%`}
+                  formatter={(value) => `${value}%`}
                 />
                 <Legend 
                   wrapperStyle={{ color: 'var(--color-text-primary)' }} 

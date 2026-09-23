@@ -1,7 +1,7 @@
 // src/app/(auth)/verify/page.tsx
 'use client';
 
-import { useState, useEffect, useContext, useCallback, useRef } from 'react';
+import { Suspense, useState, useEffect, useContext, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import VerifyForm from '@/components/VerifyForm';
 import { UserContext } from '@/contexts/UserContext';
@@ -86,7 +86,16 @@ async function apiRequest<T>(endpoint: string, data: Record<string, unknown>): P
  * 5. در صورت شکست: نمایش پیام خطا
  * 6. امکان ارسال مجدد کد
  */
+// useSearchParams نیاز به Suspense دارد تا صفحه در build پیش‌رندر شود
 export default function VerifyPage() {
+  return (
+    <Suspense fallback={null}>
+      <VerifyPageContent />
+    </Suspense>
+  );
+}
+
+function VerifyPageContent() {
   // ============================================
   // هوک‌های ری‌اکت
   // ============================================

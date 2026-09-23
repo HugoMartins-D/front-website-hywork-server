@@ -8,26 +8,7 @@ import MobileBottomNav from '@/components/MobileBottomNav';
 import PostCard from '@/components/PostCard';
 import PostModal from '@/components/PostModal';
 import { fetchAllPosts } from '@/services/postService';
-
-// ==================== تایپ‌ها ====================
-interface Post {
-  id: string | number;
-  title: string;
-  price: number;
-  stock: number;
-  category: string;
-  rating?: number;
-  images?: string[];
-  image?: string;
-  caption?: string;
-  userId: string | number;
-  authorName?: string;
-  authorUsername?: string;
-  authorAvatar?: string;
-  likesCount?: number;
-  commentsCount?: number;
-  savesCount?: number;
-}
+import type { Post } from '@/types';
 
 export default function HomePage() {
   const router = useRouter();
@@ -143,11 +124,6 @@ export default function HomePage() {
                   sellerUsername={post.authorUsername}
                   sellerAvatar={post.authorAvatar}
                   sellerId={post.userId}
-                  fullWidth={true}
-                  enableSlider={true}
-                  likesCount={post.likesCount || 0}
-                  commentsCount={post.commentsCount || 0}
-                  savesCount={post.savesCount || 0}
                 />
               </div>
             ))

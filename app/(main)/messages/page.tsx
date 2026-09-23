@@ -1,7 +1,7 @@
 // src/app/(main)/messages/page.tsx
 'use client';
 
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo, type CSSProperties } from 'react';
 import { useRouter } from 'next/navigation';
 import { toPersianNumber } from '@/utils/numberUtils';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -156,8 +156,8 @@ const CheckIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const CheckAllBigIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+const CheckAllBigIcon = ({ className, style }: { className?: string; style?: CSSProperties }) => (
+  <svg className={className} style={style} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
     <polyline points="18 6 9 15 4 10" />
     <polyline points="20 10 15 15 14 14" />
   </svg>

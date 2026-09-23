@@ -37,6 +37,9 @@ export interface User {
   avatar?: string;
   status?: 'active' | 'busy' | 'ready' | 'inactive';
   bio?: string;
+  location?: string;
+  followersCount?: number;
+  followingCount?: number;
   createdAt?: string;
 }
 

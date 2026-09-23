@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { Suspense, useState, useEffect, useContext } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
@@ -87,7 +87,16 @@ const MOCK_USER: User = {
 };
 
 // ==================== کامپوننت اصلی ====================
+// useSearchParams نیاز به Suspense دارد تا صفحه در build پیش‌رندر شود
 export default function ProfilePage() {
+  return (
+    <Suspense fallback={null}>
+      <ProfilePageContent />
+    </Suspense>
+  );
+}
+
+function ProfilePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const usernameParam = searchParams.get('user');
