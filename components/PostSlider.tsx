@@ -21,7 +21,7 @@ export default function PostSlider({ images, postTitle }: PostSliderProps) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+      <div className="w-full h-full flex items-center justify-center bg-[var(--color-bg-surface)] text-[var(--color-text-muted)]">
         تصویری وجود ندارد
       </div>
     );
