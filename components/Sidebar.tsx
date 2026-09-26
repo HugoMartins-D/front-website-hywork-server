@@ -93,18 +93,24 @@ const ConfirmLogoutModal = ({
   }, [isOpen]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let animationFrame: number | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     if (isOpen) {
-      setIsVisible(true);
-      setIsAnimatingOut(false);
-    } else if (!isOpen && isVisible) {
-      setIsAnimatingOut(true);
-      timer = setTimeout(() => {
-        setIsVisible(false);
+      animationFrame = requestAnimationFrame(() => {
+        setIsVisible(true);
         setIsAnimatingOut(false);
-      }, 300);
+      });
+    } else if (!isOpen && isVisible) {
+      animationFrame = requestAnimationFrame(() => {
+        setIsAnimatingOut(true);
+        timer = setTimeout(() => {
+          setIsVisible(false);
+          setIsAnimatingOut(false);
+        }, 300);
+      });
     }
     return () => {
+      if (animationFrame !== undefined) cancelAnimationFrame(animationFrame);
       if (timer) clearTimeout(timer);
     };
   }, [isOpen, isVisible]);
@@ -154,6 +160,7 @@ const ConfirmLogoutModal = ({
 // ==================== کامپوننت اصلی سایدبار ====================
 interface SidebarProps {
   disableHover?: boolean;
+  suppressActiveProfile?: boolean;
 }
 
 interface MenuItem {
@@ -163,12 +170,14 @@ interface MenuItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-export default function Sidebar({ disableHover = false }: SidebarProps) {
+export default function Sidebar({
+  disableHover = false,
+  suppressActiveProfile = false,
+}: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { theme } = useTheme();
   const userContext = useContext(UserContext);
-  const user = userContext?.user ?? null;
   const setUser = userContext?.setUser ?? null;
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -181,15 +190,13 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
     setShowLogoutModal(false);
   };
 
-  const goToProfile = () => {
-    router.push('/profile');
-  };
-
   const isActivePath = (path: string) => pathname === path;
 
   const isActive = (item: MenuItem) => {
+    if (item.path === '/profile') {
+      return !suppressActiveProfile && isActivePath(item.path);
+    }
     if (item.path) return isActivePath(item.path);
-    if (item.name === 'پروفایل') return pathname === '/profile';
     return false;
   };
 
