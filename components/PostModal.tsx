@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext, useSyncExternalStore } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { UserContext } from '@/contexts/UserContext';
 import PostSlider from './PostSlider';
@@ -9,15 +10,16 @@ import type { Post, Comment, User } from '@/types';
 
 // ==================== هوک‌های کمکی ====================
 const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState(false);
-  useEffect(() => {
+  const subscribe = useCallback((onStoreChange: () => void) => {
     const media = window.matchMedia(query);
-    if (media.matches !== matches) setMatches(media.matches);
-    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
-    media.addEventListener('change', listener);
-    return () => media.removeEventListener('change', listener);
-  }, [matches, query]);
-  return matches;
+    media.addEventListener('change', onStoreChange);
+    return () => media.removeEventListener('change', onStoreChange);
+  }, [query]);
+
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
+  const getServerSnapshot = useCallback(() => false, []);
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };
 
 const useScrollLock = (isLocked: boolean) => {
@@ -72,11 +74,14 @@ const UserAvatar = ({
   };
 
   return (
-    <img
+    <Image
       src={user?.avatar || '/images/avatars/default.png'}
       alt={user?.username || 'کاربر'}
+      width={size}
+      height={size}
+      unoptimized
       onClick={onClick}
-      className={`w-${size} h-${size} rounded-full object-cover border-2 flex-shrink-0 cursor-pointer`}
+      className="rounded-full object-cover border-2 flex-shrink-0 cursor-pointer"
       style={{
         width: size,
         height: size,
@@ -284,22 +289,22 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
     if (onAddToCart) onAddToCart(post);
   };
 
-  const containerWidth = isMobile ? 'calc(100% - 20px)' : isTablet ? '90%' : '85%';
-  const maxContainerWidth = isMobile ? '480px' : isTablet ? '900px' : '1200px';
-  const maxContainerHeight = isMobile ? '85vh' : '90vh';
+  const containerWidth = isMobile ? '100%' : isTablet ? '94%' : 'min(94vw, 1440px)';
+  const maxContainerWidth = isMobile ? '100%' : isTablet ? '980px' : '1440px';
+  const maxContainerHeight = isMobile ? '100dvh' : '92vh';
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-0"
+      className="fixed inset-0 bg-black/75 backdrop-blur-[2px] z-[9999] flex items-center justify-center p-0 md:p-5"
       onClick={handleOverlayClick}
     >
       <div
-        className="relative flex flex-col bg-[var(--color-bg-card)] overflow-hidden shadow-2xl"
+        className="relative flex flex-col bg-[var(--color-bg-card)] overflow-hidden shadow-[0_28px_90px_rgba(0,0,0,0.45)] md:rounded-sm border border-white/10"
         style={{
           width: containerWidth,
           maxWidth: maxContainerWidth,
           maxHeight: maxContainerHeight,
-          margin: isMobile ? '10px' : 'auto',
+          margin: isMobile ? '0' : 'auto',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -309,15 +314,16 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
             handleClose();
           }}
           aria-label="بستن"
-          className="absolute top-3 end-3 w-9 h-9 border-none bg-black/50 cursor-pointer flex items-center justify-center z-10 text-white"
+          className="absolute top-3 end-3 w-9 h-9 rounded-full border border-white/20 bg-black/55 backdrop-blur-sm cursor-pointer flex items-center justify-center z-20 text-white transition-colors hover:bg-black/75"
         >
           <CloseIcon />
         </button>
 
-        <div className="flex-1 overflow-y-auto p-2.5">
-          <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-4 w-full`}>
+        <div className="flex-1 overflow-y-auto md:overflow-hidden">
+          <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-0 w-full md:h-[min(82vh,820px)]`} dir="rtl">
             {/* ستون راست - تصاویر و تعاملات */}
-            <div className="flex flex-col gap-4 flex-1 min-w-0">
+            <section className="flex flex-col flex-1 min-w-0 bg-[var(--color-bg-card)] border-b md:border-b-0 md:border-s border-[var(--color-border-color)]">
+              <div className="flex items-center justify-between gap-3 px-5 py-4 min-h-18">
               <div
                 className="flex items-center gap-3 cursor-pointer"
                 onClick={handleAuthorClick}
@@ -344,11 +350,20 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                 </div>
               </div>
 
-              <div className="w-full aspect-square bg-black overflow-hidden">
+                <button
+                  type="button"
+                  aria-label="گزینه‌های بیشتر"
+                  className="w-9 h-9 rounded-full border-none bg-transparent text-[var(--color-text-primary)] text-xl tracking-[2px] cursor-pointer hover:bg-[var(--color-bg-surface)]"
+                >
+                  ⋮
+                </button>
+              </div>
+
+              <div className="relative w-full flex-1 min-h-[320px] md:min-h-0 bg-black overflow-hidden">
                 <PostSlider images={postImages} postTitle={post.title || post.caption || ''} />
               </div>
 
-              <div className="flex justify-between items-center flex-wrap gap-2.5">
+              <div className="flex justify-between items-center flex-wrap gap-2.5 px-4 py-2.5 border-t border-[var(--color-border-color)]">
                 <div className="flex gap-0.5 items-center flex-wrap">
                   <button onClick={handleAddToCartClick} className="border-none flex items-center gap-1 cursor-pointer text-xs font-medium p-1.5 text-[var(--color-text-primary)]">
                     <CartIcon />
@@ -378,7 +393,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                 </div>
               </div>
 
-              <div className="flex items-baseline gap-1.5 pt-2 border-t border-[var(--color-border-color)]">
+              <div className="flex items-baseline gap-2 px-5 py-3.5 border-t border-[var(--color-border-color)] bg-[var(--color-bg-card)]">
                 <span
                   className="font-extrabold text-[var(--color-accent-color)]"
                   style={{ fontSize: isMobile ? '18px' : isTablet ? '20px' : '22px' }}
@@ -386,86 +401,82 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                   {formatPrice(post.price)}
                 </span>
                 <span className="text-xs text-[var(--color-text-muted)]">تومان</span>
+                <span className="ms-auto text-xs text-[var(--color-text-muted)]">
+                  {(post.stock || 0) > 0 ? `${toPersianNumber(post.stock || 0)} عدد موجود` : 'ناموجود'}
+                </span>
               </div>
-            </div>
+            </section>
 
             {/* ستون چپ - اطلاعات و کامنت‌ها */}
-            <div className="flex flex-col gap-4 flex-1 min-w-0">
+            <section className="flex flex-col gap-4 flex-1 min-w-0 p-5 md:p-6 md:overflow-y-auto bg-[var(--color-bg-card)]">
               <h2
                 className={`font-bold m-0 leading-tight text-[var(--color-text-primary)] ${isMobile ? '' : 'pe-12'}`}
                 style={{ fontSize: isMobile ? '16px' : isTablet ? '18px' : '20px' }}
               >
                 {post.title || post.caption}
               </h2>
-              <p className="text-xs leading-relaxed text-[var(--color-text-secondary)]">
+              <p className="text-sm leading-7 text-[var(--color-text-secondary)] pb-4 border-b border-[var(--color-border-color)]">
                 {truncatedDescription(post.caption || post.description)}
               </p>
 
-              <div
-                className="grid gap-2.5 bg-[var(--color-bg-surface)] p-3"
-                style={{
-                  gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
-                  gap: isMobile ? '10px' : '12px',
-                  padding: isMobile ? '12px' : '16px',
-                }}
-              >
-                <div className="flex justify-between items-center gap-3 flex-wrap">
+              <div className="flex flex-col border-y border-[var(--color-border-color)] mt-1">
+                <div className="flex justify-between items-center gap-3 py-2.5 border-b border-[var(--color-border-color)]">
                   <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">برند:</span>
                   <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.brand || 'نامشخص'}</span>
                 </div>
-                <div className="flex justify-between items-center gap-3 flex-wrap">
+                <div className="flex justify-between items-center gap-3 py-2.5 border-b border-[var(--color-border-color)]">
                   <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">مدل:</span>
                   <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.model || 'نامشخص'}</span>
                 </div>
-                <div className="flex justify-between items-center gap-3 flex-wrap">
+                <div className="flex justify-between items-center gap-3 py-2.5 border-b border-[var(--color-border-color)]">
                   <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">رنگ:</span>
                   <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.color || 'نامشخص'}</span>
                 </div>
-                <div className="flex justify-between items-center gap-3 flex-wrap">
+                <div className="flex justify-between items-center gap-3 py-2.5">
                   <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">وزن:</span>
                   <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.weight || 'نامشخص'}</span>
                 </div>
               </div>
 
-              <div className="flex gap-2.5 items-center px-3 py-2.5 bg-[var(--color-bg-surface)]">
+              <div className="flex gap-2.5 items-center py-2.5 border-b border-[var(--color-border-color)]">
                 <span className="font-semibold text-xs text-[var(--color-text-muted)]">دسته‌بندی:</span>
                 <span className="text-xs">{post.category || 'عمومی'}</span>
               </div>
 
-              <div className="flex gap-2.5 items-center px-3 py-2.5 bg-[var(--color-bg-surface)]">
+              <div className="flex gap-2.5 items-center py-2.5 border-b border-[var(--color-border-color)]">
                 <span className="font-semibold text-xs text-[var(--color-text-muted)]">موجودی:</span>
                 <span className={`text-xs ${(post.stock || 0) > 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {(post.stock || 0) > 0 ? `${toPersianNumber(post.stock || 0)} عدد` : 'ناموجود'}
                 </span>
               </div>
 
-              <div className="border-t border-[var(--color-border-color)] pt-4">
+              <div className="border-t border-[var(--color-border-color)] pt-5 mt-1 flex flex-col min-h-0">
                 <h4 className="text-sm font-semibold mb-3 text-[var(--color-text-primary)]">
                   نظرات کاربران ({toPersianNumber(comments.length)})
                 </h4>
-                <div className="flex gap-2 mb-4 flex-wrap">
+                <div className="flex gap-2 mb-4 rounded-full bg-[var(--color-bg-surface)] p-1.5 ps-4 border border-[var(--color-border-color)]">
                   <input
                     type="text"
                     placeholder="نظر خود را بنویسید..."
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSendComment()}
-                    className="flex-1 px-3.5 py-2.5 border border-[var(--color-border-color)] outline-none text-xs bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]"
+                    className="flex-1 min-w-0 border-none outline-none text-xs bg-transparent text-[var(--color-text-primary)]"
                   />
                   <button
                     onClick={handleSendComment}
-                    className={`px-5 py-2.5 font-semibold border-none ${
+                    className={`min-w-16 h-10 rounded-full shrink-0 px-3 font-semibold border-none ${
                       commentText.trim()
                         ? 'bg-[var(--color-accent-color)] text-white cursor-pointer'
-                        : 'bg-[var(--color-bg-surface)] text-[var(--color-text-muted)] border border-[var(--color-border-color)] cursor-not-allowed'
+                        : 'bg-[var(--color-border-color)] text-[var(--color-text-muted)] cursor-not-allowed'
                     }`}
                   >
                     ارسال
                   </button>
                 </div>
-                <div className="flex flex-col gap-3 max-h-[280px] overflow-y-auto pr-1.5">
+                <div className="flex flex-col divide-y divide-[var(--color-border-color)] max-h-[260px] md:max-h-none md:flex-1 overflow-y-auto pe-1.5">
                   {comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-2.5 p-2.5 bg-[var(--color-bg-surface)]">
+                    <div key={comment.id} className="flex gap-3 py-3.5">
                       <UserAvatar
                         user={{
                           avatar: comment.user?.avatar,
@@ -488,7 +499,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                   ))}
                 </div>
               </div>
-            </div>
+            </section>
           </div>
         </div>
       </div>
