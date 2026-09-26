@@ -93,18 +93,24 @@ const ConfirmLogoutModal = ({
   }, [isOpen]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let animationFrame: number | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     if (isOpen) {
-      setIsVisible(true);
-      setIsAnimatingOut(false);
-    } else if (!isOpen && isVisible) {
-      setIsAnimatingOut(true);
-      timer = setTimeout(() => {
-        setIsVisible(false);
+      animationFrame = requestAnimationFrame(() => {
+        setIsVisible(true);
         setIsAnimatingOut(false);
-      }, 300);
+      });
+    } else if (!isOpen && isVisible) {
+      animationFrame = requestAnimationFrame(() => {
+        setIsAnimatingOut(true);
+        timer = setTimeout(() => {
+          setIsVisible(false);
+          setIsAnimatingOut(false);
+        }, 300);
+      });
     }
     return () => {
+      if (animationFrame !== undefined) cancelAnimationFrame(animationFrame);
       if (timer) clearTimeout(timer);
     };
   }, [isOpen, isVisible]);
@@ -154,6 +160,7 @@ const ConfirmLogoutModal = ({
 // ==================== کامپوننت اصلی سایدبار ====================
 interface SidebarProps {
   disableHover?: boolean;
+  suppressActiveProfile?: boolean;
 }
 
 interface MenuItem {
@@ -163,12 +170,14 @@ interface MenuItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-export default function Sidebar({ disableHover = false }: SidebarProps) {
+export default function Sidebar({
+  disableHover = false,
+  suppressActiveProfile = false,
+}: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { theme } = useTheme();
   const userContext = useContext(UserContext);
-  const user = userContext?.user ?? null;
   const setUser = userContext?.setUser ?? null;
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -181,32 +190,21 @@ export default function Sidebar({ disableHover = false }: SidebarProps) {
     setShowLogoutModal(false);
   };
 
-  const goToProfile = () => {
-    router.push('/profile');
-  };
-
   const isActivePath = (path: string) => pathname === path;
 
   const isActive = (item: MenuItem) => {
+    if (item.path === '/profile') {
+      return !suppressActiveProfile && isActivePath(item.path);
+    }
     if (item.path) return isActivePath(item.path);
-    if (item.name === 'پروفایل') return pathname === '/profile';
     return false;
   };
-
-
-  const CompassIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-  </svg>
-);
 
 
   const menuItems: MenuItem[] = [
     { name: 'خانه', path: '/', icon: House01Icon },
     { name: 'جستجو', path: '/search', icon: SearchIcon },
-{ name: 'اکسپلور', path: '/explor', icon: CompassIcon },  
-  { name: 'پیام‌ها', path: '/messages', icon: MessagesIcon },
+    { name: 'پیام‌ها', path: '/messages', icon: MessagesIcon },
     { name: 'ساخت پست', path: '/create-post', icon: CreatePostIcon },
 // در بخش menuItems، آیتم پروفایل رو اینطور تغییر بده:
 { 

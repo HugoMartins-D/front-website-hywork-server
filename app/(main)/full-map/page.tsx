@@ -359,7 +359,7 @@ const TargetIcon = () => (
     <line x1="12" y1="2" x2="12" y2="4" />
     <line x1="12" y1="20" x2="12" y2="22" />
     <line x1="2" y1="12" x2="4" y2="12" />
-    <line x1="20" y1="12" x2="22" y2="22" />
+    <line x1="20" y1="12" x2="22" y2="12" />
   </svg>
 );
 
@@ -375,8 +375,6 @@ const HorizontalProductCard: React.FC<{
   user: User; 
   onClick: (post: Post) => void 
 }> = ({ post, user, onClick }) => {
-  const { theme } = useTheme();
-  
   console.log('🔄 رندر کارت محصول:', { id: post.id, title: post.title });
 
   return (
@@ -386,10 +384,9 @@ const HorizontalProductCard: React.FC<{
         onClick(post);
       }}
       className={`
-        flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer transition-all duration-200
-        ${theme === 'dark' ? 'bg-bg-card' : 'bg-white'}
-        border border-border-color shadow-[0_4px_12px_var(--color-shadow)]
-        h-32.5 w-full max-w-[320px] rtl
+        flex items-center gap-2 p-2 rounded-xl cursor-pointer transition-all duration-200
+        bg-bg-card hover:bg-bg-hover border border-border-color
+        h-23 w-full rtl
       `}
       role="button"
       tabIndex={0}
@@ -401,29 +398,29 @@ const HorizontalProductCard: React.FC<{
       }}
     >
       {/* تصویر */}
-      <div className="w-22.5 h-22.5 relative shrink-0 rounded-2xl overflow-hidden bg-gray-100 order-2">
+      <div className="w-18 h-18 relative shrink-0 rounded-lg overflow-hidden bg-bg-surface order-2">
         <Image
           src={post.image || '/images/posts/placeholder.svg'}
           alt={post.title}
           fill
           className="object-cover"
-          sizes="(max-width: 767px) 90px, 90px"
+          sizes="72px"
         />
       </div>
       
       {/* اطلاعات */}
       <div className="flex-1 flex flex-col gap-1.5 min-w-0 h-full justify-between order-1">
-        <h4 className="text-base font-semibold text-text-primary truncate m-0">
+        <h4 className="text-xs font-semibold text-text-primary truncate m-0">
           {post.title}
         </h4>
-        <p className="text-xs text-text-secondary line-clamp-2 leading-relaxed">
+        <p className="text-[10px] text-text-secondary line-clamp-1 leading-relaxed m-0">
           {post.caption}
         </p>
         <div className="flex justify-between items-center mt-1">
-          <span className={`text-[15px] font-bold ${post.price === 0 ? 'text-emerald-500' : 'text-accent-color'}`}>
+          <span className={`text-xs font-bold ${post.price === 0 ? 'text-emerald-500' : 'text-accent-color'}`}>
             {post.price === 0 ? 'رایگان' : formatPrice(post.price)}
           </span>
-          <div className="text-[11px] text-text-muted flex items-center gap-1">
+          <div className="text-[9px] text-text-muted flex items-center gap-1">
             <span>⭐ {post.rating}</span>
             <span>|</span>
             <span>👤 {user?.name || 'ناشناس'}</span>
@@ -501,29 +498,26 @@ const DesktopSidebar: React.FC<{
   onProductClick: (post: Post) => void;
   onBack: () => void;
 }> = ({ searchTerm, onSearchChange, products, onProductClick, onBack }) => {
-  const { theme } = useTheme();
-
   console.log('🔄 رندر سایدبار دسکتاپ:', { productsCount: products.length });
 
   return (
     <div
       className={`
-        absolute top-5 right-5 bottom-5 w-85 rounded-3xl flex flex-col overflow-hidden z-1000
-        ${theme === 'dark' ? 'bg-bg-card/85' : 'bg-white/85'}
-        backdrop-blur-[20px] border border-border-color
-        shadow-[0_20px_40px_var(--color-shadow)] rtl
+        absolute top-4 right-4 bottom-4 w-[310px] rounded-2xl flex flex-col overflow-hidden z-1000
+        bg-bg-card/95 backdrop-blur-[20px] border border-border-color
+        shadow-[0_16px_40px_var(--color-shadow)] rtl
       `}
     >
       {/* هدر */}
-      <div className="p-4 px-5 border-b border-border-color flex items-center gap-3">
+      <div className="p-2.5 border-b border-border-color flex items-center gap-2">
         <button
           onClick={onBack}
-          className="w-10 h-10 rounded-full border border-border-color flex items-center justify-center cursor-pointer transition-all duration-200 text-text-primary hover:bg-bg-surface shrink-0"
+          className="w-9 h-9 rounded-full border border-border-color flex items-center justify-center cursor-pointer transition-all duration-200 text-text-primary hover:bg-bg-surface shrink-0"
           aria-label="بازگشت"
         >
           <ArrowBackIcon />
         </button>
-        <div className="flex-1 flex items-center gap-2.5 px-4 py-2.5 rounded-[40px] bg-bg-surface border border-border-color/50">
+        <div className="flex-1 flex items-center gap-2 px-3 py-2 rounded-full bg-bg-surface border border-border-color/50">
           <SearchIcon />
           <input
             type="text"
@@ -533,14 +527,14 @@ const DesktopSidebar: React.FC<{
               console.log('🔍 جستجو:', e.target.value);
               onSearchChange(e.target.value);
             }}
-            className="flex-1 border-none bg-transparent text-sm outline-none text-text-primary font-sans"
+            className="flex-1 min-w-0 border-none bg-transparent text-xs outline-none text-text-primary font-sans"
             aria-label="جستجوی محصولات"
           />
         </div>
       </div>
       
       {/* لیست محصولات */}
-      <div className="flex-1 overflow-y-auto p-4 px-5 scrollbar-thin scrollbar-track-bg-secondary scrollbar-thumb-border-color">
+      <div className="flex-1 overflow-y-auto p-2 space-y-2 scrollbar-thin scrollbar-track-bg-secondary scrollbar-thumb-border-color">
         {products.map((post) => (
           <HorizontalProductCard
             key={post.id}
@@ -607,25 +601,28 @@ const MobileHeader: React.FC<{
  */
 const DesktopLocationButton: React.FC<{ 
   onLocate: () => void; 
-  isLocating: boolean 
-}> = ({ onLocate, isLocating }) => {
-  const { theme } = useTheme();
+  isLocating: boolean;
+  onBack: () => void;
+}> = ({ onLocate, isLocating, onBack }) => {
 
   return (
-    <button
-      onClick={onLocate}
-      disabled={isLocating}
-      className={`
-        absolute bottom-5 left-5 z-1000 px-4 py-3 rounded-lg flex items-center gap-2 text-sm font-medium
-        ${theme === 'dark' ? 'bg-bg-card/85' : 'bg-white/85'}
-        backdrop-blur-[20px] border border-border-color shadow-[0_2px_6px_var(--color-shadow)]
-        text-text-primary transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed rtl
-      `}
-      aria-label="پیدا کردن موقعیت من"
-    >
-      <TargetIcon />
-      <span>{isLocating ? 'در حال پیدا کردن...' : 'موقعیت من'}</span>
-    </button>
+    <div className="absolute bottom-5 left-5 z-1000 flex items-center gap-2">
+      <button
+        onClick={onBack}
+        className="w-11 h-11 rounded-full flex items-center justify-center bg-bg-card/95 backdrop-blur-[20px] border border-border-color shadow-[0_2px_8px_var(--color-shadow)] text-text-primary transition-transform hover:scale-105"
+        aria-label="بازگشت"
+      >
+        <ArrowBackIcon />
+      </button>
+      <button
+        onClick={onLocate}
+        disabled={isLocating}
+        className="w-11 h-11 rounded-full flex items-center justify-center bg-bg-card/95 backdrop-blur-[20px] border border-border-color shadow-[0_2px_8px_var(--color-shadow)] text-text-primary transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="پیدا کردن موقعیت من"
+      >
+        {isLocating ? <div className="w-5 h-5 border-2 border-text-primary border-t-transparent rounded-full animate-spin" /> : <TargetIcon />}
+      </button>
+    </div>
   );
 };
 
@@ -911,46 +908,47 @@ function FullMapPageContent() {
   // ============================================================
 
   const createProductIcon = useCallback(
-    (price: number, isFree = false) => {
+    (post: Post) => {
       if (!LeafletModule) {
         console.warn('⚠️ Leaflet برای ایجاد آیکون آماده نیست');
         return null;
       }
-      
-      if (isFree || price === 0) {
+
+      const user = getUserById(post.userId);
+      const showAvatar = post.id % 3 === 0 && Boolean(user?.avatar);
+
+      if (showAvatar) {
         return LeafletModule.divIcon({
           className: 'custom-marker',
           html: `
-            <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-[11px] shadow-md border-2 border-white">
-              رایگان
+            <div class="map-avatar-marker">
+              <img src="${user.avatar}" alt="" />
             </div>
           `,
-          iconSize: [40, 40],
-          iconAnchor: [20, 40],
-          popupAnchor: [0, -40],
+          iconSize: [42, 42],
+          iconAnchor: [21, 21],
+          popupAnchor: [0, -24],
         });
       }
 
-      const isExpensive = price > 500000;
-      const markerColor = isExpensive ? '#ef4444' : '#3b82f6';
+      const price = post.price;
       const priceText =
-        price >= 1000000
+        price === 0
+          ? 'رایگان'
+          : price >= 1000000
           ? `${Math.floor(price / 1000000)}M`
           : `${Math.floor(price / 1000)}K`;
 
       return LeafletModule.divIcon({
         className: 'custom-marker',
         html: `
-          <div
-            class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-[11px] shadow-md border-2 border-white"
-            style="background-color:${markerColor}"
-          >
+          <div class="map-price-marker">
             ${priceText}
           </div>
         `,
         iconSize: [40, 40],
-        iconAnchor: [20, 40],
-        popupAnchor: [0, -40],
+        iconAnchor: [20, 20],
+        popupAnchor: [0, -22],
       });
     },
     [] // حذف وابستگی LeafletModule
@@ -993,7 +991,7 @@ function FullMapPageContent() {
         <MapContainer
           center={mapCenter}
           zoom={mapZoom}
-          className="w-full h-full z-1"
+            className="w-full h-full z-1 map-monochrome"
           zoomControl={true}
           ref={setMapInstance}
         >
@@ -1005,7 +1003,7 @@ function FullMapPageContent() {
           
           {/* مارکرهای محصولات */}
           {filteredPosts.map((post) => {
-            const icon = createProductIcon(post.price, post.price === 0);
+            const icon = createProductIcon(post);
             if (!icon) return null;
             
             return (
@@ -1057,7 +1055,7 @@ function FullMapPageContent() {
       {/* رابط کاربری دسکتاپ */}
       {!isMobile && (
         <>
-          <DesktopLocationButton onLocate={handleLocate} isLocating={isLocating} />
+          <DesktopLocationButton onLocate={handleLocate} isLocating={isLocating} onBack={handleBack} />
           <DesktopSidebar
             searchTerm={searchTerm}
             onSearchChange={handleSearchChange}
@@ -1109,6 +1107,13 @@ function FullMapPageContent() {
         }
         .leaflet-container {
           font-family: var(--font-sans);
+          background: var(--color-bg-primary);
+        }
+        .map-monochrome .leaflet-tile-pane {
+          filter: grayscale(1) saturate(0) contrast(0.88) brightness(1.06);
+        }
+        [data-theme='dark'] .map-monochrome .leaflet-tile-pane {
+          filter: grayscale(1) saturate(0) invert(0.9) contrast(0.9) brightness(0.72);
         }
         /* کنترل‌های بالای نقشه (زوم) زیر هدر جستجو پنهان نشوند */
         .leaflet-top {
@@ -1119,6 +1124,38 @@ function FullMapPageContent() {
         }
         .custom-marker:hover {
           transform: scale(1.1);
+        }
+        .map-price-marker,
+        .map-avatar-marker {
+          width: 40px;
+          height: 40px;
+          border-radius: 9999px;
+          border: 2px solid var(--color-bg-card);
+          box-shadow: 0 3px 10px var(--color-shadow);
+          transition: transform 0.2s ease;
+        }
+        .map-price-marker {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--color-text-primary);
+          color: var(--color-bg-primary);
+          font-size: 10px;
+          font-weight: 800;
+        }
+        .map-avatar-marker {
+          width: 42px;
+          height: 42px;
+          padding: 2px;
+          background: var(--color-bg-card);
+        }
+        .map-avatar-marker img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          border-radius: inherit;
+          object-fit: cover;
+          background: var(--color-bg-surface);
         }
         .user-location-marker {
           z-index: 1000;

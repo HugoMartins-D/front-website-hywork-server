@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface PostSliderProps {
   images: string[];
@@ -20,7 +21,7 @@ export default function PostSlider({ images, postTitle }: PostSliderProps) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+      <div className="w-full h-full flex items-center justify-center bg-[var(--color-bg-surface)] text-[var(--color-text-muted)]">
         تصویری وجود ندارد
       </div>
     );
@@ -28,9 +29,12 @@ export default function PostSlider({ images, postTitle }: PostSliderProps) {
 
   return (
     <div className="relative w-full h-full">
-      <img
+      <Image
         src={images[currentIndex]}
         alt={`${postTitle} - تصویر ${currentIndex + 1}`}
+        fill
+        sizes="(max-width: 768px) 100vw, 47vw"
+        unoptimized
         className="w-full h-full object-cover"
       />
       {images.length > 1 && (
