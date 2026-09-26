@@ -47,7 +47,13 @@ interface MenuItem {
   icon: React.ComponentType<{ className?: string; stroke?: string; fill?: string }>;
 }
 
-export default function MobileBottomNav() {
+interface MobileBottomNavProps {
+  suppressActiveProfile?: boolean;
+}
+
+export default function MobileBottomNav({
+  suppressActiveProfile = false,
+}: MobileBottomNavProps) {
   const pathname = usePathname();
   const { theme } = useTheme();
 
@@ -66,7 +72,9 @@ export default function MobileBottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 h-[70px] bg-[var(--color-bg-secondary)] border-t border-[var(--color-border-color)] flex justify-around items-center px-3 z-[1100] shadow-[0_-2px_10px_var(--color-shadow)]">
       {menuItems.map((item) => {
-        const active = isActivePath(item.path);
+        const active =
+          !(suppressActiveProfile && item.path === '/profile') &&
+          isActivePath(item.path);
         const IconComponent = item.icon;
         const itemColor = active ? activeColor : inactiveColor;
 

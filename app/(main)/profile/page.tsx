@@ -102,6 +102,11 @@ function ProfilePageContent() {
   const usernameParam = searchParams.get('user');
   const { theme, toggleTheme } = useTheme();
   const { user: currentUser, setUser } = useContext(UserContext);
+  const requestedUsername = usernameParam?.trim().toLowerCase();
+  const currentUsername = currentUser?.username?.trim().toLowerCase();
+  const isViewingAnotherUser = Boolean(
+    requestedUsername && requestedUsername !== currentUsername
+  );
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
   const [profileUser, setProfileUser] = useState<User | null>(null);
@@ -267,8 +272,8 @@ function ProfilePageContent() {
   if (loading) {
     return (
       <>
-        {!isMobile && <Sidebar />}
-        {isMobile && <MobileBottomNav />}
+        {!isMobile && <Sidebar suppressActiveProfile={isViewingAnotherUser} />}
+        {isMobile && <MobileBottomNav suppressActiveProfile={isViewingAnotherUser} />}
         <div className="min-h-screen bg-bg-primary flex items-center justify-center">
           <div className="text-text-muted text-center">
             <div className="w-10 h-10 border-4 border-border-color border-t-accent-color rounded-full animate-spin mx-auto" />
@@ -283,8 +288,8 @@ function ProfilePageContent() {
   if (!currentUser && !usernameParam) {
     return (
       <>
-        {!isMobile && <Sidebar />}
-        {isMobile && <MobileBottomNav />}
+        {!isMobile && <Sidebar suppressActiveProfile={isViewingAnotherUser} />}
+        {isMobile && <MobileBottomNav suppressActiveProfile={isViewingAnotherUser} />}
         <div className="min-h-screen bg-bg-primary flex items-center justify-center p-5">
           <div className="text-center text-text-primary">
             <h2 className="text-2xl font-bold mb-2">لطفاً وارد شوید</h2>
@@ -305,8 +310,8 @@ function ProfilePageContent() {
   if (!profileUser) {
     return (
       <>
-        {!isMobile && <Sidebar />}
-        {isMobile && <MobileBottomNav />}
+        {!isMobile && <Sidebar suppressActiveProfile={isViewingAnotherUser} />}
+        {isMobile && <MobileBottomNav suppressActiveProfile={isViewingAnotherUser} />}
         <div className="min-h-screen bg-bg-primary flex items-center justify-center p-5">
           <div className="text-center text-text-primary">
             <h2 className="text-2xl font-bold mb-2">پروفایل یافت نشد</h2>
@@ -331,8 +336,8 @@ function ProfilePageContent() {
 
   return (
     <>
-      {!isMobile && <Sidebar />}
-      {isMobile && <MobileBottomNav />}
+      {!isMobile && <Sidebar suppressActiveProfile={isViewingAnotherUser} />}
+      {isMobile && <MobileBottomNav suppressActiveProfile={isViewingAnotherUser} />}
 
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
