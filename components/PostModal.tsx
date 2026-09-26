@@ -186,6 +186,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
   const [saved, setSaved] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
+  const [activePanel, setActivePanel] = useState<'details' | 'comments'>('details');
 
   const isMobile = useMediaQuery('(max-width: 767px)');
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1024px)');
@@ -373,7 +374,16 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                     <HeartIcon filled={liked} />
                     <span>{toPersianNumber((post.likesCount || 0) + (liked ? 1 : 0))}</span>
                   </button>
-                  <button className="border-none flex items-center gap-1 cursor-pointer text-xs font-medium p-1.5 text-[var(--color-text-primary)]">
+                  <button
+                    onClick={() => setActivePanel('comments')}
+                    aria-label="نمایش نظرات"
+                    aria-pressed={activePanel === 'comments'}
+                    className={`border-none flex items-center gap-1 cursor-pointer text-xs font-medium p-1.5 transition-colors ${
+                      activePanel === 'comments'
+                        ? 'text-[var(--color-accent-color)]'
+                        : 'text-[var(--color-text-primary)]'
+                    }`}
+                  >
                     <CommentIcon />
                     <span>{toPersianNumber(comments.length)}</span>
                   </button>
@@ -407,98 +417,124 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
               </div>
             </section>
 
-            {/* ستون چپ - اطلاعات و کامنت‌ها */}
-            <section className="flex flex-col gap-4 flex-1 min-w-0 p-5 md:p-6 md:overflow-y-auto bg-[var(--color-bg-card)]">
-              <h2
-                className={`font-bold m-0 leading-tight text-[var(--color-text-primary)] ${isMobile ? '' : 'pe-12'}`}
-                style={{ fontSize: isMobile ? '16px' : isTablet ? '18px' : '20px' }}
-              >
-                {post.title || post.caption}
-              </h2>
-              <p className="text-sm leading-7 text-[var(--color-text-secondary)] pb-4 border-b border-[var(--color-border-color)]">
-                {truncatedDescription(post.caption || post.description)}
-              </p>
-
-              <div className="flex flex-col border-y border-[var(--color-border-color)] mt-1">
-                <div className="flex justify-between items-center gap-3 py-2.5 border-b border-[var(--color-border-color)]">
-                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">برند:</span>
-                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.brand || 'نامشخص'}</span>
-                </div>
-                <div className="flex justify-between items-center gap-3 py-2.5 border-b border-[var(--color-border-color)]">
-                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">مدل:</span>
-                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.model || 'نامشخص'}</span>
-                </div>
-                <div className="flex justify-between items-center gap-3 py-2.5 border-b border-[var(--color-border-color)]">
-                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">رنگ:</span>
-                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.color || 'نامشخص'}</span>
-                </div>
-                <div className="flex justify-between items-center gap-3 py-2.5">
-                  <span className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">وزن:</span>
-                  <span className="text-xs font-medium text-[var(--color-text-primary)] text-left">{post.weight || 'نامشخص'}</span>
-                </div>
+            {/* ستون چپ - جزئیات یا نظرات */}
+            <section className="flex flex-col flex-1 min-w-0 bg-[var(--color-bg-card)] md:overflow-hidden">
+              <div className="flex items-center border-b border-[var(--color-border-color)] px-5 pt-4 md:px-6">
+                <button
+                  type="button"
+                  onClick={() => setActivePanel('details')}
+                  className={`border-0 border-b-2 border-solid px-4 pb-3 text-sm font-semibold transition-colors ${
+                    activePanel === 'details'
+                      ? 'border-[var(--color-text-primary)] text-[var(--color-text-primary)]'
+                      : 'border-transparent text-[var(--color-text-muted)]'
+                  }`}
+                >
+                  جزئیات
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActivePanel('comments')}
+                  className={`border-0 border-b-2 border-solid px-4 pb-3 text-sm font-semibold transition-colors ${
+                    activePanel === 'comments'
+                      ? 'border-[var(--color-text-primary)] text-[var(--color-text-primary)]'
+                      : 'border-transparent text-[var(--color-text-muted)]'
+                  }`}
+                >
+                  نظرات ({toPersianNumber(comments.length)})
+                </button>
               </div>
 
-              <div className="flex gap-2.5 items-center py-2.5 border-b border-[var(--color-border-color)]">
-                <span className="font-semibold text-xs text-[var(--color-text-muted)]">دسته‌بندی:</span>
-                <span className="text-xs">{post.category || 'عمومی'}</span>
-              </div>
+              {activePanel === 'details' ? (
+                <div className="flex flex-col gap-4 p-5 md:flex-1 md:overflow-y-auto md:p-6">
+                  <div>
+                    <span className="mb-1 block text-xs text-[var(--color-text-muted)]">{post.category || 'محصول'}</span>
+                    <h2
+                      className="m-0 font-bold leading-tight text-[var(--color-text-primary)]"
+                      style={{ fontSize: isMobile ? '16px' : isTablet ? '18px' : '20px' }}
+                    >
+                      {post.title || post.caption}
+                    </h2>
+                  </div>
+                  <p className="border-b border-[var(--color-border-color)] pb-4 text-sm leading-7 text-[var(--color-text-secondary)]">
+                    {truncatedDescription(post.caption || post.description)}
+                  </p>
 
-              <div className="flex gap-2.5 items-center py-2.5 border-b border-[var(--color-border-color)]">
-                <span className="font-semibold text-xs text-[var(--color-text-muted)]">موجودی:</span>
-                <span className={`text-xs ${(post.stock || 0) > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {(post.stock || 0) > 0 ? `${toPersianNumber(post.stock || 0)} عدد` : 'ناموجود'}
-                </span>
-              </div>
-
-              <div className="border-t border-[var(--color-border-color)] pt-5 mt-1 flex flex-col min-h-0">
-                <h4 className="text-sm font-semibold mb-3 text-[var(--color-text-primary)]">
-                  نظرات کاربران ({toPersianNumber(comments.length)})
-                </h4>
-                <div className="flex gap-2 mb-4 rounded-full bg-[var(--color-bg-surface)] p-1.5 ps-4 border border-[var(--color-border-color)]">
-                  <input
-                    type="text"
-                    placeholder="نظر خود را بنویسید..."
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSendComment()}
-                    className="flex-1 min-w-0 border-none outline-none text-xs bg-transparent text-[var(--color-text-primary)]"
-                  />
-                  <button
-                    onClick={handleSendComment}
-                    className={`min-w-16 h-10 rounded-full shrink-0 px-3 font-semibold border-none ${
-                      commentText.trim()
-                        ? 'bg-[var(--color-accent-color)] text-white cursor-pointer'
-                        : 'bg-[var(--color-border-color)] text-[var(--color-text-muted)] cursor-not-allowed'
-                    }`}
-                  >
-                    ارسال
-                  </button>
+                  <h3 className="m-0 text-sm font-bold text-[var(--color-text-primary)]">ویژگی‌ها</h3>
+                  <dl className="m-0 flex flex-col border-y border-[var(--color-border-color)]">
+                    {[
+                      ['برند', post.brand || 'نامشخص'],
+                      ['مدل', post.model || 'نامشخص'],
+                      ['رنگ', post.color || 'نامشخص'],
+                      ['وزن', post.weight || 'نامشخص'],
+                      ['دسته‌بندی', post.category || 'عمومی'],
+                      ['موجودی', (post.stock || 0) > 0 ? `${toPersianNumber(post.stock || 0)} عدد` : 'ناموجود'],
+                    ].map(([label, value]) => (
+                      <div key={label} className="flex items-center justify-between gap-4 border-b border-[var(--color-border-color)] py-2.5 last:border-b-0">
+                        <dt className="text-xs font-semibold text-[var(--color-text-muted)]">{label}</dt>
+                        <dd className="m-0 text-left text-xs font-medium text-[var(--color-text-primary)]">{value}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 </div>
-                <div className="flex flex-col divide-y divide-[var(--color-border-color)] max-h-[260px] md:max-h-none md:flex-1 overflow-y-auto pe-1.5">
-                  {comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-3 py-3.5">
-                      <UserAvatar
-                        user={{
-                          avatar: comment.user?.avatar,
-                          username: comment.user?.username,
-                        }}
-                        size={32}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-xs text-[var(--color-text-primary)] mb-1">
-                          {comment.user?.username || 'کاربر'}
-                        </div>
-                        <div className="text-xs leading-relaxed text-[var(--color-text-secondary)] break-words">
-                          {comment.text}
-                        </div>
-                        <div className="text-[10px] text-[var(--color-text-muted)] mt-1">
-                          {comment.date ? new Date(comment.date).toLocaleDateString('fa-IR') : ''}
+              ) : (
+                <div className="flex min-h-[420px] flex-col p-5 md:min-h-0 md:flex-1 md:overflow-hidden md:p-6">
+                  <div className="mb-4 border-b border-[var(--color-border-color)] pb-3">
+                    <h2 className="m-0 truncate text-sm font-bold text-[var(--color-text-primary)]">{post.title}</h2>
+                    <p className="m-0 mt-1 text-xs text-[var(--color-text-muted)]">
+                      {post.brand || post.category || 'محصول'} · {formatRating(post.rating || 4.5)} ★
+                    </p>
+                  </div>
+
+                  <div className="flex flex-1 flex-col divide-y divide-[var(--color-border-color)] overflow-y-auto pe-1.5">
+                    {comments.length > 0 ? comments.map((comment) => (
+                      <div key={comment.id} className="flex gap-3 py-4">
+                        <UserAvatar
+                          user={{ avatar: comment.user?.avatar, username: comment.user?.username }}
+                          size={34}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="mb-1 flex items-center gap-2">
+                            <span className="text-xs font-semibold text-[var(--color-text-primary)]">
+                              {comment.user?.username || 'کاربر'}
+                            </span>
+                            <span className="text-[10px] text-[var(--color-text-muted)]">
+                              {comment.date ? new Date(comment.date).toLocaleDateString('fa-IR') : ''}
+                            </span>
+                          </div>
+                          <p className="m-0 break-words text-xs leading-6 text-[var(--color-text-secondary)]">{comment.text}</p>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    )) : (
+                      <div className="flex flex-1 items-center justify-center text-center text-sm text-[var(--color-text-muted)]">
+                        هنوز نظری ثبت نشده است.
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mt-4 flex gap-2 rounded-full border border-[var(--color-border-color)] bg-[var(--color-bg-surface)] p-1.5 ps-4">
+                    <input
+                      type="text"
+                      placeholder="نظر خود را بنویسید..."
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleSendComment()}
+                      className="min-w-0 flex-1 border-none bg-transparent text-xs text-[var(--color-text-primary)] outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSendComment}
+                      disabled={!commentText.trim()}
+                      className={`h-10 min-w-16 shrink-0 rounded-full border-none px-3 font-semibold ${
+                        commentText.trim()
+                          ? 'bg-[var(--color-accent-color)] text-white cursor-pointer'
+                          : 'bg-[var(--color-border-color)] text-[var(--color-text-muted)] cursor-not-allowed'
+                      }`}
+                    >
+                      ارسال
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </section>
           </div>
         </div>
