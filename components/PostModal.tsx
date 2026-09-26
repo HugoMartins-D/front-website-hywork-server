@@ -141,7 +141,7 @@ const SaveIcon = ({ filled }: { filled: boolean }) => (
     width="20"
     height="20"
     viewBox="0 0 24 24"
-    fill={filled ? '#262626' : 'none'}
+    fill={filled ? 'currentColor' : 'none'}
     stroke="currentColor"
     strokeWidth="1.5"
   >
@@ -299,7 +299,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
       onClick={handleOverlayClick}
     >
       <div
-        className="relative flex flex-col bg-[var(--color-bg-card)] overflow-hidden shadow-[0_28px_90px_rgba(0,0,0,0.45)] md:rounded-sm border border-white/10"
+        className="relative flex flex-col bg-[var(--color-bg-card)] text-[var(--color-text-primary)] overflow-hidden shadow-[0_28px_90px_var(--color-shadow)] md:rounded-sm border border-[var(--color-border-color)]"
         style={{
           width: containerWidth,
           maxWidth: maxContainerWidth,
