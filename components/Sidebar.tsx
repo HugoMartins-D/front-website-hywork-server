@@ -201,19 +201,10 @@ export default function Sidebar({
   };
 
 
-  const CompassIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-  </svg>
-);
-
-
   const menuItems: MenuItem[] = [
     { name: 'خانه', path: '/', icon: House01Icon },
     { name: 'جستجو', path: '/search', icon: SearchIcon },
-{ name: 'اکسپلور', path: '/explor', icon: CompassIcon },  
-  { name: 'پیام‌ها', path: '/messages', icon: MessagesIcon },
+    { name: 'پیام‌ها', path: '/messages', icon: MessagesIcon },
     { name: 'ساخت پست', path: '/create-post', icon: CreatePostIcon },
 // در بخش menuItems، آیتم پروفایل رو اینطور تغییر بده:
 { 
