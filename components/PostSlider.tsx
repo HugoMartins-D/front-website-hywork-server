@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface PostSliderProps {
   images: string[];
@@ -28,9 +29,12 @@ export default function PostSlider({ images, postTitle }: PostSliderProps) {
 
   return (
     <div className="relative w-full h-full">
-      <img
+      <Image
         src={images[currentIndex]}
         alt={`${postTitle} - تصویر ${currentIndex + 1}`}
+        fill
+        sizes="(max-width: 768px) 100vw, 47vw"
+        unoptimized
         className="w-full h-full object-cover"
       />
       {images.length > 1 && (
