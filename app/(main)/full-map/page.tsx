@@ -384,9 +384,9 @@ const HorizontalProductCard: React.FC<{
         onClick(post);
       }}
       className={`
-        flex items-center gap-2 p-2 rounded-xl cursor-pointer transition-all duration-200
-        bg-bg-card hover:bg-bg-hover border border-border-color
-        h-23 w-full rtl
+        flex items-stretch gap-3 p-3 rounded-2xl cursor-pointer transition-all duration-200
+        bg-black text-white hover:bg-neutral-900 shadow-[0_4px_14px_rgba(0,0,0,0.25)]
+        min-h-28 w-full rtl
       `}
       role="button"
       tabIndex={0}
@@ -398,32 +398,48 @@ const HorizontalProductCard: React.FC<{
       }}
     >
       {/* تصویر */}
-      <div className="w-18 h-18 relative shrink-0 rounded-lg overflow-hidden bg-bg-surface order-2">
-        <Image
-          src={post.image || '/images/posts/placeholder.svg'}
-          alt={post.title}
-          fill
-          className="object-cover"
-          sizes="72px"
-        />
+      <div className="w-22 h-22 self-center relative shrink-0 rounded-xl overflow-hidden bg-white p-1">
+        <div className="relative w-full h-full rounded-lg overflow-hidden">
+          <Image
+            src={post.image || '/images/posts/placeholder.svg'}
+            alt={post.title}
+            fill
+            className="object-cover"
+            sizes="88px"
+          />
+        </div>
+        <span className="absolute top-1 left-1 min-w-4 h-4 px-1 rounded-full bg-red-600 text-[8px] font-bold leading-4 text-center text-white">
+          {post.likesCount}
+        </span>
       </div>
-      
+
       {/* اطلاعات */}
-      <div className="flex-1 flex flex-col gap-1.5 min-w-0 h-full justify-between order-1">
-        <h4 className="text-xs font-semibold text-text-primary truncate m-0">
-          {post.title}
-        </h4>
-        <p className="text-[10px] text-text-secondary line-clamp-1 leading-relaxed m-0">
-          {post.caption}
-        </p>
-        <div className="flex justify-between items-center mt-1">
-          <span className={`text-xs font-bold ${post.price === 0 ? 'text-emerald-500' : 'text-accent-color'}`}>
-            {post.price === 0 ? 'رایگان' : formatPrice(post.price)}
+      <div className="flex-1 flex flex-col justify-between min-w-0">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h4 className="text-xs font-bold leading-snug line-clamp-2 m-0">
+              {post.title}
+            </h4>
+            <p className="text-[9px] text-white/70 line-clamp-2 leading-relaxed m-0 mt-0.5">
+              {post.caption}
+            </p>
+          </div>
+          <span className="shrink-0 flex items-center gap-0.5 text-[9px] text-white/80">
+            ★ {post.rating}
           </span>
-          <div className="text-[9px] text-text-muted flex items-center gap-1">
-            <span>⭐ {post.rating}</span>
-            <span>|</span>
-            <span>👤 {user?.name || 'ناشناس'}</span>
+        </div>
+
+        <div className="flex items-end justify-between gap-2 mt-2">
+          <span className="shrink-0 px-3 py-0.5 rounded-full bg-red-600 text-[9px] font-semibold">
+            خرید
+          </span>
+          <div className="flex flex-col items-end gap-1 min-w-0">
+            <span className="max-w-full truncate px-2 py-0.5 rounded-full bg-white/15 text-[8px] text-white/80">
+              {post.category || user?.name || 'ناشناس'}
+            </span>
+            <span className={`text-base font-bold leading-none ${post.price === 0 ? 'text-emerald-400' : 'text-white'}`}>
+              {post.price === 0 ? 'رایگان' : formatPrice(post.price)}
+            </span>
           </div>
         </div>
       </div>
