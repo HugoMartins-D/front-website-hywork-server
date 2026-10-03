@@ -3,8 +3,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import Sidebar from '@/components/Sidebar';
-import MobileBottomNav from '@/components/MobileBottomNav';
+import AppShell from '@/components/AppShell';
 import PostCard from '@/components/PostCard';
 import PostModal from '@/components/PostModal';
 import { fetchAllPosts } from '@/services/postService';
@@ -17,16 +16,6 @@ export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // تشخیص موبایل (فقط در کلاینت)
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   // بارگذاری پست‌ها
   useEffect(() => {
     let isMounted = true;
@@ -95,20 +84,17 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-bg-primary">
-      {/* سایدبار - فقط در دسکتاپ */}
-      {!isMobile && <Sidebar />}
-
-      {/* محتوای اصلی */}
-      <div className="flex-1 min-h-screen pb-[70px] md:pb-0">
-        <div className="flex flex-col items-center py-5 gap-[2px] max-w-[600px] mx-auto w-full">
+    <AppShell>
+      {/* محتوای اصلی: فید پست‌ها در ستون ۴۴۰ پیکسلی فیگما */}
+      <div>
+        <div className="flex flex-col items-center py-5 gap-[2px] w-full">
           {posts.length === 0 ? (
             <div className="text-center p-8 text-text-secondary">هیچ محصولی یافت نشد.</div>
           ) : (
             posts.map((post) => (
               <div
                 key={post.id}
-                className="w-[95%] max-w-[550px] cursor-pointer transition-transform duration-200  sm:w-[98%]"
+                className="w-full cursor-pointer"
                 onClick={() => openModal(post)}
               >
                 <PostCard
@@ -131,8 +117,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ناوبری پایین - فقط در موبایل */}
-      {isMobile && <MobileBottomNav />}
 
       {/* مودال پست */}
       {isModalOpen && selectedPost && (
@@ -143,6 +127,6 @@ export default function HomePage() {
           onSellerClick={() => handleSellerClick(selectedPost.userId)}
         />
       )}
-    </div>
+    </AppShell>
   );
 }
