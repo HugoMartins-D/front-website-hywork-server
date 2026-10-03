@@ -385,6 +385,7 @@ export default function PostDetailPage() {
 
   // ✅ اگر کاربر صاحب پست است، گزینه حذف رو هم اضافه کن
   if (currentUser && post && currentUser.id === post.userId) {
+    dropdownItems.push({ label: 'ویرایش پست', icon: '✏️', onClick: () => router.push(`/post/${post.id}/edit`) });
     dropdownItems.push({ label: 'حذف پست', icon: '🗑️', onClick: handleDeletePost });
   }
 
