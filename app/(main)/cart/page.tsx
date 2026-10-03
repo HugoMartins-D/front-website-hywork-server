@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback, useMemo, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import AppShell from '@/components/AppShell';
 import PageHeader from '@/components/PageHeader';
 import { Button, SegmentedTabs } from '@/components/FormControls';
@@ -518,7 +519,11 @@ export default function CartPage() {
     return (
       <div className="pt-8 flex flex-col gap-3">
         {orderHistory.map((order) => (
-          <div key={order.id} className="p-4 rounded-[10px] border border-border-strong text-text-primary">
+          <Link
+            key={order.id}
+            href={`/orders/${order.id}`}
+            className="block p-4 rounded-[10px] border border-border-strong text-text-primary hover:text-text-primary"
+          >
             <div className="flex items-center justify-between gap-2">
               <span className="text-sm font-semibold">سفارش #{toPersianNumber(order.id)}</span>
               <StatusPill status={order.status} />
@@ -526,7 +531,7 @@ export default function CartPage() {
             <div className="mt-1 text-[10px] text-text-secondary">{order.date}</div>
             <p className="m-0 mt-3 text-xs">{order.items.join(' - ')}</p>
             <div className="mt-3 text-lg font-semibold text-left">{toPersianNumber(order.total)}</div>
-          </div>
+          </Link>
         ))}
       </div>
     );
