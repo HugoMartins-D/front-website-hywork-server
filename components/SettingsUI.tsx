@@ -11,6 +11,7 @@ export const SETTINGS_ITEMS: { href: string; label: string }[] = [
   { href: '/notifications', label: 'صندوق اعلان‌ها' },
   { href: '/settings/locations', label: 'مکان‌ها' },
   { href: '/wallet', label: 'کیف پول' },
+  { href: '/team', label: 'تیم' },
   { href: '/settings/saved', label: 'ذخیره‌شده‌ها' },
   { href: '/settings/notifications', label: 'اعلان‌ها' },
   { href: '/settings/trending', label: 'پرطرفدارها' },
