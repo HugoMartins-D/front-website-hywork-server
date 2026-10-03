@@ -284,6 +284,7 @@ function ProfilePageContent() {
         bio={profileUser.bio || 'خوش آمدید به پروفایل من'}
         status={profileUser.status}
         rating={avgRating}
+        avatarHref={isOwn ? '/status' : undefined}
         stats={[
           { label: 'پست', value: toPersianNumber(posts.length) },
           { label: 'دنبال‌کننده', value: toPersianNumber((profileUser.followersCount || 0).toLocaleString('en-US')) },

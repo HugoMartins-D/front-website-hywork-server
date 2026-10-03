@@ -7,6 +7,8 @@ import { useCallback, useSyncExternalStore, type ReactNode } from 'react';
 
 export const SETTINGS_ITEMS: { href: string; label: string }[] = [
   { href: '/profile/edit', label: 'تنظیمات پروفایل' },
+  { href: '/status', label: 'وضعیت من' },
+  { href: '/notifications', label: 'صندوق اعلان‌ها' },
   { href: '/settings/locations', label: 'مکان‌ها' },
   { href: '/wallet', label: 'کیف پول' },
   { href: '/settings/saved', label: 'ذخیره‌شده‌ها' },

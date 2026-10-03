@@ -1024,10 +1024,18 @@ export default function MessagesPage() {
                   {selectedChat.isOnline ? 'آنلاین' : 'آفلاین'}
                 </div>
               </div>
-              <button className={styles.headerIconBtn} aria-label="تماس صوتی">
+              <button
+                className={styles.headerIconBtn}
+                aria-label="تماس صوتی"
+                onClick={() => router.push(`/call?type=voice&name=${encodeURIComponent(selectedChat.name)}`)}
+              >
                 <PhoneIcon className="w-4.5 h-4.5" />
               </button>
-              <button className={styles.headerIconBtn} aria-label="تماس تصویری">
+              <button
+                className={styles.headerIconBtn}
+                aria-label="تماس تصویری"
+                onClick={() => router.push(`/call?type=video&name=${encodeURIComponent(selectedChat.name)}`)}
+              >
                 <VideoCallIcon className="w-5 h-5" />
               </button>
               <button className={styles.headerIconBtn} aria-label="گزینه‌های بیشتر">

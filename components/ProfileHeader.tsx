@@ -4,7 +4,18 @@
 import type { ReactNode } from 'react';
 import Image from 'next/image';
 import { statusRingColor } from '@/components/MobileBottomNav';
+import Link from 'next/link';
 import { UserIcon } from '@/components/icons';
+
+// آواتار صاحب پروفایل به صفحه‌ی وضعیت لینک می‌شود
+const Wrapper = ({ href, className, children }: { href?: string; className: string; children: ReactNode }) =>
+  href ? (
+    <Link href={href} aria-label="تغییر وضعیت" className={className}>
+      {children}
+    </Link>
+  ) : (
+    <div className={className}>{children}</div>
+  );
 
 // سربرگ پروفایل فیگما (User Page / customer / seller):
 // آواتار ۱۰۹ پیکسلی با حلقه‌ی ۵ پیکسلی وضعیت در سمت راست، ستاره‌ی زرد امتیاز روی لبه‌ی پایین آن،
@@ -20,15 +31,16 @@ interface ProfileHeaderProps {
   stats: { label: string; value: string }[];
   topActions?: ReactNode;
   actions?: ReactNode;
+  avatarHref?: string;
 }
 
-export default function ProfileHeader({ avatar, name, subtitle, bio, status, rating, stats, topActions, actions }: ProfileHeaderProps) {
+export default function ProfileHeader({ avatar, name, subtitle, bio, status, rating, stats, topActions, actions, avatarHref }: ProfileHeaderProps) {
   return (
     <section className="px-4">
       <div className="flex items-center justify-end gap-3 h-17 text-text-primary">{topActions}</div>
 
       <div className="flex items-start gap-7">
-        <div className="relative shrink-0">
+        <Wrapper href={avatarHref} className="relative shrink-0 block">
           <span
             className="relative block w-27.25 h-27.25 rounded-full overflow-hidden bg-placeholder border-[5px]"
             style={{ borderColor: statusRingColor(status) }}
@@ -47,7 +59,7 @@ export default function ProfileHeader({ avatar, name, subtitle, bio, status, rat
               <span className="relative text-[6px] font-medium text-text-primary mt-0.5">{Math.round(rating)}</span>
             </span>
           )}
-        </div>
+        </Wrapper>
 
         <dl className="flex-1 m-0 grid grid-cols-3 pt-5">
           {stats.map((s) => (
