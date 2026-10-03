@@ -186,13 +186,10 @@
     background: var(--color-text-secondary);
   }
 
-  /* جلوگیری از zoom خودکار iOS روی فوکوس اینپوت در موبایل */
+  /* جلوگیری از zoom خودکار iOS روی فوکوس اینپوت در موبایل.
+     اندازه‌ی پایه‌ی html عمداً ۱۶ پیکسل می‌ماند تا اندازه‌های پیکسلی فیگما (۴۴۰ پیکسل) دقیق باشند */
   @media (max-width: 640px) {
-    html {
-      font-size: 14px;
-    }
-
-    input, textarea, select, button {
+    input, textarea, select {
       font-size: 16px;
     }
   }

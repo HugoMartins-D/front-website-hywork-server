@@ -96,37 +96,40 @@ export default function PostCard({
     { label: 'گزارش', icon: '🚫', onClick: handleReport },
   ];
 
-  // حالت فشرده (compact) - برای پروفایل کاربر
+  // حالت فشرده (compact) - خانه‌ی شبکه‌ی سه‌ستونه‌ی فیگما (نتایج جستجو، پروفایل)
+  // تصویر مربعی، زیرش ۷۲ پیکسل سفید: عنوان ۱۰/۳۰۰، دسته ۶/۳۰۰ خاکستری، موجودی ۶/۴۰۰ قرمز، قیمت ۱۰/۴۰۰
   if (compact) {
+    const lowStock = stock > 0 && stock <= 5;
     return (
-      <div className="bg-(--color-bg-card) overflow-hidden cursor-pointer relative">
-        <div className="relative aspect-square overflow-hidden bg-(--color-bg-surface)">
+      <div className="bg-bg-card overflow-hidden cursor-pointer relative">
+        <div className="relative aspect-square overflow-hidden bg-placeholder">
           <ImageWithFallback
             src={displayImage}
             alt={title}
             fallbackSrc="/images/posts/placeholder.svg"
             className="w-full h-full object-cover"
           />
-          {isService && (
-            <span className="absolute top-2 right-2 bg-green-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-              خدمات
-            </span>
-          )}
-          {stock === 0 && (
-            <span className="absolute top-2 left-2 bg-red-500 text-white px-2.5 py-1 text-[11px] font-medium z-[2] rounded-full">
-              ناموجود
-            </span>
-          )}
         </div>
-        <div className="p-2">
-          <h3
-            className={`text-[13px] font-medium m-0 mb-1 text-(--color-text-primary) line-clamp-2 leading-tight min-h-[28px] sm:min-h-[32px]`}
-            title={title}
-          >
-            {truncateTitle(title, isMobile ? 30 : 35)}
+        <div className="relative h-18 px-1.5 pt-px text-right">
+          <h3 className="m-0 text-[10px] font-light leading-3 text-text-primary line-clamp-2" title={title}>
+            {title}
           </h3>
-          <div className={`text-[14px] font-bold text-(--color-accent-color) ${isMobile ? 'text-[11px]' : ''}`}>
-            {formattedPrice} تومان
+          {category && <p className="m-0 mt-px text-[6px] font-light leading-2 text-[#8d8d8d]">{category}</p>}
+          {stock === 0 ? (
+            <p className="m-0 text-[6px] leading-2 text-danger">ناموجود</p>
+          ) : lowStock ? (
+            <p className="m-0 text-[6px] leading-2 text-danger">{formattedStock} عدد موجود</p>
+          ) : null}
+          <div className="absolute bottom-2 inset-x-1.5 flex items-end justify-between">
+            <span className="text-[10px] leading-3 text-text-primary">{formattedPrice}</span>
+            {rating > 0 && (
+              <span className="flex items-center gap-px text-[4px] leading-none text-text-primary">
+                <svg viewBox="0 0 24 24" className="w-2 h-2" fill="currentColor" aria-hidden>
+                  <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z" />
+                </svg>
+                {formattedRating}
+              </span>
+            )}
           </div>
         </div>
       </div>
