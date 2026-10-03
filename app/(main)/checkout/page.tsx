@@ -7,6 +7,7 @@ import Image from 'next/image';
 import AppShell from '@/components/AppShell';
 import PageHeader from '@/components/PageHeader';
 import BottomSheet, { SheetActions } from '@/components/BottomSheet';
+import WalletCard from '@/components/WalletCard';
 import { Button, TextField, RadioDot } from '@/components/FormControls';
 import { toPersianNumber, formatPrice } from '@/utils/numberUtils';
 import { useToast } from '@/components/NotificationToast';
@@ -534,6 +535,9 @@ export default function CheckoutPage() {
           </div>
 
           <h2 className="m-0 mt-12 mb-5 text-lg font-medium text-text-primary">پرداخت</h2>
+          <div className="-mx-4 mb-8">
+            <WalletCard balance={formatPrice(50000000)} owner={formData.fullName || 'کیف پول من'} />
+          </div>
           <div className="flex flex-col gap-2.5" role="radiogroup" aria-label="روش پرداخت">
             {paymentOptions.map((option) => (
               <ChoiceRow
