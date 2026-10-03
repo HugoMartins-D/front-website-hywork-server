@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import AppShell from '@/components/AppShell';
 import PageHeader from '@/components/PageHeader';
 import { Button, SpecList } from '@/components/FormControls';
@@ -507,7 +508,12 @@ export default function PostDetailPage() {
 
       <div className="px-4 mt-16 mb-10 flex flex-col items-end">
         <span className="text-[40px] leading-12 text-text-primary">{formatPrice(post.price)}</span>
-        <span className="mt-1 px-2.5 h-5 rounded-full bg-accent-color text-on-accent text-xs leading-5">تومان</span>
+        <Link
+          href={`/post/${post.id}/reserve`}
+          className="mt-1 px-2.5 h-5 rounded-full bg-accent-color text-on-accent text-xs leading-5 hover:text-on-accent"
+        >
+          تومان · ثبت سفارش
+        </Link>
       </div>
 
       {/* نظرات */}
