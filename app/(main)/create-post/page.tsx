@@ -245,7 +245,7 @@ const CustomSelect = ({
           setIsOpen(!isOpen);
         }}
         className={`flex items-center justify-between px-4 py-3 bg-bg-primary border rounded-2xl text-sm cursor-pointer transition-all duration-200 text-text-primary ${
-          isOpen ? 'border-accent-color shadow-[0_0_0_2px_rgba(59,130,246,0.2)]' : 'border-border-color'
+          isOpen ? 'border-accent-color shadow-[0_0_0_2px_rgba(0,0,0,0.2)]' : 'border-border-color'
         }`}
         role="button"
         tabIndex={0}
@@ -1066,7 +1066,7 @@ export default function CreatePostPage() {
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <button
                 type="submit"
-                className="flex-1 px-4 py-3 bg-accent-color text-white border-none rounded-4xl text-base font-semibold cursor-pointer transition-all text-center hover:bg-accent-hover hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                className="flex-1 px-4 py-3 bg-accent-color text-on-accent border-none rounded-4xl text-base font-semibold cursor-pointer transition-all text-center hover:bg-accent-hover hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                 disabled={uploading}
               >
                 {uploading ? 'در حال آپلود...' : 'ثبت پست'}
@@ -1154,7 +1154,7 @@ export default function CreatePostPage() {
             <button
               type="button"
               onClick={handleAddAddress}
-              className="w-11.5 h-11.5 bg-accent-color text-white border-none rounded-2xl cursor-pointer transition-colors flex items-center justify-center hover:bg-accent-hover"
+              className="w-11.5 h-11.5 bg-accent-color text-on-accent border-none rounded-2xl cursor-pointer transition-colors flex items-center justify-center hover:bg-accent-hover"
               aria-label="افزودن آدرس"
             >
               <PlusIcon className="w-5 h-5" />

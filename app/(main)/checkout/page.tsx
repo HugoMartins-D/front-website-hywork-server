@@ -615,7 +615,7 @@ export default function CheckoutPage() {
               console.log('🔙 بازگشت به فروشگاه');
               router.push('/');
             }}
-            className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent-color text-white border-none rounded-[40px] cursor-pointer transition-colors hover:bg-accent-hover text-sm sm:text-base"
+            className="px-5 sm:px-6 py-2.5 sm:py-3 bg-accent-color text-on-accent border-none rounded-[40px] cursor-pointer transition-colors hover:bg-accent-hover text-sm sm:text-base"
           >
             بازگشت به فروشگاه
           </button>
@@ -824,7 +824,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-accent-color text-white border-none px-4 py-3.5 rounded-[40px] text-sm sm:text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none mt-2"
+                className="w-full bg-accent-color text-on-accent border-none px-4 py-3.5 rounded-[40px] text-sm sm:text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none mt-2"
               >
                 {isSubmitting ? 'در حال ثبت سفارش...' : 'ثبت سفارش و پرداخت'}
               </button>

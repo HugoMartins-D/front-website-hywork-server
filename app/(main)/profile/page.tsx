@@ -63,7 +63,7 @@ const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 
   const colors = {
     success: 'bg-green-500',
     error: 'bg-red-500',
-    info: 'bg-blue-500',
+    info: 'bg-accent-color',
   };
 
   return (
@@ -296,7 +296,7 @@ function ProfilePageContent() {
             <p className="text-text-muted">برای مشاهده پروفایل خود باید وارد حساب کاربری شوید.</p>
             <button
               onClick={() => router.push('/login')}
-              className="mt-5 px-6 py-2.5 bg-accent-color text-white border-none rounded-lg cursor-pointer hover:bg-accent-hover transition-colors"
+              className="mt-5 px-6 py-2.5 bg-accent-color text-on-accent border-none rounded-lg cursor-pointer hover:bg-accent-hover transition-colors"
             >
               ورود به حساب
             </button>
@@ -318,7 +318,7 @@ function ProfilePageContent() {
             <p className="text-text-muted">کاربر مورد نظر وجود ندارد.</p>
             <button
               onClick={() => router.push('/')}
-              className="mt-5 px-6 py-2.5 bg-accent-color text-white border-none rounded-lg cursor-pointer hover:bg-accent-hover transition-colors"
+              className="mt-5 px-6 py-2.5 bg-accent-color text-on-accent border-none rounded-lg cursor-pointer hover:bg-accent-hover transition-colors"
             >
               بازگشت به صفحه اصلی
             </button>

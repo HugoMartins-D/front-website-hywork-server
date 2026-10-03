@@ -648,7 +648,7 @@ export default function EditProfilePage() {
               <button
                 type="submit"
                 disabled={isSubmitting || (!!formData.username && !isUsernameValid)}
-                className="flex-1 bg-accent-color text-white border-none px-4 py-3 rounded-[40px] text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(187,134,252,0.3)] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none sm:px-3.5 sm:py-2.5 sm:text-sm"
+                className="flex-1 bg-accent-color text-on-accent border-none px-4 py-3 rounded-[40px] text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(187,134,252,0.3)] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none sm:px-3.5 sm:py-2.5 sm:text-sm"
               >
                 {isSubmitting ? 'در حال ذخیره...' : 'ذخیره تغییرات'}
               </button>
@@ -699,7 +699,7 @@ export default function EditProfilePage() {
             <button
               type="button"
               onClick={handleAddAddress}
-              className="w-[46px] h-[46px] bg-accent-color text-white border-none rounded-2xl cursor-pointer flex items-center justify-center transition-all hover:bg-accent-hover hover:scale-105 sm:w-[42px] sm:h-[42px]"
+              className="w-[46px] h-[46px] bg-accent-color text-on-accent border-none rounded-2xl cursor-pointer flex items-center justify-center transition-all hover:bg-accent-hover hover:scale-105 sm:w-[42px] sm:h-[42px]"
             >
               <PlusIcon />
             </button>

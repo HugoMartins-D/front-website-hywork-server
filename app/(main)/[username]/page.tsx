@@ -410,7 +410,7 @@ function ProfileDisplay({ profile }: { profile: UserProfile }) {
                 href={profile.socialLinks.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="text-accent-color hover:underline"
               >
                 LinkedIn
               </a>
@@ -430,7 +430,7 @@ function ProfileDisplay({ profile }: { profile: UserProfile }) {
                 href={profile.socialLinks.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-400 hover:underline"
+                className="text-accent-color hover:underline"
               >
                 Twitter
               </a>
@@ -450,7 +450,7 @@ function ProfileDisplay({ profile }: { profile: UserProfile }) {
                 href={profile.socialLinks.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
+                className="text-accent-color hover:underline"
               >
                 Telegram
               </a>

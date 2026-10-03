@@ -208,7 +208,7 @@ const StatCard = ({
   value, 
   icon: Icon, 
   change, 
-  color = '#3b82f6' 
+  color = '#000000' 
 }: StatCardData) => {
   const persianChange = change !== undefined ? toPersianNumber(Math.abs(change).toString()) : '';
 
@@ -274,7 +274,7 @@ const OrderCard = ({ order }: { order: Order }) => {
       case 'تحویل شده':
         return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
       case 'در حال ارسال':
-        return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
+        return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-accent-color';
       default:
         return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
     }
@@ -460,7 +460,7 @@ export default function DashboardPage() {
             value="۱۲,۵۰۰,۰۰۰ تومان"
             icon={CurrencyCoinIcon}
             change={12.5}
-            color="#3b82f6"
+            color="#000000"
           />
           <StatCard
             title="کل خرید"
@@ -516,7 +516,7 @@ export default function DashboardPage() {
                     fontSize: isMobile ? 10 : 12,
                   }}
                 />
-                <Line type="monotone" dataKey="فروش" stroke="#3b82f6" strokeWidth={2} />
+                <Line type="monotone" dataKey="فروش" stroke="#000000" strokeWidth={2} />
                 <Line type="monotone" dataKey="خرید" stroke="#10b981" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
@@ -565,7 +565,7 @@ export default function DashboardPage() {
                   <button className="flex-1 px-3 py-2 bg-bg-secondary border-none rounded-lg text-xs cursor-pointer text-text-primary transition-colors hover:bg-border-color sm:py-1.5">
                     ویرایش
                   </button>
-                  <button className="flex-1 px-3 py-2 bg-bg-surface border-none rounded-lg text-xs cursor-pointer text-text-primary transition-colors hover:bg-accent-color hover:text-white sm:py-1.5">
+                  <button className="flex-1 px-3 py-2 bg-bg-surface border-none rounded-lg text-xs cursor-pointer text-text-primary transition-colors hover:bg-accent-color hover:text-on-accent sm:py-1.5">
                     آمار
                   </button>
                 </div>

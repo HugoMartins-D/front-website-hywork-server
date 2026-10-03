@@ -67,7 +67,7 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
             type="text"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
-            className="w-full px-4 py-3 border border-border-color rounded-xl text-sm outline-none transition-all bg-bg-primary text-text-primary font-sans focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(59,130,246,0.1)] disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full px-4 py-3 border border-border-color rounded-xl text-sm outline-none transition-all bg-bg-primary text-text-primary font-sans focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(0,0,0,0.1)] disabled:opacity-60 disabled:cursor-not-allowed"
             placeholder="09123456789 یا example@email.com"
             disabled={isLoading}
             dir="ltr"
@@ -80,7 +80,7 @@ export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
         <button
           type="submit"
           disabled={isLoading || !identifier.trim()}
-          className="w-full bg-accent-color text-white border-none px-4 py-3 rounded-xl text-sm sm:text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
+          className="w-full bg-accent-color text-on-accent border-none px-4 py-3 rounded-xl text-sm sm:text-base font-semibold cursor-pointer transition-all hover:bg-accent-hover hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">

@@ -165,7 +165,7 @@ export default function SearchPage() {
               <button
                 type="button"
                 onClick={() => setSearchTerm('')}
-                className="mt-5 rounded-full border-none bg-[var(--color-accent-color)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)]"
+                className="mt-5 rounded-full border-none bg-[var(--color-accent-color)] px-5 py-2.5 text-sm font-semibold text-on-accent hover:bg-[var(--color-accent-hover)]"
               >
                 نمایش همه محصولات
               </button>

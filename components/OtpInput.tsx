@@ -160,7 +160,7 @@ const OtpInput = forwardRef<OtpInputRef, OtpInputProps>(({
             text-center text-xl sm:text-2xl font-bold 
             border-2 rounded-xl outline-none transition-all
             bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-            focus:border-blue-500 focus:shadow-[0_0_0_3px_rgba(59,130,246,0.2)]
+            focus:border-accent-color focus:shadow-[0_0_0_3px_rgba(0,0,0,0.2)]
             disabled:opacity-60 disabled:cursor-not-allowed
             ${error ? 'border-red-500 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.2)]' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'}
           `}

@@ -532,7 +532,7 @@ export default function CartPage() {
           
           <button
             onClick={handleCheckout}
-            className="bg-accent-color text-white border-none px-6 py-2.5 rounded-[40px] cursor-pointer text-base font-semibold transition-all hover:bg-accent-hover hover:-translate-y-0.5 sm:w-full sm:py-3"
+            className="bg-accent-color text-on-accent border-none px-6 py-2.5 rounded-[40px] cursor-pointer text-base font-semibold transition-all hover:bg-accent-hover hover:-translate-y-0.5 sm:w-full sm:py-3"
             aria-label="پرداخت و ثبت سفارش"
           >
             پرداخت و ثبت سفارش

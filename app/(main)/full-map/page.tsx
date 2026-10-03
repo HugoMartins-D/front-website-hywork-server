@@ -782,8 +782,8 @@ function FullMapPageContent() {
       className: 'user-location-marker',
       html: `
         <div class="relative w-6 h-6">
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-blue-500 border-2 border-white rounded-full shadow-md z-2"></div>
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-blue-500/20 rounded-full animate-pulse-ring"></div>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-accent-color border-2 border-white rounded-full shadow-md z-2"></div>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-accent-color/20 rounded-full animate-pulse-ring"></div>
         </div>
       `,
       iconSize: [40, 40],
@@ -1056,7 +1056,7 @@ function FullMapPageContent() {
                     </div>
                     <button
                       onClick={() => handleMarkerClick(post)}
-                      className="w-full bg-accent-color text-white border-none py-2 px-4 rounded-lg cursor-pointer mt-2 font-sans"
+                      className="w-full bg-accent-color text-on-accent border-none py-2 px-4 rounded-lg cursor-pointer mt-2 font-sans"
                     >
                       مشاهده محصول
                     </button>

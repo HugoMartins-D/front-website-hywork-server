@@ -231,7 +231,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center" onClick={handleOverlayClick}>
         <div className="bg-[var(--color-bg-card)] p-10 text-center text-[var(--color-text-primary)]">
           اطلاعات پست در دسترس نیست
-          <button onClick={handleClose} className="mt-5 px-5 py-2.5 bg-[var(--color-accent-color)] text-white border-none cursor-pointer">
+          <button onClick={handleClose} className="mt-5 px-5 py-2.5 bg-[var(--color-accent-color)] text-on-accent border-none cursor-pointer">
             بستن
           </button>
         </div>
@@ -526,7 +526,7 @@ export default function PostModal({ post, onAddToCart, onClose, onSellerClick }:
                       disabled={!commentText.trim()}
                       className={`h-10 min-w-16 shrink-0 rounded-full border-none px-3 font-semibold ${
                         commentText.trim()
-                          ? 'bg-[var(--color-accent-color)] text-white cursor-pointer'
+                          ? 'bg-[var(--color-accent-color)] text-on-accent cursor-pointer'
                           : 'bg-[var(--color-border-color)] text-[var(--color-text-muted)] cursor-not-allowed'
                       }`}
                     >

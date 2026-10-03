@@ -245,7 +245,7 @@ const CommentModal: React.FC<{
               disabled={!commentText.trim()}
               className={`px-5 py-2.5 rounded-3xl flex items-center gap-1.5 transition-all ${
                 commentText.trim()
-                  ? 'bg-accent-color text-white cursor-pointer hover:bg-accent-hover'
+                  ? 'bg-accent-color text-on-accent cursor-pointer hover:bg-accent-hover'
                   : 'bg-bg-surface text-text-muted border border-border-color cursor-not-allowed'
               }`}
             >
@@ -256,7 +256,7 @@ const CommentModal: React.FC<{
           <div className="p-5 text-center border-t border-border-color">
             <p className="text-text-secondary">برای نوشتن نظر لطفاً وارد حساب کاربری خود شوید</p>
             <button
-              className="mt-3 px-5 py-2 bg-accent-color text-white border-none rounded-2xl cursor-pointer"
+              className="mt-3 px-5 py-2 bg-accent-color text-on-accent border-none rounded-2xl cursor-pointer"
               onClick={() => window.location.href = '/login'}
             >
               ورود به حساب
@@ -440,7 +440,7 @@ export default function PostDetailPage() {
           <h2 className="text-text-primary">پستی یافت نشد</h2>
           <button
             onClick={() => router.push('/')}
-            className="mt-5 px-5 py-2.5 bg-accent-color text-white border-none rounded-lg cursor-pointer"
+            className="mt-5 px-5 py-2.5 bg-accent-color text-on-accent border-none rounded-lg cursor-pointer"
           >
             بازگشت به صفحه اصلی
           </button>
@@ -563,7 +563,7 @@ export default function PostDetailPage() {
                       disabled={!newCommentText.trim()}
                       className={`px-4 py-2 rounded-3xl flex items-center gap-1.5 transition-all ${
                         newCommentText.trim()
-                          ? 'bg-accent-color text-white cursor-pointer hover:bg-accent-hover'
+                          ? 'bg-accent-color text-on-accent cursor-pointer hover:bg-accent-hover'
                           : 'bg-bg-surface text-text-muted border border-border-color cursor-not-allowed'
                       }`}
                     >
@@ -707,7 +707,7 @@ export default function PostDetailPage() {
                     disabled={!newCommentText.trim()}
                     className={`px-4 py-2 rounded-3xl flex items-center gap-1.5 transition-all ${
                       newCommentText.trim()
-                        ? 'bg-accent-color text-white cursor-pointer hover:bg-accent-hover'
+                        ? 'bg-accent-color text-on-accent cursor-pointer hover:bg-accent-hover'
                         : 'bg-bg-surface text-text-muted border border-border-color cursor-not-allowed'
                     }`}
                   >
